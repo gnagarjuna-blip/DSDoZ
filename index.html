@@ -2,27 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Roulette Global Progression Tracker</title>
+    <title>Roulette Professional Predictor</title>
     <style>
         :root { --green: #1b5e20; --red: #d32f2f; --black: #1a1a1a; --gold: #ffc107; --blue: #0d47a1; }
         body { font-family: 'Segoe UI', sans-serif; background: #121212; color: white; margin: 0; padding: 20px; }
         .container { max-width: 1200px; margin: auto; }
+        
+        /* Header & Stats */
         .header { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 15px; background: #2c3e50; padding: 20px; border-radius: 8px; margin-bottom: 20px; border-bottom: 4px solid var(--gold); }
         .stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 20px; }
-        .stat-card { background: #34495e; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #455a64; }
-        .stat-card div { font-size: 1.2rem; color: var(--gold); font-weight: bold; margin-top: 5px; }
-        .table-area { background: var(--green); padding: 20px; border-radius: 12px; border: 4px solid #3e2723; margin-bottom: 20px; }
-        .roulette-grid { display: grid; grid-template-columns: 50px repeat(12, 1fr); gap: 3px; }
-        .cell { height: 40px; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; border: 1px solid rgba(255,255,255,0.2); font-size: 0.85em; }
-        .zero { grid-row: span 3; background: var(--green); border: 2px solid white; height: auto; }
+        .stat-card { background: #34495e; padding: 15px; border-radius: 8px; text-align: center; border: 1px solid #455a64; transition: 0.3s; }
+        .stat-card div { font-size: 1.5rem; color: var(--gold); font-weight: bold; }
+
+        /* Interactive Board */
+        .table-area { background: #0a4d1c; padding: 25px; border-radius: 15px; border: 6px solid #3e2723; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+        .roulette-grid { display: grid; grid-template-columns: 60px repeat(12, 1fr); gap: 5px; }
+        .cell { height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); font-size: 1.1em; transition: all 0.1s ease; user-select: none; }
+        .cell:active { transform: scale(0.9); filter: brightness(1.5); }
+        .zero { grid-row: span 3; background: #2e7d32; border: 2px solid white; height: auto; }
         .r { background: var(--red); }
         .b { background: var(--black); }
-        .bet-ds { border: 3px solid var(--gold) !important; background: rgba(255, 193, 7, 0.6); box-shadow: 0 0 10px var(--gold); }
+        
+        /* Betting Highlights */
+        .bet-active { border: 3px solid var(--gold) !important; background: rgba(255, 193, 7, 0.4) !important; box-shadow: inset 0 0 15px #000; position: relative; }
+        .bet-active::after { content: '投注'; position: absolute; font-size: 10px; bottom: 2px; color: var(--gold); }
+
         .panel { background: #2c3e50; padding: 20px; border-radius: 8px; }
-        textarea { width: 100%; height: 100px; background: #1a1a1a; color: #00ff00; border: 1px solid #555; padding: 10px; font-family: monospace; box-sizing: border-box; }
-        .log { height: 300px; overflow-y: auto; background: #1a1a1a; padding: 10px; font-size: 0.85rem; border-radius: 4px; border: 1px solid #444; }
+        textarea { width: 100%; height: 100px; background: #1a1a1a; color: #00ff00; border: 1px solid #555; padding: 10px; font-family: monospace; box-sizing: border-box; border-radius: 5px; }
+        .log { height: 350px; overflow-y: auto; background: #1a1a1a; padding: 15px; font-size: 0.9rem; border-radius: 4px; border: 1px solid #444; color: #bbb; line-height: 1.6; }
+        .win-log { color: #4caf50; font-weight: bold; }
+        .loss-log { color: #f44336; }
+        
+        button { cursor: pointer; padding: 12px; font-weight: bold; border: none; border-radius: 4px; background: var(--gold); color: black; font-size: 1rem; }
+        button:hover { background: #ffca28; }
         .hidden { display: none; }
-        button { cursor: pointer; padding: 10px; font-weight: bold; border: none; border-radius: 4px; background: var(--gold); color: black; }
     </style>
 </head>
 <body>
@@ -33,51 +46,50 @@
         <div style="display:flex; flex-direction:column;"><label>Base Unit</label><input type="number" id="inUnit" value="10"></div>
         <div style="display:flex; flex-direction:column;"><label>Mode</label>
             <select id="mode" onchange="toggleMode()">
-                <option value="sim">Simulation</option>
-                <option value="manual">Manual Play</option>
+                <option value="manual">Manual Entry (Live)</option>
+                <option value="sim">Simulation (Bulk)</option>
             </select>
         </div>
-        <button onclick="startSession()">INITIALIZE SESSION</button>
+        <button onclick="startSession()">START SESSION</button>
     </div>
 
     <div class="stats">
-        <div class="stat-card">Bankroll<div id="dispBank">0</div></div>
+        <div class="stat-card">Bankroll<div id="dispBank">1000</div></div>
         <div class="stat-card">Profit/Loss<div id="dispProfit">0</div></div>
-        <div class="stat-card">Current Unit Size<div id="dispUnitSize">1</div></div>
-        <div class="stat-card">Peak Balance<div id="dispPeak">0</div></div>
+        <div class="stat-card">Next Unit<div id="dispUnitSize">1</div></div>
+        <div class="stat-card">Spin Count<div id="dispSpins">0</div></div>
     </div>
 
-    <div id="simUI" class="panel" style="margin-bottom: 20px;">
-        <label>Paste Data (200-1000 results):</label>
-        <textarea id="bulk" placeholder="Example: 32 15 1 0 24 19..."></textarea>
-        <button onclick="runSim()" style="width:100%; margin-top:10px; background: #4caf50; color: white;">RUN SIMULATION</button>
-    </div>
-
-    <div id="manualUI" class="table-area hidden">
+    <div id="manualUI" class="table-area">
         <div class="roulette-grid" id="grid"><div class="cell zero" onclick="press(0)">0</div></div>
     </div>
 
-    <div class="main-grid" id="dashboard" style="display:none;">
+    <div id="simUI" class="panel hidden" style="margin-bottom: 20px;">
+        <label>Paste Data Below:</label>
+        <textarea id="bulk" placeholder="Enter sequence..."></textarea>
+        <button onclick="runSim()" style="width:100%; margin-top:10px; background: #4caf50; color: white;">RUN SIMULATION</button>
+    </div>
+
+    <div class="main-grid">
         <div class="panel">
-            <h3>Global Progression Dashboard</h3>
-            <div id="advice" style="background:var(--blue); padding:15px; border-radius:6px; min-height:60px;">
-                Collect 18 results to trigger logic...
+            <h3>Prediction & Logic</h3>
+            <div id="advice" style="background:var(--blue); padding:15px; border-radius:6px; min-height:60px; border-left: 5px solid var(--gold);">
+                Enter 18 numbers to begin the strategy.
             </div>
             <div id="log" class="log" style="margin-top:15px;"></div>
-        </div>
-        <div class="panel">
-            <h3>Simulation History</h3>
-            <div id="histList" class="log"></div>
         </div>
     </div>
 </div>
 
 <script>
-    let bank, startBank, peak, history = [], base, active = false;
-    let globalUnit = 1; 
+    let bank, startBank, history = [], base, active = false;
+    let currentUnit = 1; 
+    let activePrediction = null; // This stores the prediction for the NEXT spin
+    
     const reds = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
     const dsRanges = { 1:[1,6], 2:[7,12], 3:[13,18], 4:[19,24], 5:[25,30], 6:[31,36] };
 
+    // Build Table
     const grid = document.getElementById('grid');
     for (let i = 1; i <= 36; i++) {
         let col = Math.ceil(i / 3), row = i % 3 === 0 ? 1 : (i % 3 === 1 ? 3 : 2);
@@ -99,60 +111,62 @@
         startBank = parseFloat(document.getElementById('inBank').value);
         bank = startBank;
         base = parseFloat(document.getElementById('inUnit').value);
-        peak = bank; history = []; globalUnit = 1; active = true;
-        document.getElementById('dashboard').style.display = 'grid';
-        document.getElementById('histList').innerHTML = "";
+        history = []; currentUnit = 1; activePrediction = null; active = true;
+        document.getElementById('log').innerHTML = "Session started. Waiting for 18 results...";
         updateUI(null);
     }
 
     function press(n) {
         if(!active) return;
-        let prediction = null;
 
-        if(history.length >= 18) {
-            prediction = getPredictions();
-            processGame(n, prediction);
+        // 1. Calculate outcome based on PREVIOUS prediction
+        if (activePrediction !== null) {
+            evaluateResult(n);
         }
-        
+
+        // 2. Add current number to history
         history.push(n);
-        updateUI(n, prediction);
+
+        // 3. Generate NEW prediction for the NEXT spin
+        if (history.length >= 18) {
+            activePrediction = generatePrediction();
+        }
+
+        updateUI(n);
     }
 
-    function getPredictions() {
+    function generatePrediction() {
         const last18 = history.slice(-18);
         const freq = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
         last18.forEach(num => { if(num > 0) freq[Math.ceil(num / 6)]++; });
 
-        // Select 1 Hot DS per Dozen
-        const p = [
+        // Select 1 Hot DS from each Dozen
+        return [
             freq[1] >= freq[2] ? 1 : 2,
             freq[3] >= freq[4] ? 3 : 4,
             freq[5] >= freq[6] ? 5 : 6
         ];
-        return p;
     }
 
-    function processGame(n, p) {
-        const totalBet = (globalUnit * base) * 3; // 3 Double Streets at current unit
-        
-        if(bank < totalBet) {
-            active = false;
-            document.getElementById('log').innerHTML = `<div style="color:red">STOPPED: Bankroll cannot cover ${totalBet} bet.</div>` + document.getElementById('log').innerHTML;
-            return;
-        }
-
+    function evaluateResult(n) {
+        const totalBet = (currentUnit * base) * 3;
         bank -= totalBet;
+
         let landingDS = Math.ceil(n / 6);
-        let isWin = (n > 0 && p.includes(landingDS));
+        let win = (n > 0 && activePrediction.includes(landingDS));
 
-        if (isWin) {
-            bank += (globalUnit * base * 6);
-            globalUnit = Math.max(1, globalUnit - 1); // Universal decrease
+        let logMsg = "";
+        if (win) {
+            const payout = (currentUnit * base * 6);
+            bank += payout;
+            logMsg = `<span class="win-log">WIN [Result ${n}]</span>: +${payout - totalBet} profit. Unit drops.`;
+            currentUnit = Math.max(1, currentUnit - 1);
         } else {
-            globalUnit++; // Universal increase
+            logMsg = `<span class="loss-log">LOSS [Result ${n}]</span>: -${totalBet} loss. Unit increases.`;
+            currentUnit++;
         }
-
-        if(bank > peak) peak = bank;
+        
+        document.getElementById('log').innerHTML = `<div>Spin ${history.length + 1}: ${logMsg}</div>` + document.getElementById('log').innerHTML;
     }
 
     function runSim() {
@@ -161,30 +175,30 @@
         data.forEach(n => { if(active) press(n); });
     }
 
-    function updateUI(n, p) {
+    function updateUI(n) {
         document.getElementById('dispBank').innerText = bank.toFixed(0);
         document.getElementById('dispProfit').innerText = (bank - startBank).toFixed(0);
-        document.getElementById('dispUnitSize').innerText = globalUnit;
-        document.getElementById('dispPeak').innerText = peak.toFixed(0);
+        document.getElementById('dispUnitSize').innerText = currentUnit;
+        document.getElementById('dispSpins').innerText = history.length;
 
-        if(p) {
-            document.querySelectorAll('.cell').forEach(c => c.classList.remove('bet-ds'));
-            p.forEach(ds => {
+        // Visual highlights for the NEXT bet
+        document.querySelectorAll('.cell').forEach(c => c.classList.remove('bet-active'));
+        
+        if (activePrediction) {
+            activePrediction.forEach(ds => {
                 let range = dsRanges[ds];
                 for(let i = range[0]; i <= range[1]; i++) {
-                    document.getElementById(`cell-${i}`).classList.add('bet-ds');
+                    document.getElementById(`cell-${i}`).classList.add('bet-active');
                 }
             });
             
             document.getElementById('advice').innerHTML = `
-                <b>Current Bet:</b> 3 DS @ ${globalUnit} units each<br>
-                <b>Total Risk:</b> ${(globalUnit * base * 3)} credits
+                <strong style="color:var(--gold)">NEXT BET READY:</strong><br>
+                Place <strong>${currentUnit} units</strong> on Double Streets: <strong>${activePrediction.join(', ')}</strong><br>
+                <small>Total Risk: ${currentUnit * base * 3} credits</small>
             `;
-        }
-
-        if(n !== null) {
-            let logEntry = `Spin ${history.length}: Result ${n} | Bank: ${bank.toFixed(0)} (Next Unit: ${globalUnit})`;
-            document.getElementById('histList').innerHTML = `<div>${logEntry}</div>` + document.getElementById('histList').innerHTML;
+        } else {
+            document.getElementById('advice').innerHTML = `Collecting History: ${history.length}/18`;
         }
     }
 </script>
