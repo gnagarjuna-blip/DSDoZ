@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Roulette Professional Predictor</title>
+    <title>Roulette Double Street Predictor</title>
     <style>
         :root { --green: #1b5e20; --red: #d32f2f; --black: #1a1a1a; --gold: #ffc107; --blue: #0d47a1; }
         body { font-family: 'Segoe UI', sans-serif; background: #121212; color: white; margin: 0; padding: 20px; }
@@ -15,17 +15,34 @@
         .stat-card div { font-size: 1.5rem; color: var(--gold); font-weight: bold; }
 
         /* Interactive Board */
-        .table-area { background: #0a4d1c; padding: 25px; border-radius: 15px; border: 6px solid #3e2723; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .roulette-grid { display: grid; grid-template-columns: 60px repeat(12, 1fr); gap: 5px; }
-        .cell { height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); font-size: 1.1em; transition: all 0.1s ease; user-select: none; }
+        .table-area { background: #0a4d1c; padding: 25px; border-radius: 15px; border: 6px solid #3e2723; margin-bottom: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); position: relative; }
+        .roulette-grid { display: grid; grid-template-columns: 60px repeat(12, 1fr); gap: 5px; position: relative; }
+        .cell { height: 50px; display: flex; align-items: center; justify-content: center; font-weight: bold; cursor: pointer; border-radius: 4px; border: 1px solid rgba(255,255,255,0.3); font-size: 1.1em; transition: all 0.1s ease; user-select: none; position: relative; }
         .cell:active { transform: scale(0.9); filter: brightness(1.5); }
         .zero { grid-row: span 3; background: #2e7d32; border: 2px solid white; height: auto; }
         .r { background: var(--red); }
         .b { background: var(--black); }
         
-        /* Betting Highlights */
-        .bet-active { border: 3px solid var(--gold) !important; background: rgba(255, 193, 7, 0.4) !important; box-shadow: inset 0 0 15px #000; position: relative; }
-        .bet-active::after { content: '投注'; position: absolute; font-size: 10px; bottom: 2px; color: var(--gold); }
+        /* Chip Styling */
+        .chip-container {
+            position: absolute;
+            z-index: 10;
+            width: 35px;
+            height: 35px;
+            background: radial-gradient(circle, #ffca28 0%, #ff8f00 100%);
+            border: 3px double white;
+            border-radius: 50%;
+            color: black;
+            font-weight: bold;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.8);
+            pointer-events: none;
+            display: none;
+            transform: translate(-50%, -50%);
+        }
 
         .panel { background: #2c3e50; padding: 20px; border-radius: 8px; }
         textarea { width: 100%; height: 100px; background: #1a1a1a; color: #00ff00; border: 1px solid #555; padding: 10px; font-family: monospace; box-sizing: border-box; border-radius: 5px; }
@@ -61,7 +78,15 @@
     </div>
 
     <div id="manualUI" class="table-area">
-        <div class="roulette-grid" id="grid"><div class="cell zero" onclick="press(0)">0</div></div>
+        <div class="roulette-grid" id="grid">
+            <div class="cell zero" onclick="press(0)">0</div>
+            <div id="chip-1" class="chip-container"></div>
+            <div id="chip-2" class="chip-container"></div>
+            <div id="chip-3" class="chip-container"></div>
+            <div id="chip-4" class="chip-container"></div>
+            <div id="chip-5" class="chip-container"></div>
+            <div id="chip-6" class="chip-container"></div>
+        </div>
     </div>
 
     <div id="simUI" class="panel hidden" style="margin-bottom: 20px;">
@@ -84,7 +109,7 @@
 <script>
     let bank, startBank, history = [], base, active = false;
     let currentUnit = 1; 
-    let activePrediction = null; // This stores the prediction for the NEXT spin
+    let activePrediction = null; 
     
     const reds = [1,3,5,7,9,12,14,16,18,19,21,23,25,27,30,32,34,36];
     const dsRanges = { 1:[1,6], 2:[7,12], 3:[13,18], 4:[19,24], 5:[25,30], 6:[31,36] };
@@ -118,20 +143,9 @@
 
     function press(n) {
         if(!active) return;
-
-        // 1. Calculate outcome based on PREVIOUS prediction
-        if (activePrediction !== null) {
-            evaluateResult(n);
-        }
-
-        // 2. Add current number to history
+        if (activePrediction !== null) evaluateResult(n);
         history.push(n);
-
-        // 3. Generate NEW prediction for the NEXT spin
-        if (history.length >= 18) {
-            activePrediction = generatePrediction();
-        }
-
+        if (history.length >= 18) activePrediction = generatePrediction();
         updateUI(n);
     }
 
@@ -139,8 +153,6 @@
         const last18 = history.slice(-18);
         const freq = { 1:0, 2:0, 3:0, 4:0, 5:0, 6:0 };
         last18.forEach(num => { if(num > 0) freq[Math.ceil(num / 6)]++; });
-
-        // Select 1 Hot DS from each Dozen
         return [
             freq[1] >= freq[2] ? 1 : 2,
             freq[3] >= freq[4] ? 3 : 4,
@@ -151,22 +163,18 @@
     function evaluateResult(n) {
         const totalBet = (currentUnit * base) * 3;
         bank -= totalBet;
-
         let landingDS = Math.ceil(n / 6);
         let win = (n > 0 && activePrediction.includes(landingDS));
 
-        let logMsg = "";
         if (win) {
             const payout = (currentUnit * base * 6);
             bank += payout;
-            logMsg = `<span class="win-log">WIN [Result ${n}]</span>: +${payout - totalBet} profit. Unit drops.`;
+            document.getElementById('log').innerHTML = `<div>Spin ${history.length + 1}: <span class="win-log">WIN [${n}]</span>. Profit +${payout-totalBet}. Unit -1.</div>` + document.getElementById('log').innerHTML;
             currentUnit = Math.max(1, currentUnit - 1);
         } else {
-            logMsg = `<span class="loss-log">LOSS [Result ${n}]</span>: -${totalBet} loss. Unit increases.`;
+            document.getElementById('log').innerHTML = `<div>Spin ${history.length + 1}: <span class="loss-log">LOSS [${n}]</span>. Loss -${totalBet}. Unit +1.</div>` + document.getElementById('log').innerHTML;
             currentUnit++;
         }
-        
-        document.getElementById('log').innerHTML = `<div>Spin ${history.length + 1}: ${logMsg}</div>` + document.getElementById('log').innerHTML;
     }
 
     function runSim() {
@@ -181,21 +189,27 @@
         document.getElementById('dispUnitSize').innerText = currentUnit;
         document.getElementById('dispSpins').innerText = history.length;
 
-        // Visual highlights for the NEXT bet
-        document.querySelectorAll('.cell').forEach(c => c.classList.remove('bet-active'));
-        
+        // Reset Chips
+        for(let i=1; i<=6; i++) document.getElementById(`chip-${i}`).style.display = 'none';
+
         if (activePrediction) {
             activePrediction.forEach(ds => {
-                let range = dsRanges[ds];
-                for(let i = range[0]; i <= range[1]; i++) {
-                    document.getElementById(`cell-${i}`).classList.add('bet-active');
-                }
+                const chip = document.getElementById(`chip-${ds}`);
+                // Position chip on the double street (the boundary between the two 3-number streets)
+                const targetCell = document.getElementById(`cell-${(ds * 6) - 2}`); // Center of the DS
+                const gridRect = document.getElementById('grid').getBoundingClientRect();
+                const cellRect = targetCell.getBoundingClientRect();
+                
+                chip.style.left = (cellRect.left - gridRect.left + (cellRect.width / 2)) + 'px';
+                chip.style.top = (cellRect.top - gridRect.top + (cellRect.height / 2)) + 'px';
+                chip.innerText = currentUnit * base;
+                chip.style.display = 'flex';
             });
             
             document.getElementById('advice').innerHTML = `
                 <strong style="color:var(--gold)">NEXT BET READY:</strong><br>
-                Place <strong>${currentUnit} units</strong> on Double Streets: <strong>${activePrediction.join(', ')}</strong><br>
-                <small>Total Risk: ${currentUnit * base * 3} credits</small>
+                Place <strong>${currentUnit * base}</strong> on predicted Double Streets.<br>
+                Total Risk: ${currentUnit * base * 3} credits
             `;
         } else {
             document.getElementById('advice').innerHTML = `Collecting History: ${history.length}/18`;
