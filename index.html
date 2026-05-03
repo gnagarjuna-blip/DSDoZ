@@ -2,202 +2,189 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CX Executive Academy - Full Day 1 Deep-Dive</title>
+    <title>Executive CX Leadership Academy</title>
     <style>
         :root {
-            --primary: #0f172a; --accent: #2563eb; --white: #ffffff;
-            --bg: #f1f5f9; --text: #334155; --success: #16a34a;
+            --primary: #0f172a; --secondary: #1e293b; --accent: #2563eb;
+            --white: #ffffff; --bg: #f1f5f9; --text: #334155;
+            --success: #16a34a; --warning: #ea580c; --danger: #dc2626;
         }
-        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; color: var(--text); line-height: 1.6; }
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px; }
-        .grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; margin-bottom: 30px; }
-        .btn { padding: 15px; border: none; border-radius: 6px; color: white; font-weight: bold; cursor: pointer; transition: 0.3s; font-size: 0.8rem; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
-        .btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; color: var(--text); line-height: 1.8; }
         
-        #display-area { background: var(--white); padding: 50px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); min-height: 700px; border-top: 10px solid var(--accent); }
+        /* Layout */
+        .sidebar { width: 300px; background: var(--primary); color: white; position: fixed; height: 100%; display: flex; flex-direction: column; }
+        .main { margin-left: 300px; padding: 40px; min-height: 100vh; }
         
-        .section-header { border-bottom: 3px solid #e2e8f0; padding-bottom: 10px; margin-bottom: 25px; color: var(--primary); font-size: 2rem; }
-        .case-study { background: #fff7ed; border-left: 6px solid #f59e0b; padding: 25px; margin: 30px 0; border-radius: 8px; }
-        .solution-box { background: #f0fdf4; border-left: 6px solid #22c55e; padding: 25px; margin: 30px 0; border-radius: 8px; }
-        h3 { color: var(--accent); margin-top: 30px; text-transform: uppercase; font-size: 1.1rem; }
+        /* Sidebar Navigation */
+        .sidebar-header { padding: 30px; font-weight: 800; font-size: 1.5rem; color: var(--accent); border-bottom: 1px solid #334155; }
+        .nav-item { padding: 20px 30px; cursor: pointer; border-left: 4px solid transparent; transition: 0.3s; color: #94a3b8; font-weight: 600; }
+        .nav-item.active { background: #1e293b; color: white; border-left-color: var(--accent); }
+        .nav-item:hover { background: #1e293b; color: white; }
+
+        /* Sub-Topic Tabs */
+        .tabs { display: flex; gap: 10px; margin-bottom: 30px; border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; }
+        .tab-btn { padding: 10px 20px; border: none; background: none; cursor: pointer; font-weight: bold; color: #64748b; border-radius: 5px; transition: 0.3s; }
+        .tab-btn.active { background: var(--accent); color: white; }
+
+        /* Content Modules */
+        .card { background: white; padding: 50px; border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); border-top: 10px solid var(--accent); animation: fadeIn 0.4s ease; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
         
+        h1, h2 { color: var(--primary); }
+        .theory-block { margin-bottom: 40px; text-align: justify; }
+        
+        .section-box { margin: 30px 0; border-radius: 8px; padding: 30px; }
+        .problem-box { background: #fff1f2; border-left: 6px solid var(--danger); }
+        .case-study-box { background: #fff7ed; border-left: 6px solid var(--warning); }
+        .solution-box { background: #f0fdf4; border-left: 6px solid var(--success); }
+        .box-title { font-weight: 800; text-transform: uppercase; margin-bottom: 15px; display: block; font-size: 0.9rem; }
+
         /* Quiz */
-        .quiz-item { margin-bottom: 25px; padding: 20px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; }
-        .opt { display: block; margin: 12px 0; padding: 15px; background: white; border: 1px solid #cbd5e1; border-radius: 6px; cursor: pointer; transition: 0.2s; }
-        .opt:hover { background: #eff6ff; border-color: var(--accent); }
-        .submit-final { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 1.2rem; margin-top: 20px; }
+        .quiz-section { background: #f8fafc; padding: 40px; border-radius: 12px; margin-top: 50px; border: 2px solid #e2e8f0; }
+        .q-item { margin-bottom: 25px; padding: 20px; background: white; border-radius: 8px; border: 1px solid #cbd5e1; }
+        .opt-label { display: block; padding: 15px; margin: 10px 0; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 6px; cursor: pointer; transition: 0.2s; }
+        .opt-label:hover { border-color: var(--accent); background: #eff6ff; }
+        .btn-submit { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; margin-top: 20px; }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <h1 style="text-align: center; color: var(--primary); margin-bottom: 10px;">Day 1: Executive Voice & Ownership</h1>
-    <p style="text-align: center; margin-bottom: 30px; font-weight: 500; color: #64748b;">Managerial Certification Track</p>
+<div class="sidebar">
+    <div class="sidebar-header">CX STRATEGY LAB</div>
+    <div class="nav-item active" onclick="loadDay(1)">Day 1: Brand Authority</div>
+    <div class="nav-item" onclick="loadDay(2)">Day 2: Ownership Logic</div>
+    <div class="nav-item">Day 3: Journey Calibration 🔒</div>
+    <div class="nav-item">Day 4: Friction Analysis 🔒</div>
+    <div class="nav-item">Day 5: Executive Exit 🔒</div>
+</div>
 
-    <div class="grid">
-        <button class="btn" style="background:#1e40af" onclick="loadTopic(1)">1. Identity</button>
-        <button class="btn" style="background:#1e40af" onclick="loadTopic(2)">2. Tone Control</button>
-        <button class="btn" style="background:#065f46" onclick="loadTopic(3)">3. Active Ownership</button>
-        <button class="btn" style="background:#065f46" onclick="loadTopic(4)">4. No-Hedge Rule</button>
-        <button class="btn" style="background:#b45309" onclick="loadTopic(5)">5. Empathy Mapping</button>
-        <button class="btn" style="background:#b45309" onclick="loadTopic(6)">6. Decision Framework</button>
-        <button class="btn" style="background:#6d28d9" onclick="loadTopic(7)">7. Power Words</button>
-        <button class="btn" style="background:#6d28d9" onclick="loadTopic(8)">8. Concise Writing</button>
-        <button class="btn" style="background:#991b1b" onclick="loadTopic(9)">9. Accountability</button>
-        <button class="btn" style="background:#0f172a" onclick="loadQuiz()">10. DAY 1 QUIZ</button>
-    </div>
-
-    <div id="display-area">
-        <div style="text-align: center; margin-top: 150px;">
-            <h2 style="color: #94a3b8;">Select a Topic to Initialize Documentation</h2>
-            <p>Full case studies and managerial solutions will be rendered here.</p>
+<div class="main">
+    <div id="content-area">
         </div>
-    </div>
 </div>
 
 <script>
-    const content = {
+    const trainingData = {
         1: {
-            title: "Executive Identity: Institutional Representation",
-            explanation: "Managers represent the 'Brand Anchor.' When a system fails, the customer looks for a person who embodies the company's stability. Identity mastery involves moving from 'Help Desk Agent' to 'Corporate Representative.'",
-            studies: [
-                "<b>The Fintech Crisis:</b> A bank’s app went down for 6 hours. While agents panicked, the CX Manager sent a single, calm broadcast: 'Our systems are undergoing a security reinforcement; your funds remain secure.' Churn dropped by 15%.",
-                "<b>The Airline Pivot:</b> Following a strike, a manager shifted their identity from 'Victim' to 'Strategist,' focusing on re-booking logistics rather than explaining the strike reasons.",
-                "<b>The High-End Retail Error:</b> A manager refused to discount a product, instead providing a 'VIP Consultation' identity to fix a shipping error, preserving the brand's luxury status."
+            title: "Day 1: Establishing Brand Authority",
+            tabs: [
+                {
+                    name: "Institutional Identity",
+                    theory: `Institutional Identity is the psychological bedrock of high-stakes customer experience. As a manager, you transition from being a 'service provider' to becoming the 'Voice of the Institution.' This requires a specific linguistic shift from individualistic responses to systematic ones. When a leader speaks, the customer must perceive a stable, unshakeable entity that is unaffected by the chaos of the immediate failure. This theory suggests that trust is not built through apologies alone, but through the projection of competence. By adopting a prescriptive persona, you eliminate the customer's perceived need to escalate, as they feel they have already reached the highest authority. This identity is maintained through consistent tone, technical precision, and the removal of emotional variance in communication.`,
+                    problem: `A high-frequency trading firm experienced a 15-minute data lag during a market surge. Thousands of clients were losing thousands of dollars per second. The frontline support team began sending emotional, panicked apologies, which signaled to the clients that the company was out of control. This caused a massive withdrawal of funds and a social media firestorm, as customers feared a total collapse of the firm's infrastructure.`,
+                    case: `In a similar event at a competitor firm, the CX Lead took over all outgoing comms. They implemented a 'Silent Professional' protocol. No apologies were issued in the first 10 minutes; instead, a technical 'Hardening Update' was broadcasted. By framing the failure as a 'Calculated Safety Interruption,' the manager projected that the company was in control of the outage rather than a victim of it.`,
+                    solution: `The solution involves the immediate deployment of a 'Command Tone' template. The Manager must audit all frontline communications and remove 'Weak Subjects' (I, me, sorry). They replace them with 'Institutional Subjects' (Our Engineering Lead, The Protocol, Verified Status). By shifting the subject of the conversation from human error to systematic process, the Manager stabilizes the brand's equity and prevents long-term churn.`
+                },
+                {
+                    name: "Tone Calibration",
+                    theory: `Tone Calibration is the process of normalizing the emotional output of a support organization. In corporate environments, emotional volatility is a liability. A manager's role is to ensure the team operates within a 'Professional Neutrality' window. This theory posits that customers react to the emotional state of the agent as much as the solution itself. If an agent is too eager, they appear untrustworthy; if too cold, they appear negligent. Calibration involves training the 'Somatic Voice'—the depth and pace of communication—to remain steady regardless of the customer's aggression level. This creates an 'Emotional Anchor' that eventually pulls the customer's frustration back to a logical level, allowing for faster technical resolutions.`,
+                    problem: `An e-commerce brand's social media team was 'clapping back' at angry customers in a misguided attempt to be 'authentic' and 'edgy.' While this worked for minor issues, during a major shipping delay, it backfired. Customers perceived the brand as flippant and disrespectful of their money. The 'humorous' tone became a weapon used against the company in PR circles, leading to a 20% drop in brand sentiment.`,
+                    case: `A luxury hotel group faced a bedbug scare. The Manager enforced a 'Zero-Adjective' policy. Staff were prohibited from using any words that carried emotional weight (e.g., 'terrible', 'unfortunate', 'scary'). Instead, they used purely functional nouns and verbs. This clinical tone effectively 'cooled' the heat of the situation, making the problem seem like a minor technical maintenance task rather than a health crisis.`,
+                    solution: `The Manager must implement a 'Tone Filter' in the CRM. Before any escalation is sent, it is reviewed for 'Adjective Density.' Any response containing more than two emotional descriptors is sent back for rewrite. The solution is to move toward a 'Bullet-Point' culture—where facts are prioritized over narratives, ensuring the brand sounds like a reliable utility rather than a desperate individual.`
+                }
             ],
-            solution: "<b>Managerial Solution:</b> Audit your team's signatures and intros. Remove 'I am sorry' and replace with 'I am the lead for [X] and I am managing your resolution.'"
-        },
-        2: {
-            title: "Tone Control: The 'Stoic Professional' Model",
-            explanation: "Tone control is the ability to maintain a 'Flat-Positive' emotional state. High emotional variance in communication signals instability. Managers must calibrate the team to stay within a 20% emotional range.",
-            studies: [
-                "<b>E-commerce Escalation:</b> A customer used profanity. The manager responded with zero emotion, purely focusing on the refund timeline. The customer eventually apologized for their own outburst.",
-                "<b>B2B Software Failure:</b> Using a 'Somatic' tone—deep, calm, and rhythmic—in a high-stakes call to de-escalate a CEO.",
-                "<b>Mass Email Calibration:</b> A manager rewrote a template that was 'Too Excited' (using !!!) to be 'Professional and Reliable,' increasing trust scores."
-            ],
-            solution: "<b>Managerial Solution:</b> Ban the use of multiple exclamation points and emojis in escalations. Calibrate all responses to a 'Neutral-Helpful' baseline."
-        },
-        3: {
-            title: "Active Ownership: End-to-End Responsibility",
-            explanation: "Ownership is the refusal to pass the 'Hot Potato.' A Manager takes the problem from the customer and does not let it go until a solution is verified. This eliminates internal 'silos'.",
-            studies: [
-                "<b>The Logistics Loop:</b> A manager personally tracked a lost organ transplant through three cities rather than trusting the automated dashboard.",
-                "<b>The Billing Black Hole:</b> Instead of saying 'Billing is slow,' the manager personally walked to the billing desk to get a manual approval.",
-                "<b>The API Failure:</b> A manager promised a 4 PM update and called at 4 PM even though they didn't have the fix yet—just to maintain ownership."
-            ],
-            solution: "<b>Managerial Solution:</b> Implement a 'One-Touch' rule for escalations. The manager who receives the issue is the ONLY person the customer talks to until it's done."
-        },
-        4: {
-            title: "The No-Hedge Rule: Absolute Communication",
-            explanation: "Hedge words (hopefully, maybe, I think, usually) are linguistic signals of weakness. They tell the customer you are not in control. Managers must delete these words from all corporate correspondence.",
-            studies: [
-                "<b>Case Study:</b> Changing 'I think it will be fixed' to 'I am tracking the fix' changed customer sentiment from 'Anxious' to 'Confident'.",
-                "<b>Contract Negotiation:</b> Removing 'Hopefully we can meet the deadline' to 'Our current timeline concludes on [Date].'",
-                "<b>The Bug Report:</b> Instead of 'Maybe it's a bug,' use 'I have documented this behavior for our engineering review.'"
-            ],
-            solution: "<b>Managerial Solution:</b> Use 'Control-F' on your team's drafts. Search for 'Hopefully' and 'Maybe.' Replace them with 'Our current status is' or 'I am confirming.'"
-        },
-        5: {
-            title: "Strategic Empathy Mapping",
-            explanation: "Empathy is not 'feeling' what the customer feels; it is 'identifying' the customer's state to move them to a solution. It is a tactical tool, not an emotional one.",
-            studies: [
-                "<b>The Stressed Parent:</b> A customer service manager for a toy company identified the 'Time Pressure' of a birthday, not just the broken toy, and used overnight shipping.",
-                "<b>The Angry Founder:</b> Identifying the founder's fear of 'Loss of Reputation' during a site crash and addressing that specifically.",
-                "<b>The Confused Senior:</b> Shifting from 'Technical instructions' to 'Outcome-based guidance' to reduce the effort-score."
-            ],
-            solution: "<b>Managerial Solution:</b> Teach the team the 'Labeling' technique: 'It sounds like you are concerned about [X].' This makes the customer feel heard instantly."
-        },
-        6: {
-            title: "The Rapid Decision Framework",
-            explanation: "Managers are paid to make decisions under pressure. This framework (OODA Loop: Observe, Orient, Decide, Act) allows for fast, accurate resolutions when things go wrong.",
-            studies: [
-                "<b>The Refund Dilemma:</b> Deciding to refund $5,000 immediately to save a $1M account.",
-                "<b>The Public Outcry:</b> Deciding to go dark on social media during a hack to prevent further data leaks.",
-                "<b>The Staff Shortage:</b> Deciding which 20% of tickets are high priority and ignoring the 80% low-impact ones during a crisis."
-            ],
-            solution: "<b>Managerial Solution:</b> Create an 'Autonomy Matrix.' Tell your agents exactly when they are allowed to spend money ($50-$500) without asking you."
-        },
-        7: {
-            title: "Power Words: Linguistic Dominance",
-            explanation: "Specific words carry more 'weight' in a corporate setting. Using 'Mandatory,' 'Verified,' 'Resolution,' and 'Protocol' creates a sense of order and safety.",
-            studies: [
-                "<b>The Security Update:</b> Using 'Mandatory Security Hardening' instead of 'Please update your app' led to 90% compliance.",
-                "<b>The Refund Email:</b> Using 'Transaction Finalized' instead of 'Money sent' reduced follow-up questions by 30%.",
-                "<b>The Dispute:</b> Using 'Based on our Protocol' instead of 'I'm not allowed to' ended arguments faster."
-            ],
-            solution: "<b>Managerial Solution:</b> Create a 'Power Word' list for the team's 'Macros' (saved responses)."
-        },
-        8: {
-            title: "Concise Executive Writing",
-            explanation: "Executives and high-value customers do not read long emails. If you can't say it in 3 sentences, you don't understand the problem. Conciseness is a sign of respect for the customer's time.",
-            studies: [
-                "<b>The CEO Email:</b> Reducing a 5-paragraph update to 3 bullet points: Status, Action, Next Step.",
-                "<b>The App Notification:</b> Cutting the 'Marketing Fluff' to get to the 'Update' button faster.",
-                "<b>The Crisis Alert:</b> Using bold headers to ensure the most important information is seen first."
-            ],
-            solution: "<b>Managerial Solution:</b> The 'Bottom-Line Up Front' (BLUF) rule. The solution must be in the first sentence of the email."
-        },
-        9: {
-            title: "Accountability & The Buck-Stops-Here Mentality",
-            explanation: "Accountability is the manager's willingness to be the 'Single Neck to Wring.' When things fail, the manager stands in front of the team, not behind them.",
-            studies: [
-                "<b>The Public Blame:</b> A manager taking responsibility for an agent's rude comment, transforming the customer into a brand advocate through sheer integrity.",
-                "<b>The System Failure:</b> A manager admitting 'I missed this in the pre-check,' which built massive internal trust with the dev team.",
-                "<b>The Churn Save:</b> A manager personally calling a departing client to say 'I failed to meet your needs, here is how I will fix it if you give me 30 days.'"
-            ],
-            solution: "<b>Managerial Solution:</b> Host 'Post-Mortem' meetings where we analyze failures without blaming individuals, focusing only on the process."
+            quiz: [
+                { q: "During a crisis, why is 'Institutional Identity' superior to a 'Personal' identity?", a: "It makes the customer feel like they are talking to a friend.", b: "It projects systematic stability and competence, reducing the customer's need to escalate.", correct: "b" },
+                { q: "What does the 'Zero-Adjective' policy aim to achieve?", a: "To make the staff sound more like robots.", b: "To remove emotional heat and treat the problem as a purely technical maintenance task.", correct: "b" },
+                { q: "How should a manager handle 'Weak Subjects' in a team's writing?", a: "Tell the team to apologize more to compensate.", b: "Audit drafts and replace 'I/Me' with 'Our Protocol' or 'The Verified Status'.", correct: "b" },
+                { q: "What is the primary danger of using a 'Humorous' tone during a major service failure?", a: "It makes the email too long.", b: "It signals flippancy and a lack of respect for the customer's financial or operational impact.", correct: "b" },
+                { q: "Tone Calibration is about keeping the team's emotional variance within:", a: "A wide range to show personality.", b: "A narrow, professional window to ensure reliability.", correct: "b" }
+            ]
         }
     };
 
-    function loadTopic(id) {
-        const data = content[id];
-        document.getElementById('display-area').innerHTML = `
-            <h1 class="section-header">${data.title}</h1>
-            <div class="depth-content">
-                <h3>1. Leadership Theory & Strategy</h3>
-                <p>${data.explanation}</p>
-                <div class="case-study">
-                    <h4>2. Real-World Case Studies (Practical Examples)</h4>
-                    <ul style="padding-left:20px;">${data.studies.map(s => `<li style="margin-bottom:15px;">${s}</li>`).join('')}</ul>
+    function loadDay(dayNum) {
+        const day = trainingData[dayNum];
+        if(!day) return;
+        
+        let html = `<h1>${day.title}</h1>`;
+        html += `<div class="tabs">`;
+        day.tabs.forEach((tab, i) => {
+            html += `<button class="tab-btn ${i===0?'active':''}" onclick="showTab(${i})">${tab.name}</button>`;
+        });
+        html += `<button class="tab-btn" style="background:#0f172a; color:white" onclick="showQuiz(${dayNum})">DAY ${dayNum} QUIZ</button>`;
+        html += `</div>`;
+        
+        html += `<div id="tab-content">`;
+        html += renderTab(day.tabs[0]);
+        html += `</div>`;
+        
+        document.getElementById('content-area').innerHTML = html;
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+    }
+
+    function renderTab(tab) {
+        return `
+            <div class="card">
+                <h2>${tab.name}</h2>
+                <div class="theory-block">
+                    <strong>EXECUTIVE THEORY:</strong><br>
+                    ${tab.theory}
                 </div>
-                <div class="solution-box">
-                    <h4>3. Managerial Solution (Action Plan)</h4>
-                    <p>${data.solution}</p>
+                <div class="section-box problem-box">
+                    <span class="box-title">Critical Problem Scenario</span>
+                    <p>${tab.problem}</p>
+                </div>
+                <div class="section-box case-study-box">
+                    <span class="box-title">Strategic Case Study</span>
+                    <p>${tab.case}</p>
+                </div>
+                <div class="section-box solution-box">
+                    <span class="box-title">Managerial Solution</span>
+                    <p>${tab.solution}</p>
                 </div>
             </div>
-            <button class="btn" style="background:#64748b; margin-top:20px;" onclick="location.reload()">Reset View</button>
         `;
     }
 
-    function loadQuiz() {
-        const questions = [
-            { q: "A high-tier client is furious about a delay. Which opening demonstrates 'Executive Identity'?", a: "I am sorry for the delay, we are busy.", b: "I am the CX Lead, and I have taken personal oversight of your file to expedite the resolution." },
-            { q: "Why must 'Hedge Words' like 'Hopefully' be banned?", a: "They make sentences too long.", b: "They project uncertainty and lack of control over the system." },
-            { q: "An agent blames the 'IT Department' for a slow response. As a manager, you:", a: "Agree with the agent to build rapport.", b: "Correct the agent; we speak as a unified 'We' to avoid appearing broken." },
-            { q: "The 'BLUF' rule in writing stands for:", a: "Be Loud Under Failure.", b: "Bottom-Line Up Front." },
-            { q: "Strategic Empathy is used to:", a: "Feel sad with the customer.", b: "Identify the customer's goal and pivot them toward a solution." },
-            { q: "You have a major system outage. What is the 'Power Word' approach for the broadcast?", a: "We have a bit of a problem.", b: "Our system is undergoing Mandatory Maintenance to ensure data integrity." },
-            { q: "What is an 'Autonomy Matrix'?", a: "A list of rules agents must never break.", b: "A framework allowing agents to make financial/service decisions without asking a manager." },
-            { q: "A 'Stoic Professional' tone is described as:", a: "Being robotic and cold.", b: "Maintaining a consistent, calm, and reliable emotional baseline." },
-            { q: "In the OODA Loop, what does the first 'O' stand for?", a: "Organize.", b: "Observe." },
-            { q: "Active Ownership means:", a: "Owning the company's stocks.", b: "Taking full responsibility for the customer's issue until it is verified as solved." }
-        ];
+    function showTab(index) {
+        const dayNum = document.querySelector('.nav-item.active').innerText.includes('1') ? 1 : 2;
+        const tab = trainingData[dayNum].tabs[index];
+        document.getElementById('tab-content').innerHTML = renderTab(tab);
+        document.querySelectorAll('.tab-btn').forEach((b, i) => {
+            b.classList.toggle('active', i === index);
+        });
+    }
 
-        let quizHtml = `<h1 class="section-header">Module 1: Final Gatekeeper Assessment</h1><p>Pass Score: 80% (8/10). All questions are scenario-based.</p>`;
-        
-        questions.forEach((item, index) => {
-            quizHtml += `
-                <div class="quiz-item">
-                    <p><b>Q${index+1}: ${item.q}</b></p>
-                    <label class="opt"><input type="radio" name="q${index}"> ${item.a}</label>
-                    <label class="opt"><input type="radio" name="q${index}"> ${item.b}</label>
+    function showQuiz(dayNum) {
+        const quiz = trainingData[dayNum].quiz;
+        let html = `<div class="quiz-section"><h2>Final Gatekeeper Assessment</h2>`;
+        quiz.forEach((q, i) => {
+            html += `
+                <div class="q-item">
+                    <p><strong>Q${i+1}:</strong> ${q.q}</p>
+                    <label class="opt-label"><input type="radio" name="q${i}" value="a"> A) ${q.a}</label>
+                    <label class="opt-label"><input type="radio" name="q${i}" value="b"> B) ${q.b}</label>
                 </div>
             `;
         });
-
-        quizHtml += `<button class="submit-final" onclick="alert('Grading Complete: 100%. Day 2 Unlocked.')">SUBMIT ASSESSMENT & UNLOCK DAY 2</button>`;
-        document.getElementById('display-area').innerHTML = quizHtml;
+        html += `<button class="btn-submit" onclick="submitQuiz(${dayNum})">SUBMIT FOR CERTIFICATION</button><div id="score"></div></div>`;
+        document.getElementById('tab-content').innerHTML = html;
     }
+
+    function submitQuiz(dayNum) {
+        const quiz = trainingData[dayNum].quiz;
+        let score = 0;
+        let answered = 0;
+        quiz.forEach((q, i) => {
+            const res = document.querySelector(`input[name="q${i}"]:checked`);
+            if(res) {
+                answered++;
+                if(res.value === q.correct) score++;
+            }
+        });
+
+        if(answered < 5) {
+            alert("Please answer all 5 questions.");
+        } else {
+            const pass = score >= 4;
+            document.getElementById('score').innerHTML = `<h3 style="color:${pass? 'green':'red'}">SCORE: ${score}/5 - ${pass? 'PASSED! Day 2 Unlocked.':'FAILED. Please review the tabs.'}</h3>`;
+        }
+    }
+
+    // Load Default
+    window.onload = () => loadDay(1);
 </script>
 
 </body>
