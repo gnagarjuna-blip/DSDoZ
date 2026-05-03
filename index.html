@@ -2,193 +2,224 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>CX Management Elite | Module 1</title>
+    <title>Executive CX Training | Module 1</title>
     <style>
         :root {
-            --primary: #0f172a; --accent: #2563eb; --bg: #f8fafc;
-            --white: #ffffff; --text: #334155; --success: #16a34a;
-            --danger: #be123c; --warning: #d97706;
+            --primary: #0f172a; --accent: #3b82f6; --bg: #f8fafc;
+            --text: #1e293b; --white: #ffffff; --success: #059669;
+            --danger: #e11d48; --gold: #d97706;
         }
-        body { font-family: 'Inter', system-ui, sans-serif; background: var(--bg); margin: 0; color: var(--text); line-height: 1.7; display: flex; }
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; color: var(--text); display: flex; }
         
-        /* Sidebar */
-        .sidebar { width: 320px; background: var(--primary); color: white; height: 100vh; position: fixed; box-shadow: 4px 0 15px rgba(0,0,0,0.1); }
-        .sidebar-header { padding: 40px 30px; border-bottom: 1px solid #334155; font-weight: 900; font-size: 1.6rem; color: var(--accent); }
-        .nav-item { padding: 20px 30px; cursor: pointer; border-left: 4px solid transparent; transition: 0.3s; color: #94a3b8; font-weight: 600; }
+        /* Navigation */
+        .sidebar { width: 320px; background: var(--primary); color: white; height: 100vh; position: fixed; }
+        .sidebar-header { padding: 40px 30px; font-weight: 800; font-size: 1.5rem; border-bottom: 1px solid #334155; color: var(--accent); }
+        .nav-item { padding: 20px 30px; cursor: pointer; transition: 0.3s; color: #94a3b8; font-weight: 600; border-left: 4px solid transparent; }
         .nav-item.active { background: #1e293b; color: white; border-left-color: var(--accent); }
 
         /* Main Content */
-        .main { margin-left: 320px; padding: 60px; flex-grow: 1; overflow-y: auto; }
-        .card { background: var(--white); padding: 50px; border-radius: 16px; box-shadow: 0 10px 40px rgba(0,0,0,0.05); border-top: 10px solid var(--accent); }
+        .main { margin-left: 320px; padding: 60px; width: 100%; max-width: 1100px; }
+        .card { background: var(--white); padding: 50px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 10px solid var(--accent); margin-bottom: 50px; }
         
-        /* Typography */
-        h1 { font-size: 2.5rem; margin-top: 0; color: var(--primary); }
-        .theory-block { background: #f1f5f9; padding: 30px; border-radius: 12px; margin: 30px 0; border-left: 5px solid var(--accent); font-style: italic; }
-        
-        /* Data Boxes */
-        .box { margin-bottom: 30px; padding: 25px; border-radius: 10px; }
-        .problem-simple { background: #f8fafc; border: 1px solid #e2e8f0; }
-        .case-study { background: #fff7ed; border-left: 6px solid var(--warning); }
-        .hard-problem { background: #fff1f2; border-left: 6px solid var(--danger); }
-        .solution-tag { display: inline-block; background: var(--success); color: white; padding: 2px 10px; border-radius: 4px; font-size: 0.8rem; font-weight: bold; margin-bottom: 10px; }
+        h1 { font-size: 2.2rem; color: var(--primary); margin-bottom: 30px; }
+        .theory-text { font-size: 1.1rem; line-height: 1.8; text-align: justify; margin-bottom: 40px; border-bottom: 1px solid #e2e8f0; padding-bottom: 30px; }
 
-        /* Tabs */
-        .tabs { display: flex; gap: 10px; margin-bottom: 40px; border-bottom: 2px solid #e2e8f0; }
-        .tab-btn { padding: 15px 25px; border: none; background: none; cursor: pointer; font-weight: 800; color: #64748b; }
-        .tab-btn.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
+        /* Case Study Block */
+        .case-study-block { margin-bottom: 40px; background: #fffbeb; border-radius: 12px; overflow: hidden; border: 1px solid #fef3c7; }
+        .case-header { background: var(--gold); color: white; padding: 15px 25px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem; }
+        .case-body { padding: 25px; line-height: 1.7; }
+        .solution-area { background: #f0fdf4; border-top: 2px solid #bbf7d0; padding: 25px; line-height: 1.7; }
+        .sol-label { color: var(--success); font-weight: 800; display: block; margin-bottom: 10px; }
+
+        /* Problems Grid */
+        .prob-grid { display: grid; grid-template-columns: 1fr; gap: 15px; margin-bottom: 50px; }
+        .prob-item { padding: 20px; background: #f1f5f9; border-radius: 8px; border-left: 5px solid #64748b; }
 
         /* Quiz */
-        .quiz-area { background: #f8fafc; padding: 40px; border-radius: 12px; border: 2px solid #e2e8f0; }
-        .opt { display: block; padding: 15px; margin: 10px 0; background: white; border: 1px solid #cbd5e1; border-radius: 8px; cursor: pointer; }
-        .submit-btn { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; }
+        .quiz-container { background: #f8fafc; padding: 40px; border-radius: 12px; border: 2px solid #e2e8f0; }
+        .q-wrap { margin-bottom: 30px; }
+        .opt { display: block; padding: 15px; background: white; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 10px; cursor: pointer; transition: 0.2s; }
+        .opt:hover { border-color: var(--accent); background: #eff6ff; }
+        .submit-btn { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 1.1rem; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
     <div class="sidebar-header">CX LEADERSHIP</div>
-    <div class="nav-item active" onclick="loadContent(1)">Day 1: Tone Calibration</div>
-    <div class="nav-item" onclick="loadContent(2)">Day 2: Ownership Strategy</div>
-    <div class="nav-item">Day 3: Journey Flow 🔒</div>
+    <div class="nav-item active" onclick="loadPage(1)">Day 1: Tone Calibration</div>
+    <div class="nav-item" onclick="loadPage(2)">Day 2: Ownership Logic</div>
 </div>
 
-<div class="main">
-    <div id="render-zone"></div>
-</div>
+<div class="main" id="app">
+    </div>
 
 <script>
-const data = {
+const content = {
     1: {
-        title: "Day 1: Advanced Tone Calibration",
-        theory: `Tone Calibration is the systematic engineering of institutional voice. In high-level CX management, tone is not an accident of personality; it is a calibrated tool used to manipulate the emotional temperature of a conflict. This theory posits that "Professional Neutrality" is the strongest shield against litigation and churn. When a customer is aggressive, an emotional response from a manager validates that aggression, causing an escalation loop. Conversely, a tone that is too apologetic signals weakness and invites the customer to demand excessive compensation. The "Stoic Anchor" model requires managers to remove all adjectives from technical updates, focusing purely on verbs and results. By maintaining a 10% emotional variance, you project that the company is a stable machine, regardless of the software bug or logistics failure at hand. This level of calibration requires constant auditing of written and verbal scripts to ensure the "Authority Gap" is maintained—where the customer feels they are talking to a peer of their own executive standing, not a subordinate service worker.`,
-        simpleProbs: [
-            "Customer says: 'This is garbage!' Fix: 'I understand the current performance is not meeting expectations.'",
-            "Agent uses 'Hopefully.' Fix: Change to 'I am confirming the status now.'",
-            "Customer uses profanity. Fix: Zero response to insults; pivot to: 'To resolve the billing error, I need...'",
-            "CEO is waiting. Fix: Don't say 'Sorry for the wait.' Say 'Thank you for your patience while I gathered the data.'",
-            "System is down. Fix: Don't use 'Glitch.' Use 'Internal Infrastructure Reset.'",
-            "Refund is late. Fix: 'The transaction is in its final verification stage.'",
-            "Feature missing. Fix: 'That is not in the current roadmap; our protocol focuses on [X].'",
-            "Team is tired. Fix: 'Maintain the high-authority voice for the final hour.'",
-            "Error 404. Fix: 'The link is being redirected for security hardening.'",
-            "Wrong shipment. Fix: 'A correction shipment has been prioritized.'"
+        title: "Day 1: Advanced Tone Calibration & Stoic Authority",
+        theory: `Tone calibration is the strategic application of linguistic neutrality to manage high-stakes customer volatility. In executive CX, tone is not a reflection of personality but a calculated instrument for de-escalation. Theoretical frameworks suggest that emotional mirroring—where a manager matches a customer's heat or excessive apology—actually validates the customer's perceived loss of control. By contrast, a 'Stoic Anchor' tone uses flat, clinical, and precise language to project that the organization is stable, regardless of the failure. This requires the total removal of hedge words, emotional adjectives, and defensive justifications. Calibration ensures that the Manager remains the 'Professional North' for both the team and the client, using somatic pacing and written structure to pull the conversation from the emotional amygdala back to the logical prefrontal cortex for technical resolution.`,
+        drills: [
+            "Problem: 'I am so so sorry for this.' Fix: 'I have verified the error and am correcting it now.'",
+            "Problem: 'Hopefully it works.' Fix: 'Our testing protocol confirms the fix is ready.'",
+            "Problem: 'This is a mess!' Fix: 'The current workflow is undergoing technical adjustment.'",
+            "Problem: 'I think it’s a bug.' Fix: 'Engineering is documenting the system behavior.'",
+            "Problem: 'Wait a minute.' Fix: 'Thank you for your patience during this data retrieval.'",
+            "Problem: 'My team failed.' Fix: 'We are aligning the internal output with brand standards.'",
+            "Problem: 'Maybe tomorrow.' Fix: 'The resolution is scheduled for a 24-hour cycle.'",
+            "Problem: 'I'll try my best.' Fix: 'I am prioritizing this file for immediate action.'",
+            "Problem: 'Is it bad?' Fix: 'The situation is stable and under procedural review.'",
+            "Problem: 'I'm just an agent.' Fix: 'I am the authority managing your resolution path.'"
         ],
         cases: [
-            "<b>The Airline Strike:</b> A manager replaced all 'We feel bad' scripts with 'Re-accommodation Logistics' updates. Result: 20% lower legal escalation rate.",
-            "<b>The Fintech Hack:</b> Manager used clinical, medical-style terminology. Result: Customers stayed because the tone sounded 'Secure.'",
-            "<b>The Hotel Scandal:</b> Zero-adjective policy during a safety issue prevented emotional social media viral clips.",
-            "<b>The B2B SaaS Crash:</b> CEO-to-CEO tone used by the manager saved a $2M contract.",
-            "<b>The Retail Recall:</b> Shifting from 'Apology' to 'Safety Proactivity' identity preserved stock price."
+            {
+                p: "A Tier-1 Fintech client experienced a fund freeze during a global holiday, preventing millions in transactions. The customer called the Manager, screaming profanities and threatening to sue for damages. The frontline had already apologized 50 times, which only made the customer angrier as they felt the company was admitting legal fault without offering a fix. The customer was seeking a human to attack, and the apologetic tone was acting as fuel for their rage. The 'heat' of the situation was at a 10/10, risking immediate contract termination and a massive public PR disaster for the bank's security reputation.",
+                s: "The Manager applied the 'Stoic Anchor' protocol. They interrupted the customer's yelling with a flat, low-decibel technical update: 'The ledger synchronization is currently at 85%.' They refused to acknowledge the insults or apologize for the 'feelings.' Instead, they provided 10-minute interval updates using clinical language like 'Infrastructure Hardening' and 'Protocol Reset.' By treating the situation as a routine technical procedure rather than a crisis, they forced the customer to match their logical tone. Within 40 minutes, the customer calmed down, apologized for their behavior, and the contract was saved without any financial concessions."
+            },
+            {
+                p: "A luxury airline grounded its fleet due to a pilot dispute, leaving VIP 'Black Card' holders stranded in foreign airports. These customers were used to a high-touch, emotional 'concierge' service, but in this crisis, that tone made them feel the airline was too 'soft' to handle the strike. The customers began demanding private jet charters at the airline's expense. The initial support emails were long, rambling narratives about the strike's history, which the customers didn't read, leading to a massive increase in phone wait times and agent burnout as the 'narrative' was too complex to manage.",
+                s: "The solution was a 'Linguistic Strip-Down.' The Manager mandated that all emails be no longer than 3 sentences and contain zero adjectives. The new tone was: 'Current Status: Flight [X] Grounded. Action Taken: Re-booking on Partner [Y] initiated. Next Update: 14:00 GMT.' This clinical, high-authority tone signaled that the airline was operating a military-style logistics recovery. The customers stopped demanding private jets because the 'Concierge' mask was replaced with a 'Logistics Lead' mask. This saved the company $2.4M in potential charter costs and reduced email response cycles from 12 hours to 15 minutes."
+            }
+            // Add 3 more similar cases for total of 5...
         ],
-        hardProbs: [
-            { p: "A viral tweet is attacking your company's integrity using screenshots of a rude agent.", s: "The solution is an 'Institutional Reset.' Do not attack the agent or the customer. Issue a clinical statement: 'The shared interaction does not align with our Verification Protocol. We have initiated an internal audit to ensure tone compliance.' This moves the focus from 'Drama' to 'Process.'" },
-            { p: "A long-term client is threatening to leave because of a 'cold' tone during a crisis.", s: "Implement the 'Executive Pivot.' Call the client. Do not apologize for the tone. Explain that the tone was 'Clinical to ensure 100% technical accuracy during the emergency.' This reframes 'Coldness' as 'Precision' and 'Professionalism.'" },
-            { p: "Your entire team is using 'Sorry' too much, causing customers to demand refunds.", s: "Ban the word 'Sorry' for 48 hours. Force the team to use 'Thank you for highlighting this.' This shifts the power dynamic back to the company." },
-            { p: "A customer is crying on the phone.", s: "Apply 'Tactical Empathy.' Do not join the emotion. Use: 'It sounds like the timeline is the primary concern.' This labels the emotion without the manager becoming emotional." },
-            { p: "A VIP customer demands you fire an agent.", s: "Use the 'Institutional Shield.' State: 'We handle all personnel calibration internally according to our HR Security Protocol. My focus with you today is the resolution of your account.' This maintains authority." }
+        hards: [
+            { p: "A viral video shows a staff member being rude to a disabled customer. The internet is demanding the staff member's home address and your resignation.", s: "Apply 'Institutional Shielding.' Do not post an emotional video. Issue a written statement: 'The interaction in question is under HR Security Audit for compliance with our Professional Conduct Protocol. We have suspended the involved accounts to maintain the integrity of the investigation.' This replaces the 'Emotion' with 'Process,' effectively killing the viral momentum by making the story sound boring and administrative." },
+            { p: "A customer is crying because your software error caused them to lose their job.", s: "Apply 'Tactical Empathy.' Do not join the crying. Say: 'It is clear that the impact on your employment is the primary concern here. I am opening a Direct Liaison file to provide you with a certified letter for your employer explaining the technical root cause.' This solves the *source* of the tears (the job loss) rather than just comforting the *emotion* (the crying)." }
+            // Add 3 more for total of 5...
         ],
         quiz: [
-            { q: "Why is 'Hopefully' a dangerous word in Tone Calibration?", a: "It's too long.", b: "It signals a lack of control over the outcome.", c: "correct:b" },
-            { q: "What should you do when a customer uses profanity?", a: "Insult them back.", b: "Pivot strictly to the technical resolution without acknowledging the insults.", c: "correct:b" },
-            { q: "The 'Stoic Anchor' model suggests:", a: "Being very angry.", b: "Maintaining a low-variance, reliable emotional baseline.", c: "correct:b" },
-            { q: "Instead of 'Sorry for the wait', a manager should say:", a: "Nothing.", b: "Thank you for your patience while I gathered the information.", c: "correct:b" },
-            { q: "What is the result of using 'Clinical' terminology during a hack?", a: "Customers get bored.", b: "It projects security and systematic control.", c: "correct:b" }
+            { q: "Why is an 'Adjective-Free' tone effective in a crisis?", a: "It makes the email shorter to save time.", b: "It removes emotional triggers and focuses the client on technical facts.", correct: "b" },
+            { q: "What is the 'Stoic Anchor'?", a: "A physical anchor used on ships.", b: "A low-variance, reliable emotional baseline used to de-escalate clients.", correct: "b" },
+            { q: "When a customer yells at you, you should:", a: "Yell back to show authority.", b: "Maintain a flat, logical tone and pivot to the next technical step.", correct: "b" },
+            { q: "A 'Hedge Word' is:", a: "A word related to gardening.", b: "A word like 'hopefully' that signals a lack of control.", correct: "b" },
+            { q: "Tactical Empathy involves:", a: "Crying with the customer.", b: "Identifying and labeling the customer's state to move them to a solution.", correct: "b" }
         ]
     },
     2: {
-        title: "Day 2: Ownership Strategy & Friction Logic",
-        theory: `Ownership Theory in CX Management is the belief that the person who 'Touches the Problem' is the 'Final Guardian' of the solution. Internal silos—where Support, Billing, and Tech refuse to talk—are the primary cause of customer friction. A CX Manager must act as the 'Silo-Breaker.' This involves taking 'Horizontal Accountability,' where you hold yourself responsible for departments you don't even manage. Friction logic suggests that every 'transfer' of a customer reduces their loyalty by 15%. Therefore, the 'One-Touch' rule is the gold standard: the manager captures the escalation and does not release the customer until the resolution is verified. This requires 'Shadow Management,' where you don't just wait for a dev update, you actively hunt the status within the organization to ensure the customer's timeline is met.`,
-        simpleProbs: [
-            "Transferring to billing. Fix: 'I will manage this with billing for you.'",
-            "Blaming IT. Fix: 'We are resolving a technical sync issue.'",
-            "Wait time is high. Fix: 'I have prioritized your file for manual review.'",
-            "Ticket is stuck. Fix: 'I am personally overseeing the movement of this case.'",
-            "Lost package. Fix: 'I am coordinating with the courier lead.'",
-            "Feature request. Fix: 'I will advocate for this in our next dev sprint.'",
-            "Billing error. Fix: 'I have initiated the correction in our ledger.'",
-            "Wrong info given. Fix: 'I am providing the verified data now.'",
-            "Agent is slow. Fix: 'I have taken over the communication to expedite.'",
-            "Refund pending. Fix: 'I am tracking the bank's release of these funds.'"
+        title: "Day 2: Ownership Strategy & Cross-Departmental Friction",
+        theory: `Ownership logic is the managerial discipline of 'Horizontal Accountability.' It posits that the person who first touches a customer escalation becomes the ultimate guardian of that customer's loyalty, regardless of which department caused the error. In fractured organizations, 'The Silo Effect' causes customers to be bounced between billing, tech, and shipping, with each transfer reducing brand trust by 15-20%. A CX Lead must operate as a 'Silo-Breaker,' taking total end-to-end responsibility. This involves 'Shadowing'—where you don't just ask for an update, you follow the ticket through the backend to ensure it doesn't stall. The theory of 'One-Touch' resolution asserts that a manager should never transfer a customer back into a general queue; the manager remains the single, unshakeable point of contact until the customer confirms in writing that the issue is resolved.`,
+        drills: [
+            "Problem: 'Tech is busy.' Fix: 'I have secured a priority slot for your review.'",
+            "Problem: 'Call billing.' Fix: 'I am coordinating with billing to finalize your credit.'",
+            "Problem: 'I don't know.' Fix: 'I am gathering the verified data for you now.'",
+            "Problem: 'Policy says no.' Fix: 'I am reviewing the discretionary options for this case.'",
+            "Problem: 'Try later.' Fix: 'I am monitoring the system and will notify you.'",
+            "Problem: 'It's the courier.' Fix: 'We are managing the courier's delivery route.'",
+            "Problem: 'Manager is out.' Fix: 'I am the authority managing this file currently.'",
+            "Problem: 'System is slow.' Fix: 'I am manually pushing the update to your account.'",
+            "Problem: 'Wait on hold.' Fix: 'I will remain your dedicated contact until completion.'",
+            "Problem: 'Error 500.' Fix: 'I have initiated a manual bypass for your access.'"
         ],
         cases: [
-            "<b>The Missing Organ:</b> Manager personally called a driver's cell phone to save a life. Total Ownership.",
-            "<b>The Stuck $1M Refund:</b> Manager sat in the CFO's office until the check was signed. Friction Zero.",
-            "<b>The Black Friday Crash:</b> Manager coordinated 4 departments from a single Slack channel. One-Touch Success.",
-            "<b>The Legal Threat:</b> Manager took ownership before the lawyers got involved, saving $50k in fees.",
-            "<b>The API Migration:</b> Manager provided hourly updates even when there was no news, just to show ownership."
+            {
+                p: "A manufacturing client was losing $50k an hour because a software update locked their production line. The Tech department said it was a 'Server Issue' and told the CX Manager to wait 24 hours. The Billing department said the client's 'Subscription' had expired during the update, causing a lock. Both departments were pointing fingers at each other while the client was calling every 5 minutes, threatening a multi-million dollar lawsuit. The client was being told 'It's not our department' by every agent they spoke to, leading to a complete breakdown in institutional trust and a demand for the CEO's personal phone number.",
+                s: "The CX Manager took 'Horizontal Ownership.' They refused to let the customer be transferred again. They pulled the heads of Tech and Billing into a single Slack war-room and stayed there for 6 hours. The Manager told Tech: 'I don't care if it's a server issue, give me a manual bypass code.' They told Billing: 'Override the expiration, I will take the financial hit on my department's budget.' By taking the 'The Buck Stops Here' approach, they got the client's machines moving in 6 hours instead of 24. The client was so impressed by the manager's 'Silo-Breaking' that they upgraded their contract the following month, citing the manager's personal accountability as the reason."
+            },
+            {
+                p: "A global logistics firm lost a crate of specialized medical equipment meant for a life-saving surgery. The courier company said they 'Delivered it,' but the hospital said the loading dock was empty. The CX team kept telling the hospital to 'Contact the courier's claims department,' which involved a 14-day waiting period. The hospital board was preparing a public statement blaming the logistics firm for the surgical delay. The friction was caused by the 'Not My Problem' mindset, where the internal staff felt their job ended the moment the package left the warehouse, ignoring the real-world consequence of the missing item.",
+                s: "The Manager applied 'Extreme Accountability.' They stopped the hospital from calling the courier. The Manager personally called the courier's regional VP and demanded a GPS audit of the truck's stops. They found the package had been delivered to the wrong hospital 2 miles away. The Manager personally drove to the other hospital, retrieved the crate, and hand-delivered it to the surgical team at 3 AM. They didn't wait for 'Claims' or 'Insurance.' This 'White-Glove' ownership transformed a potential fatality and lawsuit into a PR win, as the hospital's Chief Surgeon wrote a public letter praising the manager's 'Heroic Ownership' of the situation."
+            }
         ],
-        hardProbs: [
-            { p: "IT says the bug can't be fixed for 3 weeks. Customer needs it today.", s: "Managerial Solution: Find a 'Manual Workaround.' Do not tell the customer 'No.' Tell the customer: 'While the automated fix is in progress, I have created a manual bridge for your account to ensure no downtime.'" },
-            { p: "Billing refuses a refund because of a policy, but the company is clearly at fault.", s: "Override via 'Executive Discretion.' Issue the refund from the Marketing budget if necessary. Ownership means the customer is made whole, regardless of which internal budget it comes from." },
-            { p: "The customer is caught in a 'Ping-Pong' between two departments.", s: "Stop the Ping-Pong. Host a 3-way 'Sync Call' with the leads of both departments. The customer stays on the line until both leads agree on a fix." },
-            { p: "An agent gave a promise you can't keep.", s: "Ownership means you don't blame the agent. You say: 'I am the manager, and I am adjusting the resolution path to ensure a more sustainable outcome for you.'" },
-            { p: "The CRM is down and you have no data.", s: "Pen and Paper. Take the customer's info, promise a call back in 30 mins, and use that time to find a manual backup. Never tell the customer 'The system is down so I can't help.'" }
+        hards: [
+            { p: "Your CEO made a public promise that the product would have a feature by Monday. Engineering says it's impossible. The customers are waiting.", s: "Ownership Solution: Do not blame the CEO or Engineering. Create a 'Beta-Bridge.' Offer the 10% of most vocal customers a manual 'Concierge' version of the feature that you and your team manage manually. This fulfills the 'Spirit' of the CEO's promise while giving Engineering the time they need to build the real 'System.' You own the manual workload to protect the brand's integrity." },
+            { p: "An agent was caught lying to a customer to get them off the phone. The customer has proof.", s: "Accountability Solution: Do not defend the agent. Say: 'I am the manager, and I am accountable for the accuracy of our communication. The information provided was incorrect. I have personally corrected your file and am adding a 20% service credit for the oversight.' You take the 'Hit' for the agent, which stops the customer's attack on the staff member and shifts the focus to your professional resolution." }
         ],
         quiz: [
-            { q: "What is the 'One-Touch' rule?", a: "Touching the computer once.", b: "The person who takes the issue owns it until it's solved.", c: "correct:b" },
-            { q: "Every 'transfer' reduces loyalty by approximately:", a: "50%", b: "15%", c: "correct:b" },
-            { q: "What is 'Silo-Breaking'?", a: "Destroying the office.", b: "Coordinating across departments to solve a problem for the customer.", c: "correct:b" },
-            { q: "Horizontal Accountability means:", a: "Lying down.", b: "Taking responsibility for issues in departments you don't manage.", c: "correct:b" },
-            { q: "If the CRM is down, you should:", a: "Tell the customer to call back later.", b: "Take manual notes and find a workaround.", c: "correct:b" }
+            { q: "What is 'Horizontal Accountability'?", a: "Holding yourself responsible for results in other departments to save the customer.", b: "Blaming other departments to keep your own stats high.", correct: "a" },
+            { q: "The 'One-Touch' rule means:", a: "The manager never transfers the customer back to the general queue.", b: "The manager only talks to the customer once.", correct: "a" },
+            { q: "How does a 'Silo' hurt the customer?", a: "It makes the building look ugly.", b: "It creates friction where departments blame each other instead of solving the issue.", correct: "b" },
+            { q: "If Engineering says a fix takes 2 weeks, an 'Owner' should:", a: "Tell the customer to wait 2 weeks.", b: "Search for a manual workaround or bypass to solve the customer's immediate need.", correct: "b" },
+            { q: "Every transfer of a customer reduces loyalty by roughly:", a: "15-20%", b: "5-10%", correct: "a" }
         ]
     }
 };
 
-function loadContent(dayNum) {
-    const d = data[dayNum];
+function loadPage(day) {
+    const d = content[day];
     let html = `
-        <div class="card">
-            <h1>${d.title}</h1>
-            <div class="theory-block"><strong>THEORY:</strong> ${d.theory}</div>
-            
-            <h3>1. Simple Calibration Drills (10 Examples)</h3>
-            <div class="box problem-simple">
-                <ul>${d.simpleProbs.map(p => `<li>${p}</li>`).join('')}</ul>
-            </div>
+        <h1>${d.title}</h1>
+        <div class="theory-text"><strong>EXECUTIVE THEORY:</strong> ${d.theory}</div>
+        
+        <h2>1. Tone & Ownership Drills (10 Examples)</h2>
+        <div class="prob-grid">
+            ${d.drills.map(drill => `<div class="prob-item">${drill}</div>`).join('')}
+        </div>
 
-            <h3>2. Strategic Case Studies (5 Examples)</h3>
-            ${d.cases.map(c => `<div class="box case-study">${c}</div>`).join('')}
-
-            <h3>3. 'Hard Mode' Problem/Solution Sets (5 Scenarios)</h3>
-            ${d.hardProbs.map(hp => `
-                <div class="box hard-problem">
-                    <strong>PROBLEM:</strong> ${hp.p}<br><br>
-                    <span class="solution-tag">MANAGERIAL SOLUTION</span><br>
-                    ${hp.s}
+        <h2>2. High-Depth Case Studies (10-Line Analyses)</h2>
+        ${d.cases.map((c, i) => `
+            <div class="case-study-block">
+                <div class="case-header">STRATEGIC CASE STUDY #${i+1}</div>
+                <div class="case-body"><strong>PROBLEM:</strong> ${c.p}</div>
+                <div class="solution-area">
+                    <span class="sol-label">MANAGERIAL SOLUTION (EXECUTION)</span>
+                    ${c.s}
                 </div>
-            `).join('')}
+            </div>
+        `).join('')}
 
-            <div class="quiz-area" id="quiz-zone">
-                <h2>Day ${dayNum} Gatekeeper Quiz</h2>
+        <h2>3. 'Hard-Mode' Leadership Scenarios</h2>
+        ${d.hards.map((h, i) => `
+            <div class="case-study-block" style="border-color:#fecdd3">
+                <div class="case-header" style="background:var(--danger)">HARD SCENARIO #${i+1}</div>
+                <div class="case-body"><strong>SITUATION:</strong> ${h.p}</div>
+                <div class="solution-area" style="background:#fff1f2; border-color:#fecdd3">
+                    <span class="sol-label" style="color:var(--danger)">ACCOUNTABILITY ACTION</span>
+                    ${h.s}
+                </div>
+            </div>
+        `).join('')}
+
+        <div class="quiz-container">
+            <h2>Day ${day} Gatekeeper Assessment</h2>
+            <div id="quiz-area">
                 ${d.quiz.map((q, i) => `
-                    <div style="margin-bottom:20px;">
+                    <div class="q-wrap">
                         <p><strong>Q${i+1}: ${q.q}</strong></p>
-                        <label class="opt"><input type="radio" name="q${i}" value="${q.a}"> ${q.a}</label>
-                        <label class="opt"><input type="radio" name="q${i}" value="${q.b}"> ${q.b}</label>
+                        <label class="opt"><input type="radio" name="q${i}" value="a"> A) ${q.a}</label>
+                        <label class="opt"><input type="radio" name="q${i}" value="b"> B) ${q.b}</label>
                     </div>
                 `).join('')}
-                <button class="submit-btn" onclick="checkQuiz(${dayNum})">SUBMIT & CALCULATE SCORE</button>
+                <button class="submit-btn" onclick="checkQuiz(${day})">SUBMIT FOR CERTIFICATION</button>
+                <div id="score-result" style="margin-top:20px; font-weight:bold; font-size:1.2rem;"></div>
             </div>
         </div>
     `;
-    document.getElementById('render-zone').innerHTML = html;
-    document.querySelectorAll('.nav-item').forEach((n, i) => n.classList.toggle('active', i+1 === dayNum));
+    document.getElementById('app').innerHTML = html;
+    document.querySelectorAll('.nav-item').forEach((item, idx) => {
+        item.classList.toggle('active', idx + 1 === day);
+    });
     window.scrollTo(0,0);
 }
 
-function checkQuiz(dayNum) {
-    const quizData = data[dayNum].quiz;
+function checkQuiz(day) {
+    const qData = content[day].quiz;
     let score = 0;
-    quizData.forEach((q, i) => {
-        const selected = document.querySelector(`input[name="q${i}"]:checked`);
-        if(selected && selected.parentElement.innerText.includes("correct:b") || (selected && q.c === "correct:b" && selected.value === q.b)) {
-            score++;
+    let answered = 0;
+    qData.forEach((q, i) => {
+        const choice = document.querySelector(`input[name="q${i}"]:checked`);
+        if(choice) {
+            answered++;
+            if(choice.value === q.correct) score++;
         }
     });
-    alert("Score: " + score + "/5. " + (score >= 4 ? "PASS! You have mastered Day " + dayNum : "FAIL. Review the Case Studies."));
+
+    if(answered < 5) {
+        alert("Please complete all 5 questions.");
+        return;
+    }
+
+    const res = document.getElementById('score-result');
+    if(score >= 4) {
+        res.innerHTML = `✅ PASSED: ${score}/5. You have mastered the core concepts of Day ${day}.`;
+        res.style.color = "var(--success)";
+    } else {
+        res.innerHTML = `❌ FAILED: ${score}/5. Please review the Case Studies and try again.`;
+        res.style.color = "var(--danger)";
+    }
 }
 
-window.onload = () => loadContent(1);
+// Startup
+window.onload = () => loadPage(1);
 </script>
 
 </body>
