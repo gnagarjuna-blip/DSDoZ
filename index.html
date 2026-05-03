@@ -3,262 +3,219 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CX Manager Training - Module 1</title>
+    <title>Executive CX Training Dashboard</title>
     <style>
         :root {
-            --primary: #1a365d;
-            --secondary: #2c5282;
-            --accent: #ed8936;
-            --bg: #f7fafc;
+            --primary: #0f172a;
+            --secondary: #1e293b;
+            --accent: #3b82f6;
+            --success: #10b981;
+            --danger: #ef4444;
+            --bg: #f8fafc;
+            --text: #1e293b;
             --white: #ffffff;
-            --text: #2d3748;
-            --border: #e2e8f0;
         }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Inter', -apple-system, sans-serif;
             background-color: var(--bg);
             color: var(--text);
             margin: 0;
             padding: 0;
-            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
         }
-        header {
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 260px;
             background-color: var(--primary);
             color: var(--white);
-            padding: 40px 20px;
-            text-align: center;
-            border-bottom: 5px solid var(--accent);
+            display: flex;
+            flex-direction: column;
+            padding: 20px 0;
+            position: fixed;
+            height: 100%;
         }
-        .container {
-            max-width: 900px;
-            margin: 40px auto;
+        .sidebar h2 {
             padding: 0 20px;
+            font-size: 1.2rem;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
-        .day-block {
-            background: var(--white);
-            border-radius: 8px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            overflow: hidden;
-            border: 1px solid var(--border);
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            transition: all 0.3s;
+            text-decoration: none;
+            color: #94a3b8;
+            font-weight: 500;
         }
-        .day-header {
-            background: var(--secondary);
+        .nav-item:hover, .nav-item.active {
+            background-color: var(--secondary);
             color: var(--white);
-            padding: 15px 25px;
-            font-size: 1.25rem;
-            font-weight: bold;
+            border-left-color: var(--accent);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            margin-left: 260px;
+            flex: 1;
+            padding: 40px;
+        }
+        .header-bar {
+            background: var(--white);
+            padding: 20px 40px;
+            margin: -40px -40px 40px -40px;
+            border-bottom: 1px solid #e2e8f0;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
-        .content {
-            padding: 25px;
-        }
-        .sub-topic {
-            margin-bottom: 20px;
-            border-left: 4px solid var(--accent);
-            padding-left: 15px;
-        }
-        .sub-topic h3 {
-            margin-top: 0;
-            color: var(--primary);
-        }
-        .quiz-section {
-            background: #edf2f7;
-            padding: 30px;
-            border-radius: 8px;
-            margin-top: 50px;
-        }
-        .quiz-header {
-            border-bottom: 2px solid var(--primary);
-            margin-bottom: 20px;
-            padding-bottom: 10px;
-        }
-        .question {
-            margin-bottom: 25px;
-        }
-        .question p {
-            font-weight: 600;
-            margin-bottom: 10px;
-        }
-        .options {
-            list-style: none;
-            padding: 0;
-        }
-        .options li {
-            background: var(--white);
-            margin-bottom: 8px;
-            padding: 10px 15px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        .options li:hover {
-            background: #f1f5f9;
-        }
-        .gatekeeper-footer {
-            text-align: center;
-            margin-top: 40px;
-            padding: 20px;
-            background: #fff5f5;
-            border: 1px dashed #feb2b2;
-            border-radius: 8px;
-        }
-        .btn {
-            display: inline-block;
-            background: var(--accent);
-            color: white;
-            padding: 12px 30px;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-            margin-top: 15px;
-        }
-        .badge {
-            background: var(--accent);
-            padding: 4px 10px;
+        .btn-status {
+            background: #dcfce7;
+            color: #166534;
+            padding: 5px 12px;
             border-radius: 20px;
             font-size: 0.8rem;
-            text-transform: uppercase;
+            font-weight: bold;
+        }
+
+        /* Course Page Styling */
+        .page-card {
+            background: var(--white);
+            padding: 40px;
+            border-radius: 12px;
+            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
+            margin-bottom: 40px;
+            border-top: 5px solid var(--accent);
+        }
+        h1, h2, h3 { color: var(--primary); }
+        .page-counter {
+            font-size: 0.9rem;
+            color: #64748b;
+            margin-bottom: 10px;
+            display: block;
+        }
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #f1f5f9;
+        }
+        .btn {
+            padding: 10px 25px;
+            border-radius: 6px;
+            text-decoration: none;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+            border: none;
+        }
+        .btn-next { background: var(--accent); color: white; }
+        .btn-next:hover { background: #2563eb; }
+        .btn-prev { background: #f1f5f9; color: var(--secondary); }
+
+        /* Quiz Box */
+        .quiz-container {
+            background: #fdf2f2;
+            border: 2px solid #fee2e2;
+            padding: 30px;
+            border-radius: 10px;
+        }
+        .option-box {
+            display: block;
+            padding: 12px;
+            background: white;
+            border: 1px solid #e2e8f0;
+            margin-bottom: 10px;
+            border-radius: 6px;
+            cursor: pointer;
+        }
+        .option-box:hover { border-color: var(--accent); }
+
+        /* Gatekeeper Overlay */
+        .locked-message {
+            background: #fff1f2;
+            padding: 20px;
+            border-radius: 8px;
+            color: #be123c;
+            border: 1px solid #fecdd3;
+            text-align: center;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <h1>Module 1: Brand Excellence & Journey Mapping</h1>
-    <p>Core Training for Customer Experience Team Managers</p>
-</header>
+<div class="sidebar">
+    <h2>CX Academy</h2>
+    <div class="nav-item">Introduction</div>
+    <div class="nav-item active">Day 1: Brand Persona</div>
+    <div class="nav-item">Day 2: Journey Mapping</div>
+    <div class="nav-item">Day 3: QA Standards</div>
+    <div class="nav-item">Day 4: De-escalation</div>
+    <div class="nav-item">Day 5: Exam & Cert</div>
+</div>
 
-<div class="container">
-
-    <!-- DAY 1 -->
-    <div class="day-block">
-        <div class="day-header">
-            <span>Day 1: The Brand Persona & Authority</span>
-            <span class="badge">Week 1</span>
+<div class="main-content">
+    <div class="header-bar">
+        <div>
+            <h3 style="margin:0">Module 1: Professional Excellence</h3>
+            <span style="font-size: 0.8rem; color: #64748b;">Candidate: CX Manager Lead</span>
         </div>
-        <div class="content">
-            <div class="sub-topic">
-                <h3>1.1 Understanding the Corporate Voice</h3>
-                <p>A Team Manager must embody the brand's persona. Our voice is defined as <strong>Empathetic Authority</strong>. This means we don't just solve problems; we reassure the user that they are in expert hands.</p>
-            </div>
-            <div class="sub-topic">
-                <h3>1.2 The "Active Voice" Mandate</h3>
-                <p>Avoid passive language. Instead of "Your ticket was received," use "I have received your ticket and I am investigating the root cause." This establishes ownership.</p>
-            </div>
+        <span class="btn-status">IN PROGRESS</span>
+    </div>
+
+    <!-- INTRODUCTION & INSTRUCTIONS -->
+    <div class="page-card">
+        <h1>Onboarding Instructions</h1>
+        <p>Welcome to the Customer Experience Managerial Track. To ensure high-quality leadership standards, this module follows a <strong>Linear Progression Protocol</strong>.</p>
+        <ul>
+            <li><strong>Daily Mastery:</strong> Each day contains 4-5 pages of deep-dive documentation.</li>
+            <li><strong>Mandatory Exams:</strong> Every day concludes with a 5-question technical quiz.</li>
+            <li><strong>Gatekeeper System:</strong> You cannot access Day 2 until Day 1 is cleared with an 80% score.</li>
+            <li><strong>Deliverables:</strong> You will be required to upload tone audits and mock grades to the management portal.</li>
+        </ul>
+    </div>
+
+    <!-- DAY 1: PAGE 1 -->
+    <div class="page-card">
+        <span class="page-counter">Day 1 | Page 1 of 5</span>
+        <h2>Defining the Corporate Tone</h2>
+        <p>A CX Manager is the guardian of the brand's voice. Unlike frontline agents who focus on resolution, a Manager ensures that the <strong>manner</strong> of resolution builds equity.</p>
+        <div style="background: #f8fafc; padding: 20px; border-left: 4px solid var(--accent);">
+            <strong>Core Principle:</strong> "We don't just solve problems; we restore confidence."
+        </div>
+        <p>Effective corporate communication must be Concise, Courageous, and Consistent. Avoid "Hedge Words" like <i>'maybe', 'we'll try', or 'possibly'.</i></p>
+        <div class="nav-buttons">
+            <button class="btn btn-prev">Return to Dashboard</button>
+            <button class="btn btn-next">Next: The Empathy Scale →</button>
         </div>
     </div>
 
-    <!-- DAY 2 -->
-    <div class="day-block">
-        <div class="day-header">
-            <span>Day 2: Mapping the Emotional Journey</span>
-            <span class="badge">Week 1</span>
+    <!-- DAY 1: QUIZ (GATEKEEPER) -->
+    <div class="page-card quiz-container">
+        <span class="page-counter">Assessment: Day 1 Gatekeeper</span>
+        <h2>Knowledge Verification</h2>
+        <p>You must answer correctly to unlock Day 2 materials.</p>
+        
+        <div class="question">
+            <p><strong>Q1: A customer reports a systemic outage affecting their business. What is the priority focus?</strong></p>
+            <label class="option-box"><input type="radio" name="q1"> A) Explaining the technical reason for the server failure.</label>
+            <label class="option-box"><input type="radio" name="q1"> B) Validating the business impact and providing a concrete ETA for the fix.</label>
+            <label class="option-box"><input type="radio" name="q1"> C) Offering a 5% discount immediately without checking logs.</label>
         </div>
-        <div class="content">
-            <div class="sub-topic">
-                <h3>2.1 Identifying Friction Points</h3>
-                <p>The journey isn't a straight line. Managers must identify 'Pain Points'—specific moments where users feel confused or frustrated, such as the Onboarding or Billing phases.</p>
-            </div>
-            <div class="sub-topic">
-                <h3>2.2 Moments of Truth</h3>
-                <p>These are the make-or-break interactions. When a system fails, the recovery process is more important than the failure itself.</p>
-            </div>
+
+        <div class="nav-buttons">
+            <button class="btn btn-next" style="width: 100%; background: var(--primary);">Submit Quiz & Proceed to Day 2</button>
         </div>
     </div>
 
-    <!-- DAY 3 -->
-    <div class="day-block">
-        <div class="day-header">
-            <span>Day 3: Quality Assurance (QA) Leadership</span>
-            <span class="badge">Week 1</span>
-        </div>
-        <div class="content">
-            <div class="sub-topic">
-                <h3>3.1 The 4-Pillar Rubric</h3>
-                <p>Managers evaluate teams based on: <strong>Accuracy</strong>, <strong>Tone</strong>, <strong>Speed</strong>, and <strong>Resolution</strong>. A response can be fast but fail if the tone is robotic.</p>
-            </div>
-            <div class="sub-topic">
-                <h3>3.2 Calibrating Team Standards</h3>
-                <p>Ensuring every agent provides a consistent experience. No "Hero Agents"—the system should produce excellent results regardless of who answers.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- DAY 4 -->
-    <div class="day-block">
-        <div class="day-header">
-            <span>Day 4: Advanced De-escalation</span>
-            <span class="badge">Week 1</span>
-        </div>
-        <div class="content">
-            <div class="sub-topic">
-                <h3>4.1 The HEAT Technique</h3>
-                <p><strong>Hear</strong> the customer, <strong>Empathize</strong>, <strong>Apologize</strong>, and <strong>Take action</strong>. Managers step in when the HEAT technique is insufficient for an agent.</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- DAY 5: QUIZ -->
-    <div class="quiz-section">
-        <div class="quiz-header">
-            <h2>Module 1: Gatekeeper Assessment</h2>
-            <p>Score 80% (4/5) to unlock Module 2: Tech Stack & Systems.</p>
-        </div>
-
-        <div class="question">
-            <p>1. Which of the following is the best example of "Empathetic Authority"?</p>
-            <ul class="options">
-                <li>A) "We are sorry for the issue, please wait while we check."</li>
-                <li>B) "I understand how this delay affects your workflow. I am personally overseeing the fix to ensure it's resolved by EOD."</li>
-                <li>C) "The technical team is aware. Tickets are handled in the order they are received."</li>
-            </ul>
-        </div>
-
-        <div class="question">
-            <p>2. What is the primary goal of Identifying "Friction Points" in a journey map?</p>
-            <ul class="options">
-                <li>A) To blame the product team for bugs.</li>
-                <li>B) To reduce the number of steps a customer takes to achieve their goal.</li>
-                <li>C) To increase the Average Handle Time (AHT).</li>
-            </ul>
-        </div>
-
-        <div class="question">
-            <p>3. In the 4-Pillar QA Rubric, what does "Accuracy" refer to?</p>
-            <ul class="options">
-                <li>A) Using correct grammar and spelling.</li>
-                <li>B) Providing the technically correct solution that fixes the issue.</li>
-                <li>C) Replying to the customer within 5 minutes.</li>
-            </ul>
-        </div>
-
-        <div class="question">
-            <p>4. Why is "Active Voice" preferred in corporate CX communication?</p>
-            <ul class="options">
-                <li>A) It sounds more polite and soft.</li>
-                <li>B) It clearly identifies who is taking action and builds trust.</li>
-                <li>C) It makes the emails shorter.</li>
-            </ul>
-        </div>
-
-        <div class="question">
-            <p>5. A customer is screaming on a call. According to the HEAT technique, what is the first step?</p>
-            <ul class="options">
-                <li>A) Apologize immediately for the problem.</li>
-                <li>B) Hear the customer out without interrupting.</li>
-                <li>C) Transfer the call to the CEO.</li>
-            </ul>
-        </div>
-
-        <div class="gatekeeper-footer">
-            <h3>Ready to Proceed?</h3>
-            <p>Upon achieving 80%+, your certification code will be generated to unlock the next module.</p>
-            <a href="#" class="btn">Submit Assessment & Unlock Module 2</a>
-        </div>
+    <!-- LOCKED CONTENT PREVIEW -->
+    <div class="locked-message">
+        <strong>🔒 Day 2: Journey Mapping is Locked</strong><br>
+        Please complete the Day 1 Assessment with an 80% score to unlock these sub-tabs.
     </div>
 
 </div>
