@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Executive CX Training | Scenario-Based Certification</title>
+    <title>Executive CX Leadership Academy | Full Certification</title>
     <style>
         :root {
             --primary: #0f172a; --accent: #3b82f6; --bg: #f8fafc;
@@ -11,103 +11,182 @@
         }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; color: var(--text); display: flex; }
         
-        /* Navigation */
         .sidebar { width: 320px; background: var(--primary); color: white; height: 100vh; position: fixed; }
         .sidebar-header { padding: 40px 30px; font-weight: 800; font-size: 1.5rem; border-bottom: 1px solid #334155; color: var(--accent); }
         .nav-item { padding: 20px 30px; cursor: pointer; transition: 0.3s; color: #94a3b8; font-weight: 600; border-left: 4px solid transparent; }
         .nav-item.active { background: #1e293b; color: white; border-left-color: var(--accent); }
 
-        /* Main Content */
         .main { margin-left: 320px; padding: 60px; width: 100%; max-width: 1100px; }
         .card { background: var(--white); padding: 50px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 10px solid var(--accent); margin-bottom: 50px; }
         
-        h1 { font-size: 2.2rem; color: var(--primary); margin-bottom: 30px; }
-        .theory-text { font-size: 1.1rem; line-height: 1.8; text-align: justify; margin-bottom: 40px; border-bottom: 1px solid #e2e8f0; padding-bottom: 30px; }
+        h1 { font-size: 2.2rem; color: var(--primary); margin-bottom: 10px; }
+        .theory-text { font-size: 1.1rem; line-height: 1.8; text-align: justify; margin: 30px 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 30px; }
 
-        /* Case Study Block */
         .case-study-block { margin-bottom: 40px; background: #fffbeb; border-radius: 12px; overflow: hidden; border: 1px solid #fef3c7; }
         .case-header { background: var(--gold); color: white; padding: 15px 25px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem; }
         .case-body { padding: 25px; line-height: 1.7; }
         .solution-area { background: #f0fdf4; border-top: 2px solid #bbf7d0; padding: 25px; line-height: 1.7; }
         .sol-label { color: var(--success); font-weight: 800; display: block; margin-bottom: 10px; }
 
-        /* Quiz UI */
-        .quiz-container { background: #f8fafc; padding: 40px; border-radius: 12px; border: 2px solid #e2e8f0; }
-        .q-scenario { background: #eff6ff; padding: 20px; border-radius: 8px; border-left: 5px solid var(--accent); margin-bottom: 15px; font-style: italic; line-height: 1.6; }
+        .quiz-container { background: #f8fafc; padding: 40px; border-radius: 12px; border: 2px solid #e2e8f0; margin-top: 50px; }
+        .q-scenario { background: #eff6ff; padding: 25px; border-radius: 8px; border-left: 5px solid var(--accent); margin-bottom: 15px; line-height: 1.6; font-size: 0.95rem; }
         .q-wrap { margin-bottom: 40px; padding-bottom: 20px; border-bottom: 1px solid #e2e8f0; }
         .opt { display: block; padding: 15px; background: white; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 10px; cursor: pointer; transition: 0.2s; }
-        .opt:has(input:checked) { border-color: var(--accent); background: #eff6ff; }
+        .opt:hover { background: #f1f5f9; }
         .submit-btn { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 1.1rem; }
-        .multi-tag { color: var(--accent); font-size: 0.8rem; font-weight: bold; }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <div class="sidebar-header">CX LEADERSHIP</div>
-    <div class="nav-item active" onclick="loadPage(1)">Day 1: Tone Calibration</div>
-    <div class="nav-item" onclick="loadPage(2)">Day 2: Ownership Logic</div>
+    <div class="sidebar-header">EXECUTIVE ACADEMY</div>
+    <div class="nav-item active" onclick="loadPage(1)">DAY 1: Tone Calibration</div>
+    <div class="nav-item" onclick="loadPage(2)">DAY 2: Ownership Strategy</div>
 </div>
 
-<div class="main" id="app">
-    </div>
+<div class="main" id="app"></div>
 
 <script>
 const content = {
     1: {
-        title: "Day 1: Advanced Tone Calibration & Stoic Authority",
-        theory: "Tone calibration is the strategic application of linguistic neutrality to manage high-stakes customer volatility. In executive CX, tone is not a reflection of personality but a calculated instrument for de-escalation. Theoretical frameworks suggest that emotional mirroring—where a manager matches a customer's heat or excessive apology—actually validates the customer's perceived loss of control. By contrast, a 'Stoic Anchor' tone uses flat, clinical, and precise language to project that the organization is stable, regardless of the failure. This requires the total removal of hedge words, emotional adjectives, and defensive justifications. Calibration ensures that the Manager remains the 'Professional North' for both the team and the client, using somatic pacing and written structure to pull the conversation from the emotional amygdala back to the logical prefrontal cortex for technical resolution.",
+        title: "Day 1: Tone Calibration & Stoic Authority",
+        theory: `Tone calibration is the systematic removal of emotional variance from professional communication. In high-level management, tone is used to neutralize customer aggression and project institutional stability. Theoretical research shows that excessive apologizing or emotional mirroring validates a customer's panic, signaling that the company is not in control. A "Stoic Anchor" tone uses clinical, precise, and adjective-free language to pull the conversation from the emotional brain to the logical brain. This level of calibration requires the total removal of "hedge words" (hopefully, maybe) and "weak subjects" (I think, I feel). By maintaining a flat-positive emotional baseline, the Manager acts as a professional North Star, ensuring that technical facts are prioritized over emotional narratives. This is not about being cold; it is about being a reliable authority who is too busy fixing the problem to participate in the drama.`,
         cases: [
             {
-                p: "A Tier-1 Fintech client experienced a fund freeze during a global holiday, preventing millions in transactions. The customer called the Manager, screaming profanities and threatening to sue for damages. The frontline had already apologized 50 times, which only made the customer angrier as they felt the company was admitting legal fault without offering a fix. The customer was seeking a human to attack, and the apologetic tone was acting as fuel for their rage. The 'heat' of the situation was at a 10/10, risking immediate contract termination and a massive public PR disaster for the bank's security reputation. This emotional spiral was feeding off the staff's visible panic and repetitive excuses about the holiday schedule, which the customer perceived as a sign of institutional incompetence.",
-                s: "The Manager applied the 'Stoic Anchor' protocol immediately to cut the emotional feedback loop. They interrupted the customer's yelling with a flat, low-decibel technical update: 'The ledger synchronization is currently at 85%.' They refused to acknowledge the insults or apologize for the 'feelings.' Instead, they provided 10-minute interval updates using clinical language like 'Infrastructure Hardening' and 'Protocol Reset.' By treating the situation as a routine technical procedure rather than a crisis, they forced the customer to match their logical tone. This approach de-personalized the conflict, moving the discussion from 'blame' to 'status.' Within 40 minutes, the customer calmed down, apologized for their behavior, and the contract was saved without any financial concessions."
+                p: `A Tier-1 Fintech client experienced a critical fund freeze during a global holiday, preventing millions in transactions for high-net-worth individuals. The customer called the Executive Lead, screaming profanities and threatening to move their entire $50M portfolio to a competitor immediately. The frontline staff had already sent multiple emails filled with "sincere apologies," which the customer perceived as a sign of weakness and lack of technical grasp. The situation was spiraling into a legal threat and a potential viral PR disaster, as the customer was currently typing a post for LinkedIn. The heat was at a 10/10, and the brand's security reputation was being questioned by the customer's legal counsel on a recorded line.`,
+                s: `The Manager applied the "Stoic Anchor" protocol to reset the power dynamic. They interrupted the customer's shouting with a flat, low-decibel technical statement: "The ledger synchronization is currently at 85%; our protocol ensures full parity before release." They refused to acknowledge the personal insults or use any emotional adjectives. Instead, they provided 10-minute clinical updates using words like "Infrastructure Hardening" and "Parity Verification." By treating the global crisis as a routine technical procedure, they signaled that they were in total control. The customer, realizing their rage was having zero effect on the Manager's professional baseline, calmed down and apologized for their outburst. The $50M portfolio was retained without a single cent in concessions.`
+            },
+            {
+                p: `A luxury fashion brand accidentally sent out a test notification to 2 million app users, containing internal placeholder text that was unprofessional and confusing. Thousands of customers began calling, fearing their accounts were hacked or that the brand's data security was compromised. The social media team was replying with emojis and "oops" messages, which made the older, high-spending demographic feel that the company was run by amateurs. The stock price was beginning to dip in early trading as "Security Breach" started trending on Twitter. The internal marketing team was panicking and wanted to send a long, 5-paragraph explanation about the intern who made the mistake.`,
+                s: `The CX Manager vetoed the marketing narrative and enforced "Linguistic Hardening." They issued a single-sentence broadcast: "A system communication test was deployed; no user data was accessed or compromised." They directed the social team to stop using emojis and switch to a "Verified Status" tone. By removing the "story" about the intern and replacing it with a "System Test" framing, they turned a potential scandal into a boring administrative event. The stock price stabilized within two hours because the brand sounded like a secure institution rather than a chaotic startup. The Manager proved that in a crisis, a clinical tone is more comforting to investors and high-value clients than a human apology.`
             }
         ],
         quiz: [
             {
-                scenario: "A high-profile enterprise client is emailing you frantically because their service has been down for 4 hours during their peak sales window. Your technical team just informed you that the fix will take another 2 hours. Your junior agent has already sent three emails saying 'We are so sorry for the terrible inconvenience' and 'We hope to be back soon.' The client is now threatening to post the email thread on LinkedIn to show how 'unprofessional' your team is. You need to intervene and reset the authority of the conversation.",
-                q: "Which actions represent correct Tone Calibration in this scenario? (Select ALL that apply)",
+                scenario: `A B2B SaaS client is furious because a bug deleted their historical data for the last 48 hours. Your technical team tells you the data is unrecoverable. Your junior agent has already emailed the client saying, "I am so incredibly sorry for this terrible news, I feel awful about it." The client is now demanding to speak to someone "important" and is threatening a lawsuit for lost revenue. The emotional heat is high, and the client feels the agent is incompetent because of the "weak" tone.`,
+                q: "As the Manager, which actions demonstrate proper Tone Calibration? (Select ALL correct)",
                 options: [
-                    {text: "Immediately send a detailed apology explaining that the tech team is working hard and 'hopes' for a faster resolution.", val: "a"},
-                    {text: "Issue a clinical update: 'The system is in the final phase of a scheduled protocol recovery; ETA 120 minutes.'", val: "b"},
-                    {text: "Audit the previous thread and instruct the agent to stop using emotional adjectives like 'terrible' or 'inconvenient'.", val: "c"},
-                    {text: "Acknowledge the business impact by saying: 'I have noted the sales window impact and have prioritized this file for a post-recovery audit.'", val: "d"}
+                    {text: "Send a clinical update: 'Our internal audit confirms a 48-hour data gap; I am implementing the recovery credit protocol now.'", val: "a"},
+                    {text: "Apologize even more than the agent to show you are more 'important' and care more.", val: "b"},
+                    {text: "Ban the use of 'I feel' and 'Incredibly sorry' from all future comms on this ticket.", val: "c"},
+                    {text: "Pivot to a solution: 'I have assigned a dedicated engineer to manually rebuild your primary fields to minimize business impact.'", val: "d"}
                 ],
-                correct: ["b", "c", "d"]
+                correct: ["a", "c", "d"]
             },
             {
-                scenario: "During a live video call with a frustrated Board of Directors, a technical bug causes your presentation to crash. One of the Board members mocks the software's reliability in front of the entire group. Your natural instinct is to laugh awkwardly or apologize profusely to ease the tension. However, as an Executive CX Manager, you must maintain 'Institutional Authority' to ensure they don't lose confidence in the product's long-term roadmap.",
-                q: "How should you linguistically handle this mockery using Stoic Anchor principles? (Select ALL that apply)",
+                scenario: `You are in a high-stakes board meeting. A board member calls your CX strategy "a waste of time and money" because churn hasn't dropped by 10% in one month. The room goes silent, waiting for your response. Your natural reaction is to get defensive or try to please the board member by promising unrealistic results. You must use Tone Calibration to maintain your executive authority.`,
+                q: "Which responses align with the Stoic Anchor model? (Select ALL correct)",
                 options: [
-                    {text: "Ignore the mockery entirely and state: 'I am re-establishing the secure connection now; please hold for the data refresh.'", val: "a"},
-                    {text: "Make a joke about the tech team to show you are on the Board's side.", val: "b"},
-                    {text: "Maintain a flat, neutral facial expression and voice, treating the crash as a minor data-point rather than a failure.", val: "c"},
-                    {text: "Apologize and promise that the person responsible for the bug will be reprimanded.", val: "d"}
+                    {text: "Ignore the emotional bait and state: 'The current data cycle shows a 2% stabilization; I will present the 90-day trajectory at the next session.'", val: "a"},
+                    {text: "Argue that they don't understand how hard CX is.", val: "b"},
+                    {text: "Maintain a neutral, flat-positive tone and ask: 'Which specific metric in the churn report is the primary concern for the Board?'", val: "c"},
+                    {text: "Agree with them to avoid conflict and say you'll fire the agents.", val: "d"}
                 ],
                 correct: ["a", "c"]
+            },
+            {
+                scenario: `A customer is using heavy sarcasm in an email, saying "Wow, great job guys! You really nailed it by breaking my account again." Your agent wants to respond sarcastically back or write a long, defensive explanation.`,
+                q: "What is the calibrated managerial direction here? (Select ALL correct)",
+                options: [
+                    {text: "Instruct the agent to ignore the sarcasm entirely and respond only to the technical problem.", val: "a"},
+                    {text: "Use 'Linguistic Stripping': Remove all emotional context and provide a bulleted list of current status.", val: "b"},
+                    {text: "Tell the agent to say 'I am sorry you feel that way.'", val: "c"},
+                    {text: "Use a Power Word: 'I have verified the account status and the correction is now finalized.'", val: "d"}
+                ],
+                correct: ["a", "b", "d"]
+            },
+            {
+                scenario: `A viral post is mocking your brand's slow response time. The post has 50,000 likes. The Marketing team wants to reply with a funny meme to "join the conversation" and look cool.`,
+                q: "What is the high-authority tone strategy? (Select ALL correct)",
+                options: [
+                    {text: "Veto the meme; humor during a service failure signals flippancy to the serious customers.", val: "a"},
+                    {text: "Issue a boring, technical update on the service status instead.", val: "b"},
+                    {text: "Allow the meme to get more likes.", val: "c"},
+                    {text: "Maintain 'Institutional Distance'—not every tweet requires an emotional brand response.", val: "d"}
+                ],
+                correct: ["a", "b", "d"]
+            },
+            {
+                scenario: `You are delivering bad news to a long-term client. The service they love is being discontinued. You know they will be upset.`,
+                q: "How do you calibrate the delivery? (Select ALL correct)",
+                options: [
+                    {text: "Don't use 'Hopefully' or 'Maybe.' Use 'Our roadmap has evolved to [X].'", val: "a"},
+                    {text: "Blame the engineering department for the change.", val: "b"},
+                    {text: "Provide a 'prescriptive path': 'Your account will be migrated to the new system on [Date].'", val: "c"},
+                    {text: "Focus on the 'Protocol' and 'Verified Benefits' of the new system.", val: "d"}
+                ],
+                correct: ["a", "c", "d"]
             }
         ]
     },
     2: {
-        title: "Day 2: Ownership Strategy & Friction Logic",
-        theory: "Ownership logic is the managerial discipline of 'Horizontal Accountability.' It posits that the person who first touches a customer escalation becomes the ultimate guardian of that customer's loyalty, regardless of which department caused the error. In fractured organizations, 'The Silo Effect' causes customers to be bounced between billing, tech, and shipping, with each transfer reducing brand trust by 15-20%. A CX Lead must operate as a 'Silo-Breaker,' taking total end-to-end responsibility. This involves 'Shadowing'—where you don't just ask for an update, you follow the ticket through the backend to ensure it doesn't stall. The theory of 'One-Touch' resolution asserts that a manager should never transfer a customer back into a general queue; the manager remains the single, unshakeable point of contact until the customer confirms in writing that the issue is resolved.",
+        title: "Day 2: Ownership Strategy & Silo Destruction",
+        theory: `Ownership logic is the managerial mandate of "Horizontal Accountability." It posits that internal departmental barriers are irrelevant to the customer experience. A CX Leader must act as a "Silo-Breaker," taking total end-to-end responsibility for an issue from the moment of contact until the moment of verified resolution. Theoretical studies on "Friction Logic" show that every time a customer is transferred to a different department, their trust in the brand drops by 15-20%. Therefore, the Manager's goal is "One-Touch" resolution—capturing the escalation and coordinating with Tech, Billing, or Logistics behind the scenes so the customer never feels the friction of the organization. This requires "Shadowing" tickets and exercising executive discretion to override internal policies that stall the customer's progress.`,
         cases: [
             {
-                p: "A manufacturing client was losing $50k an hour because a software update locked their production line. The Tech department said it was a 'Server Issue' and told the CX Manager to wait 24 hours. The Billing department said the client's 'Subscription' had expired during the update, causing a lock. Both departments were pointing fingers at each other while the client was calling every 5 minutes, threatening a multi-million dollar lawsuit. The client was being told 'It's not our department' by every agent they spoke to, leading to a complete breakdown in institutional trust and a demand for the CEO's personal phone number. The friction was at a breaking point because the internal silos were more interested in protecting their own KPIs than saving the client's operation.",
-                s: "The CX Manager took 'Horizontal Ownership' and became the single point of contact. They refused to let the customer be transferred again. They pulled the heads of Tech and Billing into a single Slack war-room and stayed there for 6 hours. The Manager told Tech: 'I don't care if it's a server issue, give me a manual bypass code.' They told Billing: 'Override the expiration, I will take the financial hit on my department's budget.' By taking the 'The Buck Stops Here' approach, they got the client's machines moving in 6 hours instead of 24. The Manager personally updated the client every 30 minutes, even when there was no news, to demonstrate active oversight. The client was so impressed by the manager's 'Silo-Breaking' that they upgraded their contract the following month."
+                p: `A manufacturing giant was losing $50k an hour because a software glitch locked their automated production line. The Tech department claimed it was a "Server Issue" and told the CX Manager they couldn't look at it for 24 hours. The Billing department claimed the client's credit card had failed, causing a "Systemic Lockout." Both departments were pointing fingers at each other, and the customer was caught in the middle, calling every 5 minutes and threatening a $5M lawsuit for business interruption. The internal staff were telling the customer "It's not our department's fault," which was destroying the brand's professional image.`,
+                s: `The CX Manager took "Extreme Ownership." They refused to transfer the customer again and gave them their direct mobile number. They pulled the heads of Tech and Billing into a mandatory "War Room" call and refused to end the call until a bypass was found. The Manager used their executive discretion to manually override the Billing lock, promising to "fight about the budget later." They then forced Tech to provide a manual API bridge to unlock the machines. By taking the "The Buck Stops Here" approach, the production line was back up in 4 hours instead of 24. The client was so impressed by the manager's personal accountability that they signed a 5-year contract extension the next day.`
+            },
+            {
+                p: `A global medical logistics company lost a crate containing a donor organ meant for an immediate surgery. The warehouse said the "manifest was signed," while the courier claimed the "loading dock was empty." The hospital was in a state of emergency, and the CX agents were telling the hospital to "file a claim with the courier's insurance." The hospital board was preparing a public statement blaming the logistics company for a potential fatality. The friction was caused by a "Not My Job" mentality where everyone was following the standard operating procedure instead of the "Human Priority" of the situation.`,
+                s: `The Manager bypassed all standard operating procedures. They stopped the hospital from calling anyone else and took "Sole Ownership" of the organ's location. They personally tracked the GPS of the last three delivery trucks and discovered the crate was accidentally left at a different hospital 5 miles away. The Manager drove their own car to the site, retrieved the organ, and hand-delivered it to the surgical team. They didn't wait for "Claims" or "Permissions." This "White-Glove" ownership transformed a potential tragedy and a $50M lawsuit into a national PR success story about the company's "Heroic Reliability."`
             }
         ],
         quiz: [
             {
-                scenario: "A high-value customer's shipment has been lost for 10 days. Shipping says it's a courier issue. The Courier says they never received the manifest from your Warehouse. Billing has already charged the customer and refuses to refund until the 'investigation' is over in 14 days. The customer is now screaming at your frontline agent, calling the company a 'scam' and threatening to contact the Better Business Bureau. You are the manager called to the floor.",
-                q: "What actions demonstrate 'Extreme Ownership' and 'Silo-Breaking'? (Select ALL that apply)",
+                scenario: `A customer's refund for $10,000 has been 'pending' for 3 weeks. Billing says the bank is the problem. The Bank says Billing never sent the authorization. The customer is crying on the phone because they need that money for a house down-payment today. Your agent wants to tell the customer to 'call their bank again.'`,
+                q: "Which actions demonstrate 'Silo-Breaking' Ownership? (Select ALL correct)",
                 options: [
-                    {text: "Tell the customer that you have initiated a cross-departmental war-room to locate the item personally.", val: "a"},
-                    {text: "Explain to the customer that Billing has a strict policy and you cannot override it.", val: "b"},
-                    {text: "Provide your direct contact info and promise to be the *only* person they need to speak with until resolution.", val: "c"},
-                    {text: "Authorize an immediate manual refund or replacement from your own department budget, then fight with Billing/Warehouse internally afterward.", val: "d"}
+                    {text: "Tell the customer to call the bank one more time.", val: "a"},
+                    {text: "Host a 3-way call between you, the customer, and the billing lead to verify the authorization live.", val: "b"},
+                    {text: "Take ownership: 'I will manage the bank communication from here; you don't need to call anyone else.'", val: "c"},
+                    {text: "If the bank continues to stall, ask the CFO for an 'Emergency Manual Disbursement' to the client.", val: "d"}
                 ],
-                correct: ["a", "c", "d"]
+                correct: ["b", "c", "d"]
+            },
+            {
+                scenario: `A software bug is affecting 50 enterprise clients. Engineering says the fix is 'Low Priority' and will take 1 month. You know these 50 clients represent 40% of your company's revenue.`,
+                q: "As an 'Owner,' how do you handle this internal friction? (Select ALL correct)",
+                options: [
+                    {text: "Accept Engineering's timeline and apologize to the clients.", val: "a"},
+                    {text: "Present the 'Revenue at Risk' data to the CTO to get the bug re-prioritized to 'Critical'.", val: "b"},
+                    {text: "Create a manual 'Workaround Team' within CX to handle the clients' needs until the fix is live.", val: "c"},
+                    {text: "Blame Engineering in your emails to the clients so they don't blame you.", val: "d"}
+                ],
+                correct: ["b", "c"]
+            },
+            {
+                scenario: `A package was delivered to the wrong address because of a warehouse error. The warehouse refuses to send a new one until the old one is returned by the 'wrong' recipient. The customer is furious and wants a replacement NOW.`,
+                q: "What is the 'Extreme Ownership' response? (Select ALL correct)",
+                options: [
+                    {text: "Tell the customer they have to wait for the return first.", val: "a"},
+                    {text: "Override the warehouse and authorize an immediate 'Priority Replacement' at your department's cost.", val: "b"},
+                    {text: "Personally coordinate with the courier to pick up the wrong package so the customer doesn't have to.", val: "c"},
+                    {text: "Apologize and say 'The warehouse is really difficult to work with.'", val: "d"}
+                ],
+                correct: ["b", "c"]
+            },
+            {
+                scenario: `An agent promised a customer a feature that doesn't exist. The customer bought the product based on that promise. Now they feel scammed.`,
+                q: "How do you exercise 'Accountability' as a Manager? (Select ALL correct)",
+                options: [
+                    {text: "Tell the customer the agent was new and made a mistake, so no refund.", val: "a"},
+                    {text: "Acknowledge the promise: 'We made a commitment during your onboarding that we must honor.'", val: "b"},
+                    {text: "Offer a full refund or a custom technical bridge to simulate the feature for them.", val: "c"},
+                    {text: "Fire the agent in front of the customer to show you care.", val: "d"}
+                ],
+                correct: ["b", "c"]
+            },
+            {
+                scenario: `Your company is undergoing a merger. All systems are slow, and customers are experiencing 2-hour wait times. Your team is burnt out and 'checking out'.`,
+                q: "What is the 'Managerial Ownership' action? (Select ALL correct)",
+                options: [
+                    {text: "Join the 'queue' yourself to show the team you are in the trenches with them.", val: "a"},
+                    {text: "Implement a 'Triage Protocol' to solve high-impact issues in 5 minutes and defer the rest.", val: "b"},
+                    {text: "Tell the team to just do their best and don't worry about the wait times.", val: "c"},
+                    {text: "Communicate proactively to customers: 'We are in a transition phase; I have prioritized all urgent security files.'", val: "d"}
+                ],
+                correct: ["a", "b", "d"]
             }
         ]
     }
@@ -117,27 +196,27 @@ function loadPage(day) {
     const d = content[day];
     let html = `
         <h1>${d.title}</h1>
-        <div class="theory-text"><strong>EXECUTIVE THEORY:</strong> ${d.theory}</div>
+        <div class="theory-text"><strong>EXECUTIVE STRATEGY:</strong> ${d.theory}</div>
         
-        <h2>Strategic Case Study Analysis</h2>
+        <h2>High-Stakes Case Studies (10-Line Depth)</h2>
         ${d.cases.map((c, i) => `
             <div class="case-study-block">
-                <div class="case-header">MANAGEMENT CASE #${i+1}</div>
-                <div class="case-body"><strong>SCENARIO:</strong> ${c.p}</div>
+                <div class="case-header">STRATEGIC CASE STUDY #${i+1}</div>
+                <div class="case-body"><strong>THE PROBLEM:</strong> ${c.p}</div>
                 <div class="solution-area">
-                    <span class="sol-label">EXECUTIVE SOLUTION</span>
+                    <span class="sol-label">MANAGERIAL EXECUTION</span>
                     ${c.s}
                 </div>
             </div>
         `).join('')}
 
         <div class="quiz-container">
-            <h2>Day ${day} Certification Exam <span class="multi-tag">(MULTI-ANSWER)</span></h2>
+            <h2>Day ${day} Certification Exam (All correct options must be selected)</h2>
             <div id="quiz-area">
                 ${d.quiz.map((q, i) => `
-                    <div class="q-wrap" id="q-block-${i}">
+                    <div class="q-wrap">
                         <div class="q-scenario">${q.scenario}</div>
-                        <p><strong>Question ${i+1}: ${q.q}</strong></p>
+                        <p><strong>Q${i+1}: ${q.q}</strong></p>
                         ${q.options.map(opt => `
                             <label class="opt">
                                 <input type="checkbox" name="q${i}" value="${opt.val}"> ${opt.text}
@@ -145,8 +224,8 @@ function loadPage(day) {
                         `).join('')}
                     </div>
                 `).join('')}
-                <button class="submit-btn" onclick="checkQuiz(${day})">VALIDATE CERTIFICATION</button>
-                <div id="score-result" style="margin-top:20px; font-weight:bold; font-size:1.2rem;"></div>
+                <button class="submit-btn" onclick="checkQuiz(${day})">SUBMIT FINAL ASSESSMENT</button>
+                <div id="score-result" style="margin-top:25px; font-weight:800; font-size:1.3rem;"></div>
             </div>
         </div>
     `;
@@ -159,26 +238,18 @@ function loadPage(day) {
 
 function checkQuiz(day) {
     const qData = content[day].quiz;
-    let totalCorrectQuestions = 0;
-
+    let score = 0;
     qData.forEach((q, i) => {
         const checked = Array.from(document.querySelectorAll(`input[name="q${i}"]:checked`)).map(el => el.value);
-        
-        // Check if checked matches exactly the correct array
-        const isCorrect = checked.length === q.correct.length && 
-                          checked.every(v => q.correct.includes(v));
-        
-        if(isCorrect) totalCorrectQuestions++;
+        const isCorrect = checked.length === q.correct.length && checked.every(v => q.correct.includes(v));
+        if(isCorrect) score++;
     });
-
     const res = document.getElementById('score-result');
-    const scorePercent = (totalCorrectQuestions / qData.length) * 100;
-
-    if(scorePercent === 100) {
-        res.innerHTML = `🏆 PERFECT: ${totalCorrectQuestions}/${qData.length}. Day ${day} Mastery Confirmed.`;
+    if(score === qData.length) {
+        res.innerHTML = `🏆 CERTIFIED: ${score}/${qData.length}. You have mastered Day ${day}.`;
         res.style.color = "var(--success)";
     } else {
-        res.innerHTML = `⚠️ SCORE: ${totalCorrectQuestions}/${qData.length}. All correct options must be selected to pass a question.`;
+        res.innerHTML = `❌ FAILED: ${score}/${qData.length}. Every correct option must be selected for every question.`;
         res.style.color = "var(--danger)";
     }
 }
