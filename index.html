@@ -2,219 +2,296 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Executive CX Training | Alorica BPO Framework</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Executive Certification | Customer Experience Management</title>
     <style>
         :root {
-            --primary: #0f172a; --accent: #de2127; --bg: #f1f5f9;
-            --text: #1e293b; --white: #ffffff; --success: #059669;
-            --danger: #e11d48; --gold: #d97706;
+            --alorica-red: #de2127; --navy: #0f172a; --slate: #1e293b;
+            --ghost: #f8fafc; --gold: #b45309; --emerald: #059669;
         }
-        body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--bg); margin: 0; color: var(--text); display: flex; }
+        * { box-sizing: border-box; }
+        body { 
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
+            background: var(--ghost); color: var(--slate); margin: 0; line-height: 1.8;
+        }
         
-        .sidebar { width: 320px; background: var(--primary); color: white; height: 100vh; position: fixed; }
-        .sidebar-header { padding: 40px 30px; font-weight: 800; font-size: 1.5rem; border-bottom: 1px solid #334155; color: var(--accent); }
-        .nav-item { padding: 20px 30px; cursor: pointer; transition: 0.3s; color: #94a3b8; font-weight: 600; border-left: 4px solid transparent; }
-        .nav-item.active { background: #1e293b; color: white; border-left-color: var(--accent); }
-
-        .main { margin-left: 320px; padding: 60px; width: 100%; max-width: 1200px; }
-        .card { background: var(--white); padding: 50px; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.05); border-top: 10px solid var(--accent); margin-bottom: 50px; }
+        /* Layout Structure */
+        .app-container { display: flex; min-height: 100vh; width: 100vw; overflow-x: hidden; }
         
-        h1 { font-size: 2.2rem; color: var(--primary); margin-bottom: 20px; }
-        h2 { border-bottom: 2px solid #e2e8f0; padding-bottom: 10px; color: var(--primary); }
+        /* Professional Sidebar */
+        .sidebar { 
+            width: 350px; background: var(--navy); color: white; 
+            padding: 40px 0; position: fixed; height: 100vh; z-index: 100;
+        }
+        .brand-logo { 
+            padding: 0 30px 40px; font-size: 1.4rem; font-weight: 900; 
+            letter-spacing: 1px; color: var(--alorica-red); border-bottom: 1px solid #334155;
+        }
+        .nav-group { margin-top: 30px; }
+        .nav-link { 
+            padding: 20px 30px; display: block; color: #94a3b8; text-decoration: none;
+            font-weight: 600; transition: 0.3s; cursor: pointer; border-left: 5px solid transparent;
+        }
+        .nav-link:hover { background: #1e293b; color: white; }
+        .nav-link.active { background: #1e293b; color: white; border-left-color: var(--alorica-red); }
+
+        /* Main Content Area */
+        .content-body { margin-left: 350px; padding: 80px 10%; width: calc(100% - 350px); }
+        .certification-card { 
+            background: white; border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            padding: 60px; border-top: 8px solid var(--alorica-red);
+        }
+
+        /* Typography */
+        h1 { font-size: 2.8rem; color: var(--navy); margin-bottom: 40px; font-weight: 800; }
+        h2 { font-size: 1.8rem; color: var(--navy); margin: 50px 0 20px; border-left: 6px solid var(--alorica-red); padding-left: 20px; }
+        .exec-summary { font-size: 1.2rem; font-weight: 700; color: var(--gold); margin-bottom: 20px; text-transform: uppercase; }
         
-        .role-desc { background: #f8fafc; padding: 30px; border-radius: 8px; border-left: 5px solid var(--primary); line-height: 1.8; margin-bottom: 30px; }
-        .theory-page { line-height: 1.9; text-align: justify; margin-bottom: 50px; font-size: 1.05rem; }
+        /* High-Depth Content */
+        .theory-section { text-align: justify; color: #334155; font-size: 1.1rem; }
+        .theory-paragraph { margin-bottom: 30px; }
 
-        .case-study-block { margin-bottom: 40px; background: #fffbeb; border-radius: 12px; overflow: hidden; border: 1px solid #fef3c7; }
-        .case-header { background: var(--gold); color: white; padding: 15px 25px; font-weight: 800; text-transform: uppercase; font-size: 0.9rem; }
-        .case-body { padding: 25px; line-height: 1.7; }
-        .solution-area { background: #f0fdf4; border-top: 2px solid #bbf7d0; padding: 25px; line-height: 1.7; }
-        .sol-label { color: var(--success); font-weight: 800; display: block; margin-bottom: 10px; }
+        /* Multi-Paragraph Case Studies */
+        .case-wrapper { margin: 60px 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
+        .case-header { background: #f1f5f9; padding: 25px 40px; font-weight: 800; border-bottom: 1px solid #e2e8f0; color: var(--gold); }
+        .case-content { padding: 40px; background: #fffcf5; }
+        .case-solution { padding: 40px; background: #f0fdf4; border-top: 2px solid #dcfce7; }
+        .p-space { margin-bottom: 20px; }
 
-        .quiz-container { background: #f8fafc; padding: 40px; border-radius: 12px; border: 2px solid #e2e8f0; margin-top: 50px; }
-        .q-scenario { background: #eff6ff; padding: 25px; border-radius: 8px; border-left: 5px solid var(--accent); margin-bottom: 15px; line-height: 1.6; }
-        .opt { display: block; padding: 15px; background: white; border: 1px solid #cbd5e1; border-radius: 8px; margin-top: 10px; cursor: pointer; transition: 0.2s; }
-        .submit-btn { width: 100%; padding: 20px; background: var(--primary); color: white; border: none; border-radius: 8px; font-weight: 800; cursor: pointer; font-size: 1.1rem; }
+        /* Exam Components */
+        .exam-header { text-align: center; background: var(--navy); color: white; padding: 40px; margin: -60px -60px 60px; }
+        .q-block { margin-bottom: 60px; padding: 30px; background: #f8fafc; border-radius: 12px; border: 1px solid #e2e8f0; }
+        .q-scenario { font-style: italic; color: #475569; margin-bottom: 25px; border-bottom: 1px solid #cbd5e1; padding-bottom: 20px; font-size: 1rem; }
+        .option-label { 
+            display: block; padding: 18px 25px; background: white; border: 2px solid #e2e8f0;
+            border-radius: 8px; margin-top: 15px; cursor: pointer; transition: 0.2s; font-weight: 500;
+        }
+        .option-label:hover { border-color: var(--alorica-red); background: #fef2f2; }
+        .option-label input { margin-right: 15px; transform: scale(1.2); }
+        
+        .btn-primary { 
+            width: 100%; padding: 25px; background: var(--alorica-red); color: white; border: none;
+            font-size: 1.2rem; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 40px;
+        }
+        .btn-retake { background: var(--navy); margin-top: 20px; }
+
+        /* Pass/Fail Overlay */
+        #result-overlay { 
+            display: none; padding: 40px; border-radius: 12px; text-align: center; margin-top: 30px;
+        }
     </style>
 </head>
 <body>
 
-<div class="sidebar">
-    <div class="sidebar-header">ALORICA CX LEAD</div>
-    <div class="nav-item active" onclick="showSection('intro')">The Role & Description</div>
-    <div class="nav-item" onclick="showSection('theory')">Strategic Manual (5 Pages)</div>
-    <div class="nav-item" onclick="showSection('cases')">10 Case Studies</div>
-    <div class="nav-item" onclick="showSection('drills')">10 Problem Drills</div>
-    <div class="nav-item" onclick="showSection('quiz')">Certification Exam</div>
+<div class="app-container">
+    <aside class="sidebar">
+        <div class="brand-logo">ALORICA GLOBAL LEADERSHIP</div>
+        <nav class="nav-group">
+            <div class="nav-link active" onclick="navigate('theory')">Core Strategy & Theory</div>
+            <div class="nav-link" onclick="navigate('cases')">Strategic Case Studies</div>
+            <div class="nav-link" onclick="navigate('drills')">Operational Drills</div>
+            <div class="nav-link" onclick="navigate('exam')">Day 1 Certification Exam</div>
+        </nav>
+    </aside>
+
+    <main class="content-body" id="main-view">
+        </main>
 </div>
 
-<div class="main" id="app">
-    </div>
-
 <script>
-const data = {
-    intro: {
-        title: "Role Description: Customer Experience Manager (BPO Focus)",
-        content: `
-            <div class="role-desc">
-                <strong>Overview:</strong> As a CX Manager at Alorica, you are the architect of the customer journey for world-class brands. You bridge the gap between operational KPIs (AHT, FCR) and the emotional outcome of the customer. <br><br>
-                <strong>Key Responsibilities:</strong>
-                <ul>
-                    <li><strong>Strategic Oversight:</strong> Designing and implementing customer engagement strategies that align with client-specific brand voices.</li>
-                    <li><strong>Metric Ownership:</strong> Direct accountability for Net Promoter Score (NPS), Customer Satisfaction (CSAT), and the mitigation of Detractors (DSAT).</li>
-                    <li><strong>Cross-Functional Leadership:</strong> Coordinating with Quality Assurance, Training, and Operations to eliminate service friction.</li>
-                    <li><strong>Escalation Authority:</strong> Acting as the final decision-maker for high-value client disputes and complex technical failures.</li>
-                    <li><strong>Data Analysis:</strong> Translating raw call data into actionable insights to reduce churn and improve customer lifetime value (CLV).</li>
-                </ul>
-            </div>
-        `
-    },
-    theory: {
-        title: "The Strategic CX Manual (Peripheral Depth)",
-        pages: [
-            "<strong>Page 1: The Psychology of the BPO Lifecycle.</strong> In a BPO environment like Alorica, the customer does not see the agent; they see the client brand. Managerial success depends on ensuring 'Brand Continuity.' If an agent is working on a high-end luxury account, their linguistic cadence must mirror a five-star concierge. Peripheral strategy requires understanding that every interaction is a 'moment of truth' that can either build or destroy equity accumulated over decades. Managers must move beyond 'monitoring calls' to 'analyzing emotional sentiment.' This involves training agents to identify verbal cues of frustration before they escalate into shouting matches. Strategic depth here means recognizing that a high NPS score is not just a target; it is a financial indicator of the contract's health.",
-            "<strong>Page 2: Frictionless Ecosystems.</strong> Friction is the primary enemy of the BPO manager. Friction occurs when a customer is told to 'call back later' or when an agent lacks the internal tool-access to solve a billing issue. A CX Manager must perform 'Friction Audits,' walking through the customer's journey manually to find 'dead ends.' If a customer has to repeat their account number three times, the ecosystem is broken. The manager's role is to advocate for system upgrades that automate the boring parts of a call, allowing the human agent to focus on empathy and complex problem-solving. This peripheral view shifts the focus from 'how fast did the call end' to 'how easy was the call for the customer.'",
-            "<strong>Page 3: DSAT Root Cause Analysis (RCA).</strong> When a Detractor score is received, the CX Manager must treat it like a medical emergency. Strategic RCA goes beyond blaming the agent. It asks: Did the policy fail? Did the system crash? Was the customer's expectation set incorrectly by marketing? Deep-dive management involves interviewing the agent and the quality team to find the systemic 'black hole' that caused the failure. At Alorica, mastering RCA means you stop fixing the same problem twice. By addressing the root cause, you save thousands of future interactions from the same fate, directly impacting the client's bottom line and ensuring the BPO contract's longevity.",
-            "<strong>Page 4: The 'One Alorica' Cultural Alignment.</strong> Managing CX in a BPO requires a dual-loyalty strategy. You must make your team feel loyal to Alorica while being obsessed with the client's brand. This is achieved through 'Peripheral Motivation.' Managers who only focus on numbers see high turnover. Managers who focus on 'The Why' behind the customer service—protecting a family's vacation or fixing a life-saving medical device—see 30% higher engagement. This strategic page focuses on the human element: happy agents create happy customers. Your role is to shield your team from 'Toxic Clients' while holding them to 'Gold Standard' performance. This balance is what separates a floor supervisor from a CX Executive.",
-            "<strong>Page 5: Proactive vs. Reactive CX.</strong> The final evolution of a CX Manager is moving from 'Reaction' (solving complaints) to 'Proactivity' (preventing them). This involves predictive modeling. If you know a shipping carrier is having a strike, you proactively message the customers *before* they call you. Proactive CX reduces inbound volume by 40% and increases NPS by 15 points. In the Alorica framework, being proactive means you are the 'Eyes and Ears' for the client. You tell them what their customers are saying before they even ask. This turns you from a vendor into a strategic partner, making your role indispensable to the client's global success."
-        ]
-    },
-    cases: [
-        {p: "A Tier-1 Financial client's app crashed for 24 hours. 50,000 users couldn't access their money. The customer heat was 10/10. The agents were overwhelmed and began giving conflicting information about the recovery time.", s: "The CX Manager issued a 'Unified Script' immediately and took over the IVR recording. They shifted the message from 'We are working on it' to 'Recovery is 90% complete; next update in 30 mins.' By providing a progress bar rather than a vague promise, they reduced call volume by 30% and maintained trust during a total outage."},
-        {p: "A long-term VIP customer received a damaged $10k watch. The warehouse refused to replace it without a 30-day investigation. The customer threatened a social media boycott.", s: "The Manager used 'Executive Discretion' to override the warehouse policy. They shipped a replacement via overnight courier *before* the investigation began. The customer was so impressed they retracted their social media threat and posted a praise video instead."},
-        {p: "An agent was caught using a rude tone with an elderly customer who was struggling with the website. The customer's son, a lawyer, sent a formal complaint.", s: "The Manager didn't just fire the agent. They called the customer personally, apologized using the 'Stoic Anchor' tone, and offered a private 'tech-concierge' session to help them learn the site. This personalized touch turned a legal threat into a 5-star review."},
-        {p: "The BPO client changed their refund policy overnight without warning the agents. Customers were being denied refunds they were promised 24 hours earlier.", s: "The Manager identified the 'Policy Friction' and halted all negative responses. They negotiated a 'Grace Period' with the client for existing tickets. This prevented a massive DSAT spike and protected the agents' morale."},
-        {p: "Wait times hit 2 hours during a product recall. Customers were hanging up and calling back, further clogging the lines.", s: "The Manager implemented 'Queue Triage.' They automated the recall info on the IVR so customers didn't need to speak to an agent for the basic steps. This cleared 60% of the queue for complex cases."},
-        {p: "A competitor launched a negative ad campaign against your client, causing a wave of 'scared' customers to call about their data safety.", s: "The Manager created a 'Security FAQ' and trained the team to use 'Reassuring Technical Tone.' They moved from defensive to proactive, explaining the encryption standards clearly to every caller."},
-        {p: "Internal silos between Shipping and Support caused a customer's package to be lost for 3 weeks with no tracking updates.", s: "The Manager took 'Horizontal Ownership.' They personally sat with the Shipping lead until the package was found. They didn't tell the customer 'I'm waiting on shipping'; they said 'I am locating it now.'"},
-        {p: "A high-net-worth client demanded a refund for a non-refundable item because of a minor scratch on the box.", s: "The Manager used 'Negotiated Value.' They offered a 20% discount on the next purchase plus a premium gift instead of a refund. The customer felt 'VIP' and accepted the offer, saving the company the refund cost."},
-        {p: "An agent was suffering from burnout and began crying on the floor after a difficult call.", s: "The Manager applied 'Somatic Management.' They moved the agent to a quiet room, handled the difficult caller personally, and implemented a 'Decompression Protocol' for the whole team to prevent further burnout."},
-        {p: "The client’s CEO called the BPO floor anonymously to test the service and was put on hold for 15 minutes.", s: "The Manager identified the 'Queue Leak' where agents were 'cherry-picking' easy calls. They redesigned the call-routing logic to ensure the oldest calls (and VIPs) were always answered first, regardless of difficulty."}
-    ],
-    drills: [
-        "Customer says 'This is my 5th call!' Response: 'I see your history; I am the final point of contact to resolve this.'",
-        "Agent says 'It's not my fault.' Feedback: 'Ownership means the brand's fault is our responsibility.'",
-        "System is slow. Response: 'I am manually refreshing your data; thank you for the extra 30 seconds.'",
-        "Customer wants the CEO. Response: 'I am the authorized Manager for this account; let’s solve the billing now.'",
-        "Refund is impossible. Response: 'While a refund isn't an option, I have authorized a service credit of [X].'",
-        "Customer is swearing. Response: 'I want to help you, but I must ask you to use professional language so we can focus on the fix.'",
-        "Wait time is high. Response: 'I appreciate your patience; I have prioritized your account for immediate review.'",
-        "Agent forgot to log a case. Action: Log it personally, apologize to the client, and coach the agent privately.",
-        "Customer is crying. Response: 'I can hear this is frustrating. Let's focus on the timeline for the fix.'",
-        "Wrong info was given. Response: 'I am providing the verified correction now to ensure your records are accurate.'"
-    ],
-    quiz: [
-        {
-            scenario: "An Alorica client (a major Retailer) has a massive data breach. Thousands of customers are calling, and your NPS is dropping by 5 points every hour. Your agents are panicking because they don't have all the answers. The client is breathing down your neck for a 'miracle' recovery.",
-            q: "What are your first three strategic moves? (Select ALL correct)",
-            options: [
-                {text: "Create a 'Single Source of Truth' document and mandate its use to stop conflicting info.", val: "a"},
-                {text: "Tell the agents to just say 'I don't know' so they don't lie.", val: "b"},
-                {text: "Implement a 'Clinical, Stoic' tone across all channels to project institutional security.", val: "c"},
-                {text: "Take ownership of the most vocal 'Detractors' personally to prevent viral social media posts.", val: "d"}
-            ],
-            correct: ["a", "c", "d"]
-        },
-        {
-            scenario: "You notice a 'Friction Point' where customers have to wait for 48 hours for a supervisor callback. This is causing a 20% increase in repeat calls (Redial Rate). You want to destroy this silo and improve the experience.",
-            q: "How do you execute 'Extreme Ownership' here? (Select ALL correct)",
-            options: [
-                {text: "Tell the agents to stop promising supervisor callbacks.", val: "a"},
-                {text: "Empower frontline agents with a 'Discretionary Budget' to solve issues without a supervisor.", val: "b"},
-                {text: "Implement a 'Real-Time Escalation' Slack channel where you solve issues in 5 minutes instead of 48 hours.", val: "c"},
-                {text: "Audit the reasons for the callbacks and fix the 'Root Cause' so the customer doesn't need to escalate.", val: "d"}
-            ],
-            correct: ["b", "c", "d"]
-        },
-        {
-            scenario: "A high-value Detractor (DSAT) leaves a 1-star review saying your agent was 'cold and unhelpful.' Upon review, the agent followed every policy correctly but lacked empathy.",
-            q: "How do you coach the agent and recover the customer? (Select ALL correct)",
-            options: [
-                {text: "Tell the agent they did a great job because they followed policy.", val: "a"},
-                {text: "Teach the agent 'Tactical Empathy'—labeling the customer's frustration to build rapport.", val: "b"},
-                {text: "Call the customer to explain that the agent followed policy and they are wrong.", val: "c"},
-                {text: "Offer the customer a 'Value-Add' (like a discount) as a gesture of goodwill for the experience failure.", val: "d"}
-            ],
-            correct: ["b", "d"]
-        },
-        {
-            scenario: "You are presenting NPS results to the Alorica Client. The numbers are down. The Client suggests the agents are 'lazy.' You know the real reason is their website is broken.",
-            q: "How do you maintain 'Strategic Authority' in this meeting? (Select ALL correct)",
-            options: [
-                {text: "Agree that the agents are lazy to make the client happy.", val: "a"},
-                {text: "Present the 'Correlation Data' showing that 70% of calls are about website technical errors.", val: "b"},
-                {text: "Propose a 'UX Audit' of the website to help the client reduce call volume.", val: "c"},
-                {text: "Take ownership of the training gap while also highlighting the technical friction point.", val: "d"}
-            ],
-            correct: ["b", "c", "d"]
-        },
-        {
-            scenario: "Wait times are spiking. Your team lead suggests ignoring the complex cases to get the 'Average Handle Time' (AHT) down.",
-            q: "What is your decision as a CX Manager? (Select ALL correct)",
-            options: [
-                {text: "Reject the idea; solving complex cases (FCR) is more important for NPS than speed.", val: "a"},
-                {text: "Implement a 'Triage' system where senior agents handle complex cases while juniors handle speed.", val: "b"},
-                {text: "Go along with it to make the AHT report look good.", val: "c"},
-                {text: "Explain to the team that 'Quality over Quantity' is the brand's strategic North Star.", val: "d"}
-            ],
-            correct: ["a", "b", "d"]
-        }
-    ]
-};
-
-function showSection(section) {
-    const s = data[section];
-    let html = `<h1>${s.title}</h1>`;
-
-    if (section === 'intro') {
-        html += s.content;
-    } else if (section === 'theory') {
-        html += s.pages.map((p, i) => `<div class="theory-page"><h3>Page ${i+1}</h3>${p}</div>`).join('');
-    } else if (section === 'cases') {
-        html += s.map((c, i) => `
-            <div class="case-study-block">
-                <div class="case-header">STRATEGIC CASE STUDY #${i+1}</div>
-                <div class="case-body"><strong>PROBLEM:</strong> ${c.p}</div>
-                <div class="solution-area"><span class="sol-label">SOLUTION:</span> ${c.s}</div>
-            </div>
-        `).join('');
-    } else if (section === 'drills') {
-        html += `<div class="role-desc"><ul>${s.map(d => `<li>${d}</li>`).join('')}</ul></div>`;
-    } else if (section === 'quiz') {
-        html += `<div class="quiz-container">
-            ${s.map((q, i) => `
-                <div class="q-wrap">
-                    <div class="q-scenario">${q.scenario}</div>
-                    <p><strong>Q${i+1}: ${q.q}</strong></p>
-                    ${q.options.map(opt => `<label class="opt"><input type="checkbox" name="q${i}" value="${opt.val}"> ${opt.text}</label>`).join('')}
+    // --- DATABASE ---
+    const DB = {
+        theory: {
+            title: "Executive Customer Experience Management Theory",
+            content: `
+                <div class="theory-section">
+                    <div class="exec-summary">Mastering Global BPO Dynamics</div>
+                    <p class="theory-paragraph">The modern Customer Experience Manager (CXM) serves as the strategic fulcrum between high-scale operational logistics and brand-equity protection. Within the BPO ecosystem, the CXM is not merely a supervisor; they are the architect of a "Zero-Friction" environment. This role requires a sophisticated understanding of behavioral economics, specifically how customers perceive value during moments of service failure. The principle of the "Service Recovery Paradox" suggests that a customer who experiences a failure followed by an exceptional resolution becomes more loyal than a customer who never experienced a failure at all. Therefore, the CXM must engineer recovery protocols that are both proactive and emotionally calibrated.</p>
+                    <p class="theory-paragraph">Peripheral strategic intelligence in this domain involves the management of "Linguistic Branding." At Alorica, our managers ensure that every interaction—whether via voice, chat, or social media—mirrors the client’s institutional voice. This requires a transition from "Template-Based Responses" to "Cognitive Empathy." By training frontline teams to identify a customer's psychological state through verbal cues and sentiment patterns, the CXM reduces the need for escalation. A 1% reduction in Redial Rate across a 1,000-seat program can result in millions of dollars in saved operational expenditure, directly impacting the profitability of the BPO contract.</p>
+                    <p class="theory-paragraph">Furthermore, the CXM must master "Data-Driven Silo Destruction." Often, departments like Billing, Warehouse, and Tech operate as isolated entities. Friction occurs when a customer is trapped in the gaps between these silos. The CXM exercises "Horizontal Accountability," reaching across traditional department lines to secure resolutions. This involves high-level negotiation with client stakeholders to secure discretionary powers for the frontline. Empowering an agent to issue an immediate $50 credit without supervisor approval can improve First Call Resolution (FCR) by 18%, significantly boosting the Net Promoter Score (NPS) and neutralizing potential Detractors (DSAT).</p>
+                    <p class="theory-paragraph">Finally, the executive manager focuses on "Predictive Journey Mapping." By analyzing historical DSAT trends, a CXM can predict where friction will occur before it happens. For example, if a software update is scheduled for Tuesday, the CXM should have already deployed "Defensive Messaging" across IVR channels by Monday evening. This proactive stance moves the organization from a "Crisis Management" culture to a "Quality Management" culture. In this training module, we will explore the nuances of ownership, the physics of friction, and the linguistic engineering required to maintain brand authority in the face of global volatility.</p>
                 </div>
-            `).join('')}
-            <button class="submit-btn" onclick="checkQuiz()">SUBMIT FOR CERTIFICATION</button>
-            <div id="res" style="margin-top:20px; font-weight:bold;"></div>
-        </div>`;
+            `
+        },
+        cases: [
+            {
+                title: "CASE STUDY 01: The Global Infrastructure Cascade",
+                problem: `
+                    <p class="p-space">During a peak holiday quarter, a Tier-1 retail client suffered a massive database corruption that resulted in the duplication of 200,000 orders. Thousands of customers were charged twice, while others received shipping notifications for items they never ordered. The client's internal servers were unable to process refunds at scale, leading to a 400% surge in inbound call volume. The BPO floor at Alorica was hit with a 'Black Swan' event: wait times spiked to 3 hours, and the workforce was reaching a breaking point due to the relentless verbal abuse from panicked customers.</p>
+                    <p class="p-space">The primary friction was not just the double charge, but the lack of transparency. The client's marketing team issued a vague apology on social media that didn't provide a timeline for refunds. Customers felt their financial security was at risk. Within the BPO, the internal silos between the 'Refunds Team' and 'Inbound Support' were paralyzed by a policy that required manual verification of every duplicate order—a task estimated to take 30 days. The risk was a total collapse of brand trust and a mass litigation event.</p>
+                `,
+                solution: `
+                    <p class="p-space">The CX Manager initiated an 'Executive Silo Bypass.' They bypassed the manual verification policy by presenting a 'Risk-Benefit Analysis' to the client's CFO, proving that the cost of potential lawsuits outweighed the risk of occasional refund errors. The Manager secured a 'Blanket Authorization' for the BPO agents to issue immediate manual credits for any customer who could provide a bank screenshot. This eliminated the 30-day wait and empowered the frontline.</p>
+                    <p class="p-space">Simultaneously, the Manager implemented 'Linguistic Hardening' across the floor. They removed phrases like 'I think' and 'We are trying' from the scripts, replacing them with: 'The refund protocol is active; your funds are verified for return within 48 hours.' They also created a 'Real-Time Dashboard' for the client to track refund velocity. By taking ownership of the technical recovery narrative and empowering the agents, the Manager reduced the 3-hour wait to 15 minutes within 72 hours, resulting in a 'Service Recovery' win that saved the client contract.</p>
+                `
+            },
+            {
+                title: "CASE STUDY 02: High-Value Detractor Neutralization",
+                problem: `
+                    <p class="p-space">A high-net-worth customer of a luxury travel client experienced a 'Systemic Failure' where their private jet booking was cancelled 2 hours before takeoff due to a billing mismatch. The customer, a billionaire CEO, was stranded with their family and called the Alorica support line. The junior agent, following the standard SOP, told the customer that 'Refunds take 7-10 business days' and that they would need to re-book online with a different card. This response was perceived as an insult to the customer's status and wealth.</p>
+                    <p class="p-space">The customer began a live-stream on a platform with 2 million followers, detailing the 'Incompetence' of the brand. The brand's Chief Marketing Officer contacted the BPO Manager directly, demanding an immediate fix. The friction was caused by 'SOP Rigidity'—the agent was so focused on the rulebook that they failed to see the high-stakes reality of the person on the phone. The client's brand was being publicly dismantled in real-time.</p>
+                `,
+                solution: `
+                    <p class="p-space">The CX Manager immediately 'Intercepted' the call and identified themselves as the Final Authority. Using 'Tactical Empathy,' the Manager stated: 'I have personally authorized a private charter via a secondary partner to ensure your itinerary is unaffected. My team will manage the billing reconciliation internally; your focus should remain on your travel.' This 'White Glove' ownership moved the problem away from the customer entirely.</p>
+                    <p class="p-space">Following the resolution, the Manager implemented a 'VIP Sentiment Flag' in the CRM, which automatically routes high-value or high-risk social media influencers to a specialized 'Executive Response Team.' They coached the junior agent on 'Dynamic Authority,' teaching them when to break the SOP to save the relationship. The customer was so impressed by the 'Zero-Friction' recovery that they deleted the live-stream and replaced it with a video praising the brand's 'Unshakeable Commitment' to their clients.</p>
+                `
+            }
+        ],
+        exam: [
+            {
+                scenario: "An Alorica partner (a global electronics firm) launches a product that begins to overheat. 50,000 units are affected. Your agents are being told 'The product is fine' by the client, but customers are sending photos of melted components. Churn is increasing, and your NPS has plummeted from +60 to -20 in 48 hours. Your team is burnt out and the client is refusing to acknowledge a recall.",
+                q: "As the CX Manager, what are the most strategic 'Institutional Ownership' moves? (Select ALL that apply)",
+                options: [
+                    {text: "Present the 'Sentiment Data' and photo evidence to the client's Head of Quality to force a 'Safety Protocol' update.", val: "a"},
+                    {text: "Tell agents to continue the 'Product is Fine' script because the client is the boss.", val: "b"},
+                    {text: "Implement a 'Proactive Exchange' bypass: Swap units for customers who send photo proof before the client officially calls a recall.", val: "c"},
+                    {text: "Create a 'War Room' with the Training team to update the 'Stoic Anchor' scripts, focusing on safety assurance.", val: "d"}
+                ],
+                correct: ["a", "c", "d"]
+            },
+            {
+                scenario: "A 'Friction Audit' reveals that 40% of your call volume comes from a 'Password Reset' loop that should be automated but is broken. Tech says they can't fix it for 2 months. Every time a customer calls for this, it costs the client $7.00 per interaction and wastes 10 minutes of an agent's time.",
+                q: "How do you apply 'Silo-Breaking' and 'Extreme Ownership' here? (Select ALL correct)",
+                options: [
+                    {text: "Accept the 2-month timeline and hire more agents to handle the volume.", val: "a"},
+                    {text: "Calculate the 'Total Waste Cost' ($7 x volume) and present it to the client to justify an emergency 'External API' fix.", val: "b"},
+                    {text: "Create a 'Rapid Reset Team'—a small group of agents with higher permissions to solve these in 1 minute instead of 10.", val: "c"},
+                    {text: "Draft an IVR 'Self-Help' announcement that directs customers to a temporary manual landing page you created.", val: "d"}
+                ],
+                correct: ["b", "c", "d"]
+            },
+            {
+                scenario: "You are reviewing a 'Detractor' (DSAT) interaction. The customer was rude, but the agent's response was technically correct but sounded 'robotic and uncaring.' The customer wrote: 'They didn't even listen to me.'",
+                q: "Which 'Tone Calibration' coaching is required? (Select ALL correct)",
+                options: [
+                    {text: "Teach 'Tactical Empathy': Acknowledge the frustration with 'It sounds like the timeline is the primary issue.'", val: "a"},
+                    {text: "Tell the agent to be more emotional and cry with the customer.", val: "b"},
+                    {text: "Implement 'Active Listening' drills: Training the agent to repeat the customer's core concern before answering.", val: "c"},
+                    {text: "Shift to 'Solution-Forward' language: Focus on 'What we ARE doing' instead of 'What we CAN'T do.'", val: "d"}
+                ],
+                correct: ["a", "c", "d"]
+            },
+            {
+                scenario: "A VIP client demands you fire a specific agent because the agent couldn't solve a problem that was actually a system error. The agent is one of your top performers.",
+                q: "How do you maintain 'Executive Authority' and 'Institutional Shielding'?",
+                options: [
+                    {text: "Fire the agent immediately to keep the client happy.", val: "a"},
+                    {text: "Take ownership: 'The failure was systemic, not individual; I am personally re-engineering the workflow for your account.'", val: "b"},
+                    {text: "Protect the agent: 'Our internal audit confirms the protocol was followed; I am the point of contact for the resolution now.'", val: "c"},
+                    {text: "Offer the client a service credit instead of firing the agent.", val: "d"}
+                ],
+                correct: ["b", "c", "d"]
+            },
+            {
+                scenario: "NPS scores are down. You realize the 'Wait Time' on the IVR is telling people 'We value your time' while they wait for 40 minutes.",
+                q: "What 'Friction Logic' change do you implement? (Select ALL correct)",
+                options: [
+                    {text: "Remove the 'We value your time' message—it is a 'Linguistic Irritant' during high wait times.", val: "a"},
+                    {text: "Implement 'Callback Technology' so customers don't have to stay on the line.", val: "b"},
+                    {text: "Increase the volume of the hold music.", val: "c"},
+                    {text: "Deploy 'Expectation Management': Tell the customer the exact wait time (e.g., '35 minutes') immediately.", val: "d"}
+                ],
+                correct: ["a", "b", "d"]
+            }
+        ]
+    };
+
+    // --- LOGIC ---
+    function navigate(view) {
+        const main = document.getElementById('main-view');
+        const links = document.querySelectorAll('.nav-link');
+        links.forEach(l => l.classList.remove('active'));
+        event.currentTarget.classList.add('active');
+
+        if(view === 'theory') {
+            main.innerHTML = `<div class="certification-card"><h1>${DB.theory.title}</h1>${DB.theory.content}</div>`;
+        } else if(view === 'cases') {
+            let html = `<div class="certification-card"><h1>Strategic Case Study Repository</h1>`;
+            DB.cases.forEach(c => {
+                html += `
+                    <div class="case-wrapper">
+                        <div class="case-header">${c.title}</div>
+                        <div class="case-content"><strong>CRITICAL PROBLEM SCENARIO:</strong>${c.problem}</div>
+                        <div class="case-solution"><span class="sol-label">MANAGERIAL EXECUTION:</span>${c.solution}</div>
+                    </div>
+                `;
+            });
+            html += `</div>`;
+            main.innerHTML = html;
+        } else if(view === 'exam') {
+            renderExam();
+        } else if(view === 'drills') {
+            main.innerHTML = `<div class="certification-card"><h1>Operational Drills</h1><p>Consult the theory and cases before taking the exam. Ensure your tone is 'Stoic' and your ownership is 'Extreme'.</p></div>`;
+        }
+        window.scrollTo(0,0);
     }
 
-    document.getElementById('app').innerHTML = html;
-    document.querySelectorAll('.nav-item').forEach(n => {
-        n.classList.toggle('active', n.innerText.toLowerCase().includes(section.toLowerCase()) || (section==='intro' && n.innerText.includes('Role')));
-    });
-    window.scrollTo(0,0);
-}
+    function renderExam() {
+        const main = document.getElementById('main-view');
+        let html = `
+            <div class="certification-card">
+                <div class="exam-header">
+                    <div style="text-transform:uppercase; letter-spacing:2px; margin-bottom:10px;">Certification Portal</div>
+                    <h1 style="color:white; margin:0;">Customer Experience Manager: Day 1 Exam</h1>
+                    <p>80% Passing Score Required for Credentialing</p>
+                </div>
+                <div id="quiz-container">
+        `;
 
-function checkQuiz() {
-    const qData = data.quiz;
-    let score = 0;
-    qData.forEach((q, i) => {
-        const checked = Array.from(document.querySelectorAll(`input[name="q${i}"]:checked`)).map(el => el.value);
-        const isCorrect = checked.length === q.correct.length && checked.every(v => q.correct.includes(v));
-        if(isCorrect) score++;
-    });
-    const r = document.getElementById('res');
-    r.innerHTML = score === 5 ? "🏆 PASSED! (5/5) - Certification Unlocked." : `❌ FAILED (${score}/5). All correct options must be selected.`;
-    r.style.color = score === 5 ? "var(--success)" : "var(--danger)";
-}
+        DB.exam.forEach((q, i) => {
+            html += `
+                <div class="q-block">
+                    <div class="q-scenario"><strong>SITUATION:</strong> ${q.scenario}</div>
+                    <p><strong>QUESTION ${i+1}:</strong> ${q.q}</p>
+                    ${q.options.map(opt => `
+                        <label class="option-label">
+                            <input type="checkbox" name="q${i}" value="${opt.val}"> ${opt.text}
+                        </label>
+                    `).join('')}
+                </div>
+            `;
+        });
 
-window.onload = () => showSection('intro');
+        html += `
+            <button class="btn-primary" onclick="gradeExam()">Finalize Submission</button>
+            <div id="result-overlay"></div>
+            </div></div>
+        `;
+        main.innerHTML = html;
+    }
+
+    function gradeExam() {
+        let score = 0;
+        DB.exam.forEach((q, i) => {
+            const checked = Array.from(document.querySelectorAll(`input[name="q${i}"]:checked`)).map(el => el.value);
+            const isCorrect = checked.length === q.correct.length && checked.every(v => q.correct.includes(v));
+            if(isCorrect) score++;
+        });
+
+        const percent = (score / DB.exam.length) * 100;
+        const overlay = document.getElementById('result-overlay');
+        overlay.style.display = 'block';
+
+        if(percent >= 80) {
+            overlay.innerHTML = `
+                <h2 style="color:var(--emerald);">CERTIFICATION GRANTED</h2>
+                <p style="font-size:1.5rem;">Your Score: ${percent}% (${score}/5)</p>
+                <p>You have demonstrated the required proficiency in Stoic Authority and Extreme Ownership.</p>
+            `;
+            overlay.style.background = "#f0fdf4";
+        } else {
+            overlay.innerHTML = `
+                <h2 style="color:var(--alorica-red);">CERTIFICATION DENIED</h2>
+                <p style="font-size:1.5rem;">Your Score: ${percent}% (${score}/5)</p>
+                <p>An 80% score is required. Please review the Case Studies and Theory before retaking.</p>
+                <button class="btn-primary btn-retake" onclick="renderExam()">Retake Examination</button>
+            `;
+            overlay.style.background = "#fef2f2";
+        }
+        window.scrollTo(0, document.body.scrollHeight);
+    }
+
+    window.onload = () => navigate('theory');
 </script>
 
 </body>
