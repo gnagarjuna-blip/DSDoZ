@@ -2,222 +2,243 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive CX Training Dashboard</title>
+    <title>CX Leadership Academy - Module 1</title>
     <style>
         :root {
-            --primary: #0f172a;
-            --secondary: #1e293b;
-            --accent: #3b82f6;
-            --success: #10b981;
-            --danger: #ef4444;
-            --bg: #f8fafc;
-            --text: #1e293b;
+            --primary: #1e293b;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-orange: #f59e0b;
+            --accent-red: #ef4444;
+            --bg: #f1f5f9;
             --white: #ffffff;
         }
         body {
-            font-family: 'Inter', -apple-system, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
             background-color: var(--bg);
-            color: var(--text);
             margin: 0;
-            padding: 0;
             display: flex;
-            min-height: 100vh;
+            height: 100vh;
+            overflow: hidden;
         }
-        /* Sidebar Navigation */
+        /* Navigation Sidebar */
         .sidebar {
-            width: 260px;
-            background-color: var(--primary);
-            color: var(--white);
+            width: 280px;
+            background: var(--primary);
+            color: white;
             display: flex;
             flex-direction: column;
-            padding: 20px 0;
-            position: fixed;
-            height: 100%;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.1);
         }
-        .sidebar h2 {
-            padding: 0 20px;
-            font-size: 1.2rem;
-            color: var(--accent);
-            text-transform: uppercase;
-            letter-spacing: 1px;
+        .sidebar-header {
+            padding: 30px 20px;
+            background: #0f172a;
+            text-align: center;
         }
-        .nav-item {
+        .nav-group {
+            flex-grow: 1;
+            overflow-y: auto;
+            padding: 10px 0;
+        }
+        .day-btn {
+            width: 100%;
             padding: 15px 20px;
-            cursor: pointer;
-            border-left: 4px solid transparent;
-            transition: all 0.3s;
-            text-decoration: none;
+            text-align: left;
+            background: none;
+            border: none;
             color: #94a3b8;
-            font-weight: 500;
-        }
-        .nav-item:hover, .nav-item.active {
-            background-color: var(--secondary);
-            color: var(--white);
-            border-left-color: var(--accent);
-        }
-
-        /* Main Content Area */
-        .main-content {
-            margin-left: 260px;
-            flex: 1;
-            padding: 40px;
-        }
-        .header-bar {
-            background: var(--white);
-            padding: 20px 40px;
-            margin: -40px -40px 40px -40px;
-            border-bottom: 1px solid #e2e8f0;
+            cursor: pointer;
+            font-weight: 600;
             display: flex;
             justify-content: space-between;
             align-items: center;
+            border-bottom: 1px solid #334155;
         }
-        .btn-status {
-            background: #dcfce7;
-            color: #166534;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 0.8rem;
-            font-weight: bold;
+        .day-btn.active {
+            color: var(--white);
+            background: var(--accent-blue);
         }
+        .day-btn:hover { background: #334155; }
 
-        /* Course Page Styling */
-        .page-card {
-            background: var(--white);
-            padding: 40px;
-            border-radius: 12px;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            margin-bottom: 40px;
-            border-top: 5px solid var(--accent);
-        }
-        h1, h2, h3 { color: var(--primary); }
-        .page-counter {
-            font-size: 0.9rem;
-            color: #64748b;
-            margin-bottom: 10px;
-            display: block;
-        }
-        .nav-buttons {
+        /* Main Dashboard Content */
+        .main {
+            flex-grow: 1;
             display: flex;
+            flex-direction: column;
+            background: var(--bg);
+        }
+        .top-nav {
+            height: 70px;
+            background: var(--white);
+            display: flex;
+            align-items: center;
+            padding: 0 40px;
             justify-content: space-between;
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #f1f5f9;
+            border-bottom: 1px solid #e2e8f0;
         }
-        .btn {
-            padding: 10px 25px;
-            border-radius: 6px;
-            text-decoration: none;
-            font-weight: 600;
-            cursor: pointer;
-            transition: 0.2s;
-            border: none;
+        .content-area {
+            padding: 40px;
+            overflow-y: auto;
         }
-        .btn-next { background: var(--accent); color: white; }
-        .btn-next:hover { background: #2563eb; }
-        .btn-prev { background: #f1f5f9; color: var(--secondary); }
 
-        /* Quiz Box */
-        .quiz-container {
-            background: #fdf2f2;
-            border: 2px solid #fee2e2;
-            padding: 30px;
-            border-radius: 10px;
+        /* Corporate Page Grid */
+        .topic-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 15px;
+            margin-bottom: 30px;
         }
-        .option-box {
+        .topic-btn {
+            padding: 12px;
+            border-radius: 8px;
+            border: none;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            text-align: center;
+            font-size: 0.8rem;
+            transition: transform 0.2s;
+        }
+        .topic-btn:hover { transform: translateY(-3px); box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .t-blue { background: #3b82f6; }
+        .t-green { background: #10b981; }
+        .t-orange { background: #f59e0b; }
+        .t-purple { background: #8b5cf6; }
+        .t-red { background: #ef4444; }
+
+        /* Detail Card */
+        .detail-card {
+            background: var(--white);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+            margin-bottom: 30px;
+            border-left: 6px solid var(--accent-blue);
+        }
+        .problem-scenario {
+            background: #fff7ed;
+            border: 1px solid #ffedd5;
+            padding: 20px;
+            border-radius: 8px;
+            margin: 20px 0;
+        }
+        .problem-scenario h4 { color: #9a3412; margin-top: 0; }
+
+        /* Quiz Styling */
+        .quiz-box {
+            background: #f8fafc;
+            padding: 30px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+        }
+        .q-item { margin-bottom: 25px; }
+        .q-text { font-weight: bold; display: block; margin-bottom: 10px; color: var(--primary); }
+        .q-opt {
             display: block;
             padding: 12px;
             background: white;
-            border: 1px solid #e2e8f0;
-            margin-bottom: 10px;
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
+            margin-bottom: 8px;
             cursor: pointer;
         }
-        .option-box:hover { border-color: var(--accent); }
+        .q-opt:hover { border-color: var(--accent-blue); background: #f0f9ff; }
 
-        /* Gatekeeper Overlay */
-        .locked-message {
-            background: #fff1f2;
-            padding: 20px;
-            border-radius: 8px;
-            color: #be123c;
-            border: 1px solid #fecdd3;
+        .gatekeeper-status {
             text-align: center;
+            padding: 20px;
+            background: #ecfdf5;
+            color: #065f46;
+            border-radius: 8px;
+            border: 1px solid #a7f3d0;
+            font-weight: bold;
         }
     </style>
 </head>
 <body>
 
 <div class="sidebar">
-    <h2>CX Academy</h2>
-    <div class="nav-item">Introduction</div>
-    <div class="nav-item active">Day 1: Brand Persona</div>
-    <div class="nav-item">Day 2: Journey Mapping</div>
-    <div class="nav-item">Day 3: QA Standards</div>
-    <div class="nav-item">Day 4: De-escalation</div>
-    <div class="nav-item">Day 5: Exam & Cert</div>
+    <div class="sidebar-header">
+        <h2 style="margin:0; font-size:1.4rem;">CX ACADEMY</h2>
+        <p style="font-size:0.8rem; color:#94a3b8;">Manager Training | Mod 1</p>
+    </div>
+    <div class="nav-group">
+        <button class="day-btn active">DAY 1: Brand Authority <span>➔</span></button>
+        <button class="day-btn">DAY 2: Journey Dynamics <span>🔒</span></button>
+        <button class="day-btn">DAY 3: QA & Precision <span>🔒</span></button>
+        <button class="day-btn">DAY 4: Crisis Resolve <span>🔒</span></button>
+        <button class="day-btn">DAY 5: Strategic Exit <span>🔒</span></button>
+    </div>
 </div>
 
-<div class="main-content">
-    <div class="header-bar">
-        <div>
-            <h3 style="margin:0">Module 1: Professional Excellence</h3>
-            <span style="font-size: 0.8rem; color: #64748b;">Candidate: CX Manager Lead</span>
-        </div>
-        <span class="btn-status">IN PROGRESS</span>
+<div class="main">
+    <div class="top-nav">
+        <h3 style="margin:0">Dashboard > Day 1: Brand Authority</h3>
+        <div style="font-weight: bold; color: var(--accent-blue);">Progress: 0%</div>
     </div>
 
-    <!-- INTRODUCTION & INSTRUCTIONS -->
-    <div class="page-card">
-        <h1>Onboarding Instructions</h1>
-        <p>Welcome to the Customer Experience Managerial Track. To ensure high-quality leadership standards, this module follows a <strong>Linear Progression Protocol</strong>.</p>
-        <ul>
-            <li><strong>Daily Mastery:</strong> Each day contains 4-5 pages of deep-dive documentation.</li>
-            <li><strong>Mandatory Exams:</strong> Every day concludes with a 5-question technical quiz.</li>
-            <li><strong>Gatekeeper System:</strong> You cannot access Day 2 until Day 1 is cleared with an 80% score.</li>
-            <li><strong>Deliverables:</strong> You will be required to upload tone audits and mock grades to the management portal.</li>
-        </ul>
-    </div>
+    <div class="content-area">
+        <h1>Day 1 Curriculum: The Executive Voice</h1>
+        <p>Select a topic to begin your deep-dive. You must complete all 10 topics to unlock the Daily Quiz.</p>
 
-    <!-- DAY 1: PAGE 1 -->
-    <div class="page-card">
-        <span class="page-counter">Day 1 | Page 1 of 5</span>
-        <h2>Defining the Corporate Tone</h2>
-        <p>A CX Manager is the guardian of the brand's voice. Unlike frontline agents who focus on resolution, a Manager ensures that the <strong>manner</strong> of resolution builds equity.</p>
-        <div style="background: #f8fafc; padding: 20px; border-left: 4px solid var(--accent);">
-            <strong>Core Principle:</strong> "We don't just solve problems; we restore confidence."
-        </div>
-        <p>Effective corporate communication must be Concise, Courageous, and Consistent. Avoid "Hedge Words" like <i>'maybe', 'we'll try', or 'possibly'.</i></p>
-        <div class="nav-buttons">
-            <button class="btn btn-prev">Return to Dashboard</button>
-            <button class="btn btn-next">Next: The Empathy Scale →</button>
-        </div>
-    </div>
-
-    <!-- DAY 1: QUIZ (GATEKEEPER) -->
-    <div class="page-card quiz-container">
-        <span class="page-counter">Assessment: Day 1 Gatekeeper</span>
-        <h2>Knowledge Verification</h2>
-        <p>You must answer correctly to unlock Day 2 materials.</p>
-        
-        <div class="question">
-            <p><strong>Q1: A customer reports a systemic outage affecting their business. What is the priority focus?</strong></p>
-            <label class="option-box"><input type="radio" name="q1"> A) Explaining the technical reason for the server failure.</label>
-            <label class="option-box"><input type="radio" name="q1"> B) Validating the business impact and providing a concrete ETA for the fix.</label>
-            <label class="option-box"><input type="radio" name="q1"> C) Offering a 5% discount immediately without checking logs.</label>
+        <!-- 10 TOPIC BUTTONS -->
+        <div class="topic-grid">
+            <button class="topic-btn t-blue">1. Brand Identity</button>
+            <button class="topic-btn t-blue">2. Authority Tone</button>
+            <button class="topic-btn t-green">3. Active Ownership</button>
+            <button class="topic-btn t-green">4. Bias for Action</button>
+            <button class="topic-btn t-orange">5. Empathy Mapping</button>
+            <button class="topic-btn t-orange">6. Solution Design</button>
+            <button class="topic-btn t-purple">7. Word Choice</button>
+            <button class="topic-btn t-purple">8. Concise Writing</button>
+            <button class="topic-btn t-red">9. Accountability</button>
+            <button class="topic-btn t-red">10. Stakeholder Ops</button>
         </div>
 
-        <div class="nav-buttons">
-            <button class="btn btn-next" style="width: 100%; background: var(--primary);">Submit Quiz & Proceed to Day 2</button>
+        <!-- EXAMPLE TOPIC PAGE (Topic 1: Brand Identity) -->
+        <div class="detail-card">
+            <h3>Topic 1: Corporate Brand Identity for Managers</h3>
+            <p>A Manager doesn't just "talk" to customers; they represent the Institution's stability. Your role is to bridge the gap between technical failure and brand loyalty.</p>
+            
+            <div class="problem-scenario">
+                <h4>REAL WORLD PROBLEM: The Trust Deficit</h4>
+                <p><strong>Scenario:</strong> A high-value corporate client experiences a data breach. Your frontline agents are panicking and giving mixed signals about the resolution time.</p>
+                <p><strong>The Managerial Fix:</strong> Step in as the "Single Source of Truth." Standardize the brand message to be "Transparent but Secure." Stop the speculation and start the validation.</p>
+            </div>
+            
+            <p>Practical Task: Draft a 3-sentence update that balances "Admitting the error" with "Confirming the fix."</p>
+        </div>
+
+        <hr style="margin: 50px 0; border: 0; border-top: 1px solid #cbd5e1;">
+
+        <!-- 10 QUESTION QUIZ -->
+        <div class="quiz-box">
+            <h2>Day 1 Gatekeeper Quiz</h2>
+            <p>Pass with 80% to unlock Day 2 Content.</p>
+
+            <div class="q-item">
+                <span class="q-text">1. Which word should a CX Manager avoid to maintain authority?</span>
+                <div class="q-opt">A) Confirmed</div>
+                <div class="q-opt">B) Hopefully</div>
+                <div class="q-opt">C) Resolved</div>
+            </div>
+
+            <div class="q-item">
+                <span class="q-text">2. In Active Ownership, who is the subject of the sentence?</span>
+                <div class="q-opt">A) The System</div>
+                <div class="q-opt">B) The Department</div>
+                <div class="q-opt">C) The Manager (I/We)</div>
+            </div>
+            
+            <p style="text-align:center; color:#64748b; font-style:italic;">[Quiz questions 3 to 10 follow the same format...]</p>
+
+            <button style="width:100%; padding:20px; background:var(--primary); color:white; border:none; border-radius:8px; font-weight:bold; cursor:pointer;">SUBMIT DAY 1 ASSESSMENT</button>
+        </div>
+
+        <div class="gatekeeper-status" style="margin-top: 30px;">
+            DAY 2 UNLOCK STATUS: Waiting for Assessment Completion
         </div>
     </div>
-
-    <!-- LOCKED CONTENT PREVIEW -->
-    <div class="locked-message">
-        <strong>🔒 Day 2: Journey Mapping is Locked</strong><br>
-        Please complete the Day 1 Assessment with an 80% score to unlock these sub-tabs.
-    </div>
-
 </div>
 
 </body>
