@@ -92,10 +92,10 @@
     <aside class="sidebar">
         <div class="brand-logo">ALORICA GLOBAL LEADERSHIP</div>
         <nav class="nav-group">
-            <div class="nav-link active" onclick="navigate('theory')">Day 2 Core Strategy</div>
-            <div class="nav-link" onclick="navigate('cases')">Day 2 Case Studies</div>
-            <div class="nav-link" onclick="navigate('drills')">Operational Drills</div>
-            <div class="nav-link" onclick="navigate('exam')">Day 2 Certification Exam</div>
+            <div class="nav-link active" id="nav-theory" onclick="navigate('theory')">Day 2 Core Strategy</div>
+            <div class="nav-link" id="nav-cases" onclick="navigate('cases')">Day 2 Case Studies</div>
+            <div class="nav-link" id="nav-drills" onclick="navigate('drills')">Operational Drills</div>
+            <div class="nav-link" id="nav-exam" onclick="navigate('exam')">Day 2 Certification Exam</div>
         </nav>
     </aside>
 
@@ -111,7 +111,7 @@
             content: `
                 <div class="theory-section">
                     <div class="exec-summary">Architecting the Digital Experience Ecosystem</div>
-                    <p class="theory-paragraph">On Day 2 of Customer Experience Management, the focus pivots from single-touch service recovery models to the architectural integration of multidimensional touchpoints. In a world defined by transactional complexity, the modern Customer Experience Manager (CXM) must orchestrate an ecosystem where text, speech analytics, asynchronous messaging, and automated agents interact seamlessly. The metric of success has evolved from First Call Resolution (FCR) to Omnichannel Journey Continuity. Friction manifests when a consumer faces contextual amnesia—defined as the system's inability to retain transactional intent across channel migrations, forcing a repetitive validation loop.</p>
+                    <p class="theory-paragraph">On Day 2 of Customer Experience Management, the strategic focus pivots from single-touch service recovery models to the architectural integration of multidimensional touchpoints. In a world defined by transactional complexity, the modern Customer Experience Manager (CXM) must orchestrate an ecosystem where text, speech analytics, asynchronous messaging, and automated agents interact seamlessly. The metric of success has evolved from First Call Resolution (FCR) to Omnichannel Journey Continuity. Friction manifests when a consumer faces contextual amnesia—defined as the system's inability to retain transactional intent across channel migrations, forcing a repetitive validation loop.</p>
                     <p class="theory-paragraph">A critical tool under the modern CXM's purview is Real-Time Sentiment Analytics (RTSA). RTSA pipelines ingest acoustic, semantic, and metadata properties to assign dynamic effort ratings during live agent encounters. By tracking acoustic pitch fluctuations and conversational cross-talk patterns, the infrastructure triggers immediate supervisor alerts or algorithmic script augmentations. Moving beyond baseline quality assurance, this training focuses on utilizing predictive intent categorization to dynamically route customers before a voice channel escalation becomes necessary, driving down operational costs by capitalizing on lower-cost asynchronous messaging networks.</p>
                     <p class="theory-paragraph">Furthermore, Day 2 unpacks the integration of Generative AI Copilots with core Customer Relationship Management (CRM) databases. The CXM must define the "Guardrail Parameters" that prevent machine-learned hallucination while maximizing conversational velocity. Implementing automated agent assistance allows frontline personnel to bypass manual Knowledge Base searches, shaving critical seconds off Average Handle Time (AHT) while ensuring a uniform brand perspective. We will evaluate how to navigate the technical divide between legacy database frameworks and cloud-native API abstractions to ensure real-time personal data surfaces securely at the point of customer engagement.</p>
                 </div>
@@ -139,6 +139,17 @@
                     <p class="p-space">The CX Manager intervened by implementing a real-time semantic analysis patch that scanned digital message patterns and incoming text for high-stress keywords. The platform automatically re-routed high-stress interactions directly to senior recovery agents equipped with immediate compensation authority.</p>
                     <p class="p-space">They also adjusted the automated outbound notification templates to mirror a proactive and supportive tone, offering direct links to self-service rebooking portals. This strategy successfully diverted 60% of the conversational volume away from standard voice lines while simultaneously protecting the high-value traveler segments.</p>
                 `
+            },
+            {
+                title: "CASE 03: The Asynchronous Scaling Dynamic",
+                problem: `
+                    <p class="p-space">An international e-commerce conglomerate faced an unpredicted logistics block where delivery estimations for thousands of tech orders slipped by two weeks. Standard operations relied heavily on telephony channels, but agent capacity maxed out instantly. The average wait time soared past 90 minutes, driving high abandonment numbers.</p>
+                    <p class="p-space">Because customers couldn't get updates, they double-ticketed across Facebook, email, and live chat, resulting in triplicate data loops. The operation faced an extreme risk of contract penalties due to missing target SLAs across all metrics.</p>
+                `,
+                solution: `
+                    <p class="p-space">The CXM immediately locked synchronous voice access for non-urgent tracking inquiries, changing the main interactive voice script to transfer users directly to an enriched WhatsApp/SMS asynchronous gateway via an automated link.</p>
+                    <p class="p-space">Agents were upskilled onto multi-session dashboard interfaces, raising concurrency ratios from 1:1 voice calls to 1:4 active digital messaging slots. By organizing conversation logs by issue urgency instead of chronologically, the operation cleared the 3-day backup in 24 hours, stabilizing operational SLAs while decreasing handling costs.</p>
+                `
             }
         ],
         drills: [
@@ -158,7 +169,7 @@
                 options: [
                     "Contextual Amnesia due to a lack of unified channel state persistence",
                     "Acoustic fluctuation anomaly within the interactive voice response architecture",
-                    "Defensive messaging lag caused by over-reliance on self-service portals",
+                    "Defensive messaging lag caused over-reliance on self-service portals",
                     "Linguistic branding mismatch between internal service departments"
                 ],
                 correct: 0
@@ -183,7 +194,7 @@
                     "Force the customer to re-authenticate their profile every time the AI generates a response",
                     "Train agents to manually overwrite all conversational logs at the end of every shift"
                 ],
-                correct: 2
+                correct: 1
             },
             {
                 id: 4,
@@ -231,7 +242,7 @@
             },
             {
                 id: 8,
-                scenario: "An premium airline passenger gets stuck in a standard, low-priority voice queue during an airport weather delay. This reflects a failure in which advanced CX field?",
+                scenario: "An elite airline passenger gets stuck in a standard, low-priority voice queue during an airport weather delay. This reflects a failure in which advanced CX field?",
                 options: [
                     "Linguistic validation alignment protocols",
                     "Predictive routing based on customer tiering and real-time intent categorization",
@@ -267,10 +278,10 @@
 
     // --- APPLICATION ENGINE ---
     function navigate(viewId) {
-        // Update Active Nav Styles
+        // Manage active visual state across links
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        const activeLink = Array.from(document.querySelectorAll('.nav-link')).find(link => link.getAttribute('onclick').includes(viewId));
-        if(activeLink) activeLink.classList.add('active');
+        const targetLink = document.getElementById(`nav-${viewId}`);
+        if(targetLink) targetLink.classList.add('active');
 
         const mainView = document.getElementById('main-view');
         
@@ -304,7 +315,7 @@
                         <div class="drill-header">${d.title}</div>
                         <div class="drill-body">
                             <p>${d.instruction}</p>
-                            <textarea style="width:100%; height:120px; padding:15px; border-radius:4px; border:1px solid #cbd5e1; font-family:inherit; font-size:1rem;" placeholder="Type your strategic response here..."></textarea>
+                            <textarea style="width:100%; height:120px; padding:15px; border-radius:4px; border:1px solid #cbd5e1; font-family:inherit; font-size:1rem;" placeholder="Type strategic resolution framework here..."></textarea>
                         </div>
                     </div>
                 `;
@@ -312,4 +323,91 @@
             html += `</div>`;
             mainView.innerHTML = html;
         } 
-        else if (viewId ===
+        else if (viewId === 'exam') {
+            let html = `
+                <div class="certification-card">
+                    <div class="exam-header">
+                        <h1 style="color:white; margin-bottom:10px;">DAY 2 CERTIFICATION EXAM</h1>
+                        <p>Advanced Omnichannel Strategy & Analytics Architecture</p>
+                        <p><strong>Passing Criteria: 80% (8/10 Correct)</strong></p>
+                    </div>
+                    <form id="exam-form" onsubmit="evaluateExam(event)">
+            `;
+
+            DB.exam.forEach((q, idx) => {
+                html += `
+                    <div class="q-block">
+                        <div class="q-scenario"><strong>Question ${idx + 1} of 10:</strong> ${q.scenario}</div>
+                        <div class="options-container">
+                `;
+                q.options.forEach((opt, oIdx) => {
+                    html += `
+                        <label class="option-label">
+                            <input type="radio" name="q${q.id}" value="${oIdx}" required>
+                            ${opt}
+                        </label>
+                    `;
+                });
+                html += `
+                        </div>
+                    </div>
+                `;
+            });
+
+            html += `
+                        <div id="result-overlay"></div>
+                        <button type="submit" class="btn-primary" id="btn-submit">Submit Certification Solutions</button>
+                        <button type="button" class="btn-primary btn-retake" onclick="navigate('exam')" style="display:none;" id="btn-reset">Retake Examination</button>
+                    </form>
+                </div>
+            `;
+            mainView.innerHTML = html;
+        }
+    }
+
+    function evaluateExam(event) {
+        event.preventDefault();
+        const form = document.getElementById('exam-form');
+        const formData = new FormData(form);
+        let score = 0;
+
+        DB.exam.forEach(q => {
+            const answer = formData.get(`q${q.id}`);
+            if (parseInt(answer) === q.correct) {
+                score++;
+            }
+        });
+
+        const pct = (score / DB.exam.length) * 100;
+        const overlay = document.getElementById('result-overlay');
+        const submitBtn = document.getElementById('btn-submit');
+        const resetBtn = document.getElementById('btn-reset');
+
+        overlay.style.display = "block";
+        window.scrollTo({ top: overlay.offsetTop + 200, behavior: 'smooth' });
+
+        if (pct >= 80) {
+            overlay.style.background = "#dcfce7";
+            overlay.style.color = "#15803d";
+            overlay.style.border = "2px solid #bbf7d0";
+            overlay.innerHTML = `<h2>CERTIFICATION APPROVED</h2><p>You scored ${pct}% (${score}/10). You have demonstrated executive mastery of Day 2 core operational frameworks.</p>`;
+            if (submitBtn) submitBtn.style.display = "none";
+            if (resetBtn) resetBtn.style.display = "none";
+        } else {
+            overlay.style.background = "#fef2f2";
+            overlay.style.color = "#991b1b";
+            overlay.style.border = "2px solid #fecaca";
+            overlay.innerHTML = `<h2>CERTIFICATION DENIED</h2><p>You scored ${pct}% (${score}/10). Review the Day 2 materials and attempt the examination again.</p>`;
+            if (submitBtn) submitBtn.style.display = "none";
+            if (resetBtn) resetBtn.style.display = "block";
+        }
+    }
+
+    // Direct Boot Assignment
+    window.onload = function() {
+        navigate('theory');
+    };
+</script>
+
+</body>
+</html>
