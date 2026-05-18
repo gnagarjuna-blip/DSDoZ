@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Certification | Customer Experience Management - Day 2</title>
+    <title>Executive Certification | Customer Experience Management</title>
     <style>
         :root {
             --alorica-red: #de2127; --navy: #0f172a; --slate: #1e293b;
@@ -62,6 +62,7 @@
         .drill-block { background: #fff; border: 2px solid #cbd5e1; border-radius: 8px; margin-bottom: 40px; }
         .drill-header { background: var(--slate); color: white; padding: 20px 30px; font-weight: 700; }
         .drill-body { padding: 30px; }
+        .drill-feedback { display: none; padding: 20px; margin-top: 20px; border-radius: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
 
         /* Exam Components */
         .exam-header { text-align: center; background: var(--navy); color: white; padding: 40px; margin: -60px -60px 60px; }
@@ -92,10 +93,10 @@
     <aside class="sidebar">
         <div class="brand-logo">ALORICA GLOBAL LEADERSHIP</div>
         <nav class="nav-group">
-            <div class="nav-link active" id="nav-theory" onclick="navigate('theory')">Day 2 Core Strategy</div>
-            <div class="nav-link" id="nav-cases" onclick="navigate('cases')">Day 2 Case Studies</div>
+            <div class="nav-link active" id="nav-theory" onclick="navigate('theory')">Core Strategy & Theory</div>
+            <div class="nav-link" id="nav-cases" onclick="navigate('cases')">Strategic Case Studies</div>
             <div class="nav-link" id="nav-drills" onclick="navigate('drills')">Operational Drills</div>
-            <div class="nav-link" id="nav-exam" onclick="navigate('exam')">Day 2 Certification Exam</div>
+            <div class="nav-link" id="nav-exam" onclick="navigate('exam')">Certification Exam</div>
         </nav>
     </aside>
 
@@ -107,13 +108,13 @@
     // --- DATABASE ---
     const DB = {
         theory: {
-            title: "Day 2: Advanced Omnichannel Orchestration & Predictive CX Analytics",
+            title: "Advanced Omnichannel Orchestration & Predictive CX Analytics",
             content: `
                 <div class="theory-section">
                     <div class="exec-summary">Architecting the Digital Experience Ecosystem</div>
-                    <p class="theory-paragraph">On Day 2 of Customer Experience Management, the strategic focus pivots from single-touch service recovery models to the architectural integration of multidimensional touchpoints. In a world defined by transactional complexity, the modern Customer Experience Manager (CXM) must orchestrate an ecosystem where text, speech analytics, asynchronous messaging, and automated agents interact seamlessly. The metric of success has evolved from First Call Resolution (FCR) to Omnichannel Journey Continuity. Friction manifests when a consumer faces contextual amnesia—defined as the system's inability to retain transactional intent across channel migrations, forcing a repetitive validation loop.</p>
+                    <p class="theory-paragraph">In this phase of Customer Experience Management, the strategic focus pivots from single-touch service recovery models to the architectural integration of multidimensional touchpoints. In a world defined by transactional complexity, the modern Customer Experience Manager (CXM) must orchestrate an ecosystem where text, speech analytics, asynchronous messaging, and automated agents interact seamlessly. The metric of success has evolved from First Call Resolution (FCR) to Omnichannel Journey Continuity. Friction manifests when a consumer faces contextual amnesia—defined as the system's inability to retain transactional intent across channel migrations, forcing a repetitive validation loop.</p>
                     <p class="theory-paragraph">A critical tool under the modern CXM's purview is Real-Time Sentiment Analytics (RTSA). RTSA pipelines ingest acoustic, semantic, and metadata properties to assign dynamic effort ratings during live agent encounters. By tracking acoustic pitch fluctuations and conversational cross-talk patterns, the infrastructure triggers immediate supervisor alerts or algorithmic script augmentations. Moving beyond baseline quality assurance, this training focuses on utilizing predictive intent categorization to dynamically route customers before a voice channel escalation becomes necessary, driving down operational costs by capitalizing on lower-cost asynchronous messaging networks.</p>
-                    <p class="theory-paragraph">Furthermore, Day 2 unpacks the integration of Generative AI Copilots with core Customer Relationship Management (CRM) databases. The CXM must define the "Guardrail Parameters" that prevent machine-learned hallucination while maximizing conversational velocity. Implementing automated agent assistance allows frontline personnel to bypass manual Knowledge Base searches, shaving critical seconds off Average Handle Time (AHT) while ensuring a uniform brand perspective. We will evaluate how to navigate the technical divide between legacy database frameworks and cloud-native API abstractions to ensure real-time personal data surfaces securely at the point of customer engagement.</p>
+                    <p class="theory-paragraph">Furthermore, we unpack the integration of Generative AI Copilots with core Customer Relationship Management (CRM) databases. The CXM must define the "Guardrail Parameters" that prevent machine-learned hallucination while maximizing conversational velocity. Implementing automated agent assistance allows frontline personnel to bypass manual Knowledge Base searches, shaving critical seconds off Average Handle Time (AHT) while ensuring a uniform brand perspective. We will evaluate how to navigate the technical divide between legacy database frameworks and cloud-native API abstractions to ensure real-time personal data surfaces securely at the point of customer engagement.</p>
                 </div>
             `
         },
@@ -154,10 +155,12 @@
         ],
         drills: [
             {
+                id: 1,
                 title: "Drill 01: Multi-Channel Data Mapping Scenario",
                 instruction: "Analyze a complex cross-channel log where a user moves from an automated chatbot to a live phone agent. Draft a clear context-handover summary that a live phone agent can review in under 5 seconds to eliminate customer repetition."
             },
             {
+                id: 2,
                 title: "Drill 02: AI Copilot Guardrail Structuring",
                 instruction: "Draft a system prompt rulebook for a generative AI customer service agent handling billing discrepancies. Your guardrails must explicitly prevent the AI from offering unauthorized statement credits while maintaining an empathetic tone."
             }
@@ -278,7 +281,6 @@
 
     // --- APPLICATION ENGINE ---
     function navigate(viewId) {
-        // Manage active visual state across links
         document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
         const targetLink = document.getElementById(`nav-${viewId}`);
         if(targetLink) targetLink.classList.add('active');
@@ -315,7 +317,9 @@
                         <div class="drill-header">${d.title}</div>
                         <div class="drill-body">
                             <p>${d.instruction}</p>
-                            <textarea style="width:100%; height:120px; padding:15px; border-radius:4px; border:1px solid #cbd5e1; font-family:inherit; font-size:1rem;" placeholder="Type strategic resolution framework here..."></textarea>
+                            <textarea id="drill-text-${d.id}" style="width:100%; height:120px; padding:15px; border-radius:4px; border:1px solid #cbd5e1; font-family:inherit; font-size:1rem;" placeholder="Type strategic resolution framework here..."></textarea>
+                            <div id="drill-feedback-${d.id}" class="drill-feedback"></div>
+                            <button type="button" class="btn-primary" style="padding:12px; margin-top:15px; font-size:1rem; width:auto;" onclick="submitDrill(${d.id})">Submit Operational Drill</button>
                         </div>
                     </div>
                 `;
@@ -327,7 +331,7 @@
             let html = `
                 <div class="certification-card">
                     <div class="exam-header">
-                        <h1 style="color:white; margin-bottom:10px;">DAY 2 CERTIFICATION EXAM</h1>
+                        <h1 style="color:white; margin-bottom:10px;">CERTIFICATION EXAMINATION</h1>
                         <p>Advanced Omnichannel Strategy & Analytics Architecture</p>
                         <p><strong>Passing Criteria: 80% (8/10 Correct)</strong></p>
                     </div>
@@ -365,6 +369,19 @@
         }
     }
 
+    function submitDrill(drillId) {
+        const textValue = document.getElementById(`drill-text-${drillId}`).value.trim();
+        const feedbackDiv = document.getElementById(`drill-feedback-${drillId}`);
+        
+        if (!textValue) {
+            alert("Please type your response framework before submitting.");
+            return;
+        }
+        
+        feedbackDiv.style.display = "block";
+        feedbackDiv.innerHTML = `<strong>Operational Assessment Confirmed:</strong> Response log accepted into training repository. Your framework aligns with strategic zero-friction omnichannel validation guidelines. Monitor real-time performance attributes closely.`;
+    }
+
     function evaluateExam(event) {
         event.preventDefault();
         const form = document.getElementById('exam-form');
@@ -390,20 +407,19 @@
             overlay.style.background = "#dcfce7";
             overlay.style.color = "#15803d";
             overlay.style.border = "2px solid #bbf7d0";
-            overlay.innerHTML = `<h2>CERTIFICATION APPROVED</h2><p>You scored ${pct}% (${score}/10). You have demonstrated executive mastery of Day 2 core operational frameworks.</p>`;
+            overlay.innerHTML = `<h2>CERTIFICATION APPROVED</h2><p>You scored ${pct}% (${score}/10). You have demonstrated executive mastery of core operational frameworks.</p>`;
             if (submitBtn) submitBtn.style.display = "none";
             if (resetBtn) resetBtn.style.display = "none";
         } else {
             overlay.style.background = "#fef2f2";
             overlay.style.color = "#991b1b";
             overlay.style.border = "2px solid #fecaca";
-            overlay.innerHTML = `<h2>CERTIFICATION DENIED</h2><p>You scored ${pct}% (${score}/10). Review the Day 2 materials and attempt the examination again.</p>`;
+            overlay.innerHTML = `<h2>CERTIFICATION DENIED</h2><p>You scored ${pct}% (${score}/10). Review training materials and attempt the examination again.</p>`;
             if (submitBtn) submitBtn.style.display = "none";
             if (resetBtn) resetBtn.style.display = "block";
         }
     }
 
-    // Direct Boot Assignment
     window.onload = function() {
         navigate('theory');
     };
