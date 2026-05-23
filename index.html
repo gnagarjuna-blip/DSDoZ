@@ -178,6 +178,45 @@
             outline: none;
         }
 
+        .drill-btn {
+            width: auto;
+            padding: 12px 30px;
+            background: var(--navy);
+            color: white;
+            border: none;
+            font-size: 1rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 15px;
+            border-radius: 4px;
+            transition: background 0.2s;
+        }
+
+        .drill-btn:hover {
+            background: #1e293b;
+        }
+
+        .drill-feedback {
+            display: none;
+            padding: 15px 20px;
+            margin-top: 15px;
+            border-radius: 6px;
+            font-weight: 600;
+        }
+
+        .drill-success {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #15803d;
+        }
+
+        .drill-error {
+            background: #fef2f2;
+            border: 1px solid #fca5a5;
+            color: #991b1b;
+        }
+
         .btn-primary {
             width: 100%;
             padding: 25px;
@@ -207,7 +246,6 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.15);
         }
 
-        /* Highly Professional High-Contrast Failure Screen styles */
         .failed-terminal {
             background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%) !important;
             color: #fef2f2 !important;
@@ -246,14 +284,16 @@
 
 <div id="drills-view-wrapper" class="certification-card">
     <div class="section-title">Operational Strategy Drills</div>
-    <p style="margin-bottom: 40px; color: #475569;">Complete all written operational analyses before submitting the final proctored certification examination interface below.</p>
+    <p style="margin-bottom: 40px; color: #475569;">Complete all written operational analyses before submitting the final proctored certification examination interface below. Each drill response <strong>must be at least 3 lines long</strong> to be accepted.</p>
     
     <div class="q-block">
         <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 01: Multi-Channel Data Mapping Scenario</span>
         <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
             Analyze a complex cross-channel log where a user moves from an automated chatbot to a live phone agent. Draft a clear context-handover summary that a live phone agent can review in under 5 seconds to eliminate customer repetition.
         </div>
-        <textarea class="drill-textarea" rows="4" placeholder="Type your strategic handover framework here..."></textarea>
+        <textarea id="drill-text-1" class="drill-textarea" rows="4" placeholder="Type your strategic handover framework here...&#10;(Press Enter to break text lines manually if needed)"></textarea>
+        <button type="button" class="drill-btn" onclick="submitDrill(1)">Submit Operational Analysis</button>
+        <div id="drill-feedback-1" class="drill-feedback"></div>
     </div>
 
     <div class="q-block">
@@ -261,7 +301,9 @@
         <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
             Draft a system prompt rulebook for a generative AI customer service agent handling billing discrepancies. Your guardrails must explicitly prevent the AI from offering unauthorized statement credits while maintaining an empathetic tone.
         </div>
-        <textarea class="drill-textarea" rows="4" placeholder="Type your algorithmic prompt guardrails here..."></textarea>
+        <textarea id="drill-text-2" class="drill-textarea" rows="4" placeholder="Type your algorithmic prompt guardrails here..."></textarea>
+        <button type="button" class="drill-btn" onclick="submitDrill(2)">Submit Operational Analysis</button>
+        <div id="drill-feedback-2" class="drill-feedback"></div>
     </div>
 
     <div class="q-block">
@@ -269,7 +311,9 @@
         <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
             Define the operational parameters for an automated real-time speech analytics filter. Specify the exact language patterns, tone indicators, and call conditions that should trigger an immediate live supervisor notification.
         </div>
-        <textarea class="drill-textarea" rows="4" placeholder="Type your acoustic metric parameters here..."></textarea>
+        <textarea id="drill-text-3" class="drill-textarea" rows="4" placeholder="Type your acoustic metric parameters here..."></textarea>
+        <button type="button" class="drill-btn" onclick="submitDrill(3)">Submit Operational Analysis</button>
+        <div id="drill-feedback-3" class="drill-feedback"></div>
     </div>
 
     <div class="q-block">
@@ -277,7 +321,9 @@
         <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
             Design a prioritization logic framework for an incoming asynchronous text queue containing 5,000 unread messages following an app crash. Categorize messages based on intent tags to maximize customer retention.
         </div>
-        <textarea class="drill-textarea" rows="4" placeholder="Type your traffic allocation algorithms here..."></textarea>
+        <textarea id="drill-text-4" class="drill-textarea" rows="4" placeholder="Type your traffic allocation algorithms here..."></textarea>
+        <button type="button" class="drill-btn" onclick="submitDrill(4)">Submit Operational Analysis</button>
+        <div id="drill-feedback-4" class="drill-feedback"></div>
     </div>
 
     <div class="q-block">
@@ -285,7 +331,9 @@
         <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
             Review a data report showing a high digital channel closure rate coupled with an increase in repeat voice calls within 24 hours. Outline a targeted process modification to identify and eliminate this hidden customer friction point.
         </div>
-        <textarea class="drill-textarea" rows="4" placeholder="Type your root-cause analytical process blueprint here..."></textarea>
+        <textarea id="drill-text-5" class="drill-textarea" rows="4" placeholder="Type your root-cause analytical process blueprint here..."></textarea>
+        <button type="button" class="drill-btn" onclick="submitDrill(5)">Submit Operational Analysis</button>
+        <div id="drill-feedback-5" class="drill-feedback"></div>
     </div>
 </div>
 
@@ -466,7 +514,7 @@
         }
     ];
 
-    // ATTEMPT CONTROL MANAGEMENT ENGINE (Supports 1 Retry, Blocks on 2nd Failure)
+    // ATTEMPT CONTROL MANAGEMENT ENGINE
     const attemptsUsed = parseInt(localStorage.getItem("exam_attempts_count") || "0");
     const permanentLockout = localStorage.getItem("exam_permanently_locked") === "true";
 
@@ -474,6 +522,34 @@
         lockExamPermanently();
     } else {
         renderExamQuestions();
+    }
+
+    // INTERACTIVE LINE-COUNT DRILL VALIDATOR ENGINE
+    function submitDrill(drillId) {
+        const textarea = document.getElementById(`drill-text-${drillId}`);
+        const feedback = document.getElementById(`drill-feedback-${drillId}`);
+        const textValue = textarea.value.trim();
+
+        // 1. Calculate lines based on explicit newlines
+        let lineCount = textValue === "" ? 0 : textValue.split('\n').length;
+
+        // 2. Wrap-Around Calculation: Calculate columns and row length dynamically 
+        // to prevent users from bypassing validation with single massive strings.
+        const approximateCharsPerLine = 75; 
+        if (lineCount === 1 && textValue.length > approximateCharsPerLine) {
+            lineCount = Math.ceil(textValue.length / approximateCharsPerLine);
+        }
+
+        feedback.style.display = "block";
+
+        // LINE CRITERIA ACTION CONSTRAINT GUARD
+        if (lineCount < 3) {
+            feedback.className = "drill-feedback drill-error";
+            feedback.innerHTML = `⚠️ SUBMISSION REJECTED: Your response contains roughly ${lineCount} line(s). You must draft at least 3 lines of deep tactical strategy text before logging ledger.`;
+        } else {
+            feedback.className = "drill-feedback drill-success";
+            feedback.innerHTML = `✓ ANALYSIS REGISTERED: Operational deployment analysis saved into active performance matrices (${lineCount} lines evaluated).`;
+        }
     }
 
     function renderExamQuestions() {
@@ -535,7 +611,6 @@
         window.scrollTo({ top: resultOverlay.offsetTop + 200, behavior: 'smooth' });
 
         if (scorePercentage >= 80) {
-            // SUCCESS PASSED MATRIX
             resultOverlay.className = ""; 
             resultOverlay.style.background = "#dcfce7";
             resultOverlay.style.color = "#166534";
@@ -546,13 +621,11 @@
                 <p style="margin-top:10px; font-weight:normal;">Congratulations. Your operational strategy configurations meet administrative deployment standards.</p>
             `;
         } else {
-            // INCREMENT ATTEMPT COUNTER ON FAILURE
             let currentAttempts = parseInt(localStorage.getItem("exam_attempts_count") || "0");
             currentAttempts++;
             localStorage.setItem("exam_attempts_count", currentAttempts);
 
             if (currentAttempts === 1) {
-                // FIRST FAILURE: ALLOW RETRY BUT ALERT THE CANDIDATE
                 resultOverlay.className = "";
                 resultOverlay.style.background = "#fffbeb";
                 resultOverlay.style.color = "#b45309";
@@ -564,7 +637,6 @@
                     <button type="button" class="btn-primary" style="background:var(--navy); margin-top:20px;" onclick="resetFormAndTryAgain()">Initialize Final Authorized Attempt</button>
                 `;
             } else {
-                // SECOND FAILURE: PERMANENT SYSTEM BLOCK
                 localStorage.setItem("exam_permanently_locked", "true");
                 lockExamPermanently();
             }
@@ -578,13 +650,12 @@
     }
 
     function lockExamPermanently() {
-        // Destroy structural interaction views completely
         document.getElementById('exam-view-wrapper').innerHTML = ""; 
         document.getElementById('drills-view-wrapper').innerHTML = ""; 
         
         const resultOverlay = document.getElementById('result-overlay');
         resultOverlay.style.display = "block";
-        resultOverlay.className = "failed-terminal"; // Renders targeted professional gradient styling
+        resultOverlay.className = "failed-terminal"; 
         
         resultOverlay.innerHTML = `
             <div class="failed-title">🚨 ACCESS VIOLATION & ATTEMPT LOCKOUT 🚨</div>
