@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proctored Executive Certification Exam</title>
+    <title>Proctored Executive Certification & Operational Drills</title>
     <style>
         :root {
             --navy: #0f172a;
@@ -31,6 +31,16 @@
             padding: 60px;
             border-top: 8px solid var(--alorica-red);
             position: relative;
+            margin-bottom: 40px;
+        }
+
+        .section-title {
+            font-size: 2rem;
+            color: var(--navy);
+            margin-bottom: 30px;
+            border-left: 6px solid var(--alorica-red);
+            padding-left: 20px;
+            font-weight: 800;
         }
 
         .exam-secure-container {
@@ -151,6 +161,23 @@
             transform: scale(1.3);
         }
 
+        .drill-textarea {
+            width: 100%;
+            padding: 20px;
+            border: 2px solid #cbd5e1;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            margin-top: 15px;
+            box-sizing: border-box;
+        }
+
+        .drill-textarea:focus {
+            border-color: var(--navy);
+            outline: none;
+        }
+
         .btn-primary {
             width: 100%;
             padding: 25px;
@@ -216,6 +243,52 @@
     </style>
 </head>
 <body>
+
+<div id="drills-view-wrapper" class="certification-card">
+    <div class="section-title">Operational Strategy Drills</div>
+    <p style="margin-bottom: 40px; color: #475569;">Complete all written operational analyses before submitting the final proctored certification examination interface below.</p>
+    
+    <div class="q-block">
+        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 01: Multi-Channel Data Mapping Scenario</span>
+        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
+            Analyze a complex cross-channel log where a user moves from an automated chatbot to a live phone agent. Draft a clear context-handover summary that a live phone agent can review in under 5 seconds to eliminate customer repetition.
+        </div>
+        <textarea class="drill-textarea" rows="4" placeholder="Type your strategic handover framework here..."></textarea>
+    </div>
+
+    <div class="q-block">
+        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 02: AI Copilot Guardrail Structuring</span>
+        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
+            Draft a system prompt rulebook for a generative AI customer service agent handling billing discrepancies. Your guardrails must explicitly prevent the AI from offering unauthorized statement credits while maintaining an empathetic tone.
+        </div>
+        <textarea class="drill-textarea" rows="4" placeholder="Type your algorithmic prompt guardrails here..."></textarea>
+    </div>
+
+    <div class="q-block">
+        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 03: Speech Analytics Alert Threshold Calibration</span>
+        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
+            Define the operational parameters for an automated real-time speech analytics filter. Specify the exact language patterns, tone indicators, and call conditions that should trigger an immediate live supervisor notification.
+        </div>
+        <textarea class="drill-textarea" rows="4" placeholder="Type your acoustic metric parameters here..."></textarea>
+    </div>
+
+    <div class="q-block">
+        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 04: Asynchronous Queue Prioritization Mapping</span>
+        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
+            Design a prioritization logic framework for an incoming asynchronous text queue containing 5,000 unread messages following an app crash. Categorize messages based on intent tags to maximize customer retention.
+        </div>
+        <textarea class="drill-textarea" rows="4" placeholder="Type your traffic allocation algorithms here..."></textarea>
+    </div>
+
+    <div class="q-block">
+        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 05: Faux Resolution Root-Cause Analysis</span>
+        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
+            Review a data report showing a high digital channel closure rate coupled with an increase in repeat voice calls within 24 hours. Outline a targeted process modification to identify and eliminate this hidden customer friction point.
+        </div>
+        <textarea class="drill-textarea" rows="4" placeholder="Type your root-cause analytical process blueprint here..."></textarea>
+    </div>
+</div>
+
 
 <div class="certification-card exam-secure-container">
     <div class="exam-header">
@@ -393,8 +466,11 @@
         }
     ];
 
-    // Check if user has already failed this exam in this browser session
-    if (localStorage.getItem("exam_status_failed") === "true") {
+    // ATTEMPT CONTROL MANAGEMENT ENGINE (Supports 1 Retry, Blocks on 2nd Failure)
+    const attemptsUsed = parseInt(localStorage.getItem("exam_attempts_count") || "0");
+    const permanentLockout = localStorage.getItem("exam_permanently_locked") === "true";
+
+    if (permanentLockout) {
         lockExamPermanently();
     } else {
         renderExamQuestions();
@@ -431,8 +507,7 @@
     function evaluateExam(event) {
         event.preventDefault();
         
-        // Final Double Check Protection against manual code injection bypasses
-        if (localStorage.getItem("exam_status_failed") === "true") {
+        if (localStorage.getItem("exam_permanently_locked") === "true") {
             lockExamPermanently();
             return;
         }
@@ -467,22 +542,49 @@
             resultOverlay.style.border = "3px solid #22c55e";
             resultOverlay.innerHTML = `
                 <h2 style="color:#166534; margin:0 0 10px; font-size:2rem; text-transform:uppercase;">CREDENTIAL CONFERRED</h2>
-                <p style="font-size:1.5rem; margin:0;">Final Architecture Score: <strong>${scorePercentage}%</strong> (${totalPassed}/${totalQuestions} Correct)</p>
+                <p style="font-size:1.5rem; margin:0;">Final Architecture Score: <strong>${scorePercentage}%</strong> </p>
                 <p style="margin-top:10px; font-weight:normal;">Congratulations. Your operational strategy configurations meet administrative deployment standards.</p>
             `;
         } else {
-            // CRITICAL SYSTEM FAILURE: LOG ATTEMPT AND LOCK OUT USER
-            localStorage.setItem("exam_status_failed", "true");
-            lockExamPermanently();
+            // INCREMENT ATTEMPT COUNTER ON FAILURE
+            let currentAttempts = parseInt(localStorage.getItem("exam_attempts_count") || "0");
+            currentAttempts++;
+            localStorage.setItem("exam_attempts_count", currentAttempts);
+
+            if (currentAttempts === 1) {
+                // FIRST FAILURE: ALLOW RETRY BUT ALERT THE CANDIDATE
+                resultOverlay.className = "";
+                resultOverlay.style.background = "#fffbeb";
+                resultOverlay.style.color = "#b45309";
+                resultOverlay.style.border = "3px solid #f59e0b";
+                resultOverlay.innerHTML = `
+                    <h2 style="color:#b45309; margin:0 0 10px; font-size:1.8rem; text-transform:uppercase;">ATTEMPT 1 FAILED (${scorePercentage}%)</h2>
+                    <p style="font-size:1.2rem; margin:0;">You missed the passing line standard threshold of 80%.</p>
+                    <p style="margin-top:10px; font-weight:normal;"><strong>Notice:</strong> Your access profile has been granted <strong>ONE FINAL ATTEMPT</strong>. If you fail the next entry session, your testing interface tokens will be locked permanently.</p>
+                    <button type="button" class="btn-primary" style="background:var(--navy); margin-top:20px;" onclick="resetFormAndTryAgain()">Initialize Final Authorized Attempt</button>
+                `;
+            } else {
+                // SECOND FAILURE: PERMANENT SYSTEM BLOCK
+                localStorage.setItem("exam_permanently_locked", "true");
+                lockExamPermanently();
+            }
         }
     }
 
+    function resetFormAndTryAgain() {
+        document.getElementById("cx-exam-form").reset();
+        document.getElementById('result-overlay').style.display = "none";
+        window.scrollTo({ top: document.getElementById("questions-container").offsetTop, behavior: 'smooth' });
+    }
+
     function lockExamPermanently() {
-        document.getElementById('exam-view-wrapper').innerHTML = ""; // Clear and destroy all active test components
+        // Destroy structural interaction views completely
+        document.getElementById('exam-view-wrapper').innerHTML = ""; 
+        document.getElementById('drills-view-wrapper').innerHTML = ""; 
         
         const resultOverlay = document.getElementById('result-overlay');
         resultOverlay.style.display = "block";
-        resultOverlay.className = "failed-terminal"; // Trigger intense high-colorful gradient layout styles
+        resultOverlay.className = "failed-terminal"; // Renders targeted professional gradient styling
         
         resultOverlay.innerHTML = `
             <div class="failed-title">🚨 ACCESS VIOLATION & ATTEMPT LOCKOUT 🚨</div>
@@ -490,12 +592,11 @@
                 Security Level: CRITICAL_TERMINATION_EVENT
             </div>
             <div class="failed-msg">
-                <strong>EVALUATION LEDGER REGISTRATION: FAILED</strong><br><br>
-                Your system architecture configuration score dropped below the required 80% passing threshold. 
-                As a strict proctored protocol for this executive certification, 
+                <strong>EVALUATION LEDGER REGISTRATION: PERMANENT BLOCK</strong><br><br>
+                Your enterprise system architecture configuration score has dropped below the 80% passing threshold for the second consecutive time. 
+                As a strict proctored operational security rule, 
                 <strong>YOU ARE NOT ALLOWED TO DO THIS EXAM.</strong><br><br>
-                Your single authorized testing session token has been permanently revoked. 
-                All future attempts to access, review, or submit this architecture ledger from your profile are blocked.
+                All verification attempts have been completely exhausted. Your authorized testing tokens are revoked, and access profile allocations to this examination script are blocked from your environment parameters.
             </div>
             <div style="font-size:0.8rem; color:#fca5a5; opacity:0.7; margin-top:15px; font-family: monospace;">
                 ERR_CODE: ATTEMPT_MAX_EXCEEDED // TRANSACTION_LOGGED_TO_ADMINISTRATOR
