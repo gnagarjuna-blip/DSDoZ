@@ -3,508 +3,505 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Executive Certification | Customer Experience Management</title>
+    <title>Proctored Executive Certification Exam</title>
     <style>
         :root {
-            --alorica-red: #de2127; --navy: #0f172a; --slate: #1e293b;
-            --ghost: #f8fafc; --gold: #b45309; --emerald: #059669; --crimson: #991b1b;
-        }
-        * { box-sizing: border-box; }
-        body { 
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; 
-            background: var(--ghost); color: var(--slate); margin: 0; line-height: 1.8;
-            user-select: auto;
-        }
-        
-        /* Layout Structure */
-        .app-container { display: flex; min-height: 100vh; width: 100vw; overflow-x: hidden; }
-        
-        /* Professional Sidebar */
-        .sidebar { 
-            width: 350px; background: var(--navy); color: white; 
-            padding: 40px 0; position: fixed; height: 100vh; z-index: 100;
-        }
-        .brand-logo { 
-            padding: 0 30px 40px; font-size: 1.4rem; font-weight: 900; 
-            letter-spacing: 1px; color: var(--alorica-red); border-bottom: 1px solid #334155;
-        }
-        .nav-group { margin-top: 30px; }
-        .nav-link { 
-            padding: 20px 30px; display: block; color: #94a3b8; text-decoration: none;
-            font-weight: 600; transition: 0.3s; cursor: pointer; border-left: 5px solid transparent;
-        }
-        .nav-link:hover { background: #1e293b; color: white; }
-        .nav-link.active { background: #1e293b; color: white; border-left-color: var(--alorica-red); }
-
-        /* Main Content Area */
-        .content-body { margin-left: 350px; padding: 80px 10%; width: calc(100% - 350px); }
-        .certification-card { 
-            background: white; border-radius: 4px; box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            padding: 60px; border-top: 8px solid var(--alorica-red); position: relative;
+            --navy: #0f172a;
+            --slate: #1e293b;
+            --ghost: #f8fafc;
+            --alorica-red: #de2127;
+            --gold: #b45309;
+            --emerald: #059669;
+            --crimson: #991b1b;
         }
 
-        /* Typography */
-        h1 { font-size: 2.8rem; color: var(--navy); margin-bottom: 40px; font-weight: 800; }
-        h2 { font-size: 1.8rem; color: var(--navy); margin: 50px 0 20px; border-left: 6px solid var(--alorica-red); padding-left: 20px; }
-        .exec-summary { font-size: 1.2rem; font-weight: 700; color: var(--gold); margin-bottom: 20px; text-transform: uppercase; }
-        
-        /* Content Sections */
-        .theory-section { text-align: justify; color: #334155; font-size: 1.1rem; }
-        .theory-paragraph { margin-bottom: 30px; }
-
-        .case-wrapper { margin: 60px 0; background: #fff; border: 1px solid #e2e8f0; border-radius: 8px; overflow: hidden; }
-        .case-header { background: #f1f5f9; padding: 25px 40px; font-weight: 800; border-bottom: 1px solid #e2e8f0; color: var(--gold); }
-        .case-content { padding: 40px; background: #fffcf5; }
-        .case-solution { padding: 40px; background: #f0fdf4; border-top: 2px solid #dcfce7; }
-        .p-space { margin-bottom: 20px; }
-
-        .drill-block { background: #fff; border: 2px solid #cbd5e1; border-radius: 8px; margin-bottom: 40px; }
-        .drill-header { background: var(--slate); color: white; padding: 20px 30px; font-weight: 700; }
-        .drill-body { padding: 30px; }
-        .drill-feedback { display: none; padding: 20px; margin-top: 20px; border-radius: 6px; background: #f0fdf4; border: 1px solid #bbf7d0; color: #15803d; }
-
-        /* Hard Proctored Exam Components */
-        .exam-secure-container { user-select: none !important; -webkit-user-select: none !important; }
-        .exam-header { text-align: center; background: var(--navy); color: white; padding: 40px; margin: -60px -60px 60px; position: relative; }
-        
-        .proctor-badge { 
-            background: #b91c1c; color: white; padding: 8px 16px; border-radius: 20px; 
-            font-size: 0.85rem; font-weight: 700; display: inline-flex; align-items: center; 
-            gap: 8px; margin-bottom: 15px; letter-spacing: 1px; animation: pulse 2s infinite;
+        body {
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: var(--ghost);
+            color: var(--slate);
+            margin: 0;
+            padding: 40px 10%;
+            line-height: 1.8;
         }
-        @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.6; } 100% { opacity: 1; } }
+
+        .certification-card {
+            background: white;
+            border-radius: 8px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
+            padding: 60px;
+            border-top: 8px solid var(--alorica-red);
+            position: relative;
+        }
+
+        .exam-secure-container {
+            user-select: none !important;
+            -webkit-user-select: none !important;
+        }
+
+        .exam-header {
+            text-align: center;
+            background: var(--navy);
+            color: white;
+            padding: 40px;
+            margin: -60px -60px 60px;
+            position: relative;
+            border-top-left-radius: 4px;
+            border-top-right-radius: 4px;
+        }
+
+        .proctor-badge {
+            background: #b91c1c;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 15px;
+            letter-spacing: 1px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 1; }
+            50% { opacity: 0.6; }
+            100% { opacity: 1; }
+        }
 
         .webcam-feed-simulation {
-            position: absolute; top: 20px; right: 20px; width: 100px; height: 75px; 
-            background: #000; border: 2px solid #b91c1c; border-radius: 4px; color: #0f0;
-            font-family: monospace; font-size: 0.6rem; display: flex; flex-direction: column;
-            justify-content: center; align-items: center; text-align: center; font-weight: bold;
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            width: 100px;
+            height: 75px;
+            background: #000;
+            border: 2px solid #b91c1c;
+            border-radius: 4px;
+            color: #0f0;
+            font-family: monospace;
+            font-size: 0.6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-weight: bold;
         }
-        .webcam-dot { width: 8px; height: 8px; background: #0f0; border-radius: 50%; margin-bottom: 4px; animation: pulse 1s infinite; }
 
-        .q-block { margin-bottom: 60px; padding: 40px; background: #f8fafc; border-radius: 12px; border: 2px solid #e2e8f0; }
-        .q-scenario { color: var(--navy); margin-bottom: 25px; border-bottom: 2px solid #cbd5e1; padding-bottom: 20px; font-size: 1.05rem; font-weight: 600; text-align: justify; }
-        .q-multi-alert { color: var(--gold); font-size: 0.9rem; font-weight: 700; margin-bottom: 15px; text-transform: uppercase; display: block; }
-        
-        .option-label { 
-            display: flex; align-items: flex-start; padding: 20px 25px; background: white; border: 2px solid #e2e8f0;
-            border-radius: 8px; margin-top: 15px; cursor: pointer; transition: 0.2s; font-weight: 500; font-size: 0.95rem;
+        .webcam-dot {
+            width: 8px;
+            height: 8px;
+            background: #0f0;
+            border-radius: 50%;
+            margin-bottom: 4px;
+            animation: pulse 1s infinite;
         }
-        .option-label:hover { border-color: var(--alorica-red); background: #fef2f2; }
-        .option-label input { margin-right: 20px; margin-top: 5px; transform: scale(1.3); }
-        
-        .btn-primary { 
-            width: 100%; padding: 25px; background: var(--alorica-red); color: white; border: none;
-            font-size: 1.2rem; font-weight: 800; text-transform: uppercase; cursor: pointer; margin-top: 40px;
-        }
-        .btn-retake { background: var(--navy); margin-top: 20px; }
 
-        #result-overlay, .violation-overlay { 
-            display: none; padding: 40px; border-radius: 12px; text-align: center; margin-top: 30px; font-weight: bold;
+        .q-block {
+            margin-bottom: 40px;
+            padding: 40px;
+            background: #f8fafc;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
         }
-        .violation-overlay { background: #fee2e2 !important; color: #991b1b !important; border: 3px dashed #ef4444 !important; display: none; }
+
+        .q-scenario {
+            color: var(--navy);
+            margin-bottom: 25px;
+            border-bottom: 2px solid #cbd5e1;
+            padding-bottom: 20px;
+            font-size: 1.05rem;
+            font-weight: 600;
+            text-align: justify;
+        }
+
+        .q-multi-alert {
+            color: var(--gold);
+            font-size: 0.9rem;
+            font-weight: 700;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .option-label {
+            display: flex;
+            align-items: flex-start;
+            padding: 20px 25px;
+            background: white;
+            border: 2px solid #e2e8f0;
+            border-radius: 8px;
+            margin-top: 15px;
+            cursor: pointer;
+            transition: 0.2s;
+            font-weight: 500;
+            font-size: 0.95rem;
+        }
+
+        .option-label:hover {
+            border-color: var(--alorica-red);
+            background: #fef2f2;
+        }
+
+        .option-label input {
+            margin-right: 20px;
+            margin-top: 5px;
+            transform: scale(1.3);
+        }
+
+        .btn-primary {
+            width: 100%;
+            padding: 25px;
+            background: var(--alorica-red);
+            color: white;
+            border: none;
+            font-size: 1.2rem;
+            font-weight: 800;
+            text-transform: uppercase;
+            cursor: pointer;
+            margin-top: 40px;
+            border-radius: 4px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .btn-primary:hover {
+            background: #b91c1c;
+        }
+
+        #result-overlay {
+            display: none;
+            padding: 50px;
+            border-radius: 12px;
+            text-align: center;
+            margin-top: 40px;
+            font-weight: bold;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        }
+
+        /* Highly Professional High-Contrast Failure Screen styles */
+        .failed-terminal {
+            background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%) !important;
+            color: #fef2f2 !important;
+            border: 4px dashed #ef4444 !important;
+            animation: shake 0.5s ease-in-out;
+        }
+
+        .failed-title {
+            color: #fee2e2 !important;
+            font-size: 2.5rem !important;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
+        }
+
+        .failed-msg {
+            font-size: 1.5rem !important;
+            line-height: 2rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 25px;
+            border-radius: 8px;
+            border-left: 8px solid #f87171;
+            margin: 20px 0;
+            text-align: left;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            20%, 60% { transform: translateX(-10px); }
+            40%, 80% { transform: translateX(10px); }
+        }
     </style>
 </head>
 <body>
 
-<div class="app-container">
-    <aside class="sidebar">
-        <div class="brand-logo">ALORICA GLOBAL LEADERSHIP</div>
-        <nav class="nav-group">
-            <div class="nav-link active" id="nav-theory" onclick="navigate('theory')">Core Strategy & Theory</div>
-            <div class="nav-link" id="nav-cases" onclick="navigate('cases')">Strategic Case Studies</div>
-            <div class="nav-link" id="nav-drills" onclick="navigate('drills')">Operational Drills</div>
-            <div class="nav-link" id="nav-exam" onclick="navigate('exam')">Certification Exam</div>
-        </nav>
-    </aside>
+<div class="certification-card exam-secure-container">
+    <div class="exam-header">
+        <span class="proctor-badge">● PROCTOR ACTIVE</span>
+        <h1 style="color: white; margin: 10px 0 0; font-weight: 800; font-size: 2.2rem;">Executive Certification Assessment</h1>
+        <p style="margin: 5px 0 0; opacity: 0.9;">Omnichannel Operations & Strategic Customer Experience Architecture</p>
+        <div class="webcam-feed-simulation">
+            <div class="webcam-dot"></div>
+            <span>FEED LOCK</span>
+            <span style="font-size:0.5rem; color:#888;">ENV_SECURE</span>
+        </div>
+    </div>
 
-    <main class="content-body" id="main-view">
-        </main>
+    <div id="exam-view-wrapper">
+        <form id="cx-exam-form" onsubmit="evaluateExam(event)">
+            <div id="questions-container"></div>
+            <button type="submit" class="btn-primary">Submit Proctored Architecture Ledger</button>
+        </form>
+    </div>
+
+    <div id="result-overlay"></div>
 </div>
 
 <script>
-    // --- DATABASE ---
-    const DB = {
-        theory: {
-            title: "Advanced Omnichannel Orchestration & Predictive CX Analytics",
-            content: `
-                <div class="theory-section">
-                    <div class="exec-summary">Architecting the Digital Experience Ecosystem</div>
-                    <p class="theory-paragraph">In this phase of Customer Experience Management, the strategic focus pivots from single-touch service recovery models to the architectural integration of multidimensional touchpoints. In a world defined by transactional complexity, the modern Customer Experience Manager (CXM) must orchestrate an ecosystem where text, speech analytics, asynchronous messaging, and automated agents interact seamlessly. The metric of success has evolved from First Call Resolution (FCR) to Omnichannel Journey Continuity. Friction manifests when a consumer faces contextual amnesia—defined as the system's inability to retain transactional intent across channel migrations, forcing a repetitive validation loop.</p>
-                    <p class="theory-paragraph">A critical tool under the modern CXM's purview is Real-Time Sentiment Analytics (RTSA). RTSA pipelines ingest acoustic, semantic, and metadata properties to assign dynamic effort ratings during live agent encounters. By tracking acoustic pitch fluctuations and conversational cross-talk patterns, the infrastructure triggers immediate supervisor alerts or algorithmic script augmentations. Moving beyond baseline quality assurance, this training focuses on utilizing predictive intent categorization to dynamically route customers before a voice channel escalation becomes necessary, driving down operational costs by capitalizing on lower-cost asynchronous messaging networks.</p>
-                    <p class="theory-paragraph">Furthermore, we unpack the integration of Generative AI Copilots with core Customer Relationship Management (CRM) databases. The CXM must define the "Guardrail Parameters" that prevent machine-learned hallucination while maximizing conversational velocity. Implementing automated agent assistance allows frontline personnel to bypass manual Knowledge Base searches, shaving critical seconds off Average Handle Time (AHT) while ensuring a uniform brand perspective. We will evaluate how to navigate the technical divide between legacy database frameworks and cloud-native API abstractions to ensure real-time personal data surfaces securely at the point of customer engagement.</p>
-                </div>
-            `
+    const EXAM_QUESTIONS = [
+        {
+            scenario: "A Tier-1 retail banking operation rolls out a structural core database overhaul. Within hours, the legacy token integration system fails to map active mobile sessions cleanly over to the regional desktop web messaging software application whenever a customer requests chat escalations. Consequently, customers who began their journeys authenticating inside the application are forced to re-verify their 16-digit account profiles and re-explain their technical issues to live personnel. Given this operational context, which of the following root systemic dynamics and engineering actions are accurate? (Select ALL that apply)",
+            options: [
+                "The failure describes a critical break in Omnichannel Journey Continuity known as Contextual Amnesia.",
+                "The failure implies that acoustic pitch fluctuations in the interactive voice response (IVR) hardware caused validation lags.",
+                "An immediate operational recovery requires deploying a dedicated middleware patch to parse session tokens securely across the API gateway.",
+                "The operational group should disable all digital entry-points and route 100% of live traffic into synchronous voice lines indefinitely."
+            ],
+            correct: [0, 2]
         },
-        cases: [
-            {
-                title: "CASE 01: The Fractured Omnichannel Migration Failure",
-                problem: `<p class="p-space">A tier-one banking enterprise implemented an updated mobile application platform that accidentally locked out 50,000 legacy users due to an automated API validation error. When users migrated to web-based chat services to seek assistance, the system failed to pass their session tokens. This forced users to re-verify their identities across multiple security gates, resulting in a systemic bottleneck.</p><p class="p-space">Compounding the crisis, the automated interactive voice response (IVR) setup failed to recognize the influx of users attempting to bypass the broken digital platforms. The separation between the digital application support branch and the core voice telephony infrastructure resulted in conflicting messaging, long queues, and a 28-point drop in Net Promoter Score over a 48-hour period.</p>`,
-                solution: `<p class="p-space">The CX Manager deployed an immediate emergency middleware update that extracted session metadata and automatically generated temporary authentication bypass keys for affected customers. Simultaneously, they implemented unified desktop interfaces for the agent workforce, which immediately displayed a customer's cross-channel pathway logs.</p><p class="p-space">By creating a centralized repository for cross-channel intent, agents were able to instantly bypass repetitive authentication requirements. This structural integration stabilized the cross-channel migration path, cut customer handle time by 45%, and completely eliminated the redundant verification friction that drove the original escalation wave.</p>`
-            },
-            {
-                title: "CASE 02: Algorithmic Recovery and Sentiment Calibration",
-                problem: `<p class="p-space">A high-volume global travel platform deployed an automated notification engine to inform passengers of flight cancellations during an extreme weather event. The automated notifications utilized cold, compliance-heavy language that triggered widespread panic. Customers swarmed both digital channels and social media profiles simultaneously.</p><p class="p-space">The internal customer support systems lacked conversational analytics capabilities to properly categorize callers based on panic levels or cancellation severity. As a result, standard premium flyers were left stuck in general assistance lines, while low-tier transactional users clogged high-priority emergency support paths, creating systemic service disruption.</p>`,
-                solution: `<p class="p-space">The CX Manager intervened by implementing a real-time semantic analysis patch that scanned digital message patterns and incoming text for high-stress keywords. The platform automatically re-routed high-stress interactions directly to senior recovery agents equipped with immediate compensation authority.</p><p class="p-space">They also adjusted the automated outbound notification templates to mirror a proactive and supportive tone, offering direct links to self-service rebooking portals. This strategy successfully diverted 60% of the conversational volume away from standard voice lines while simultaneously protecting the high-value traveler segments.</p>`
-            },
-            {
-                title: "CASE 03: The Asynchronous Scaling Dynamic",
-                problem: `<p class="p-space">An international e-commerce conglomerate faced an unpredicted logistics block where delivery estimations for thousands of tech orders slipped by two weeks. Standard operations relied heavily on telephony channels, but agent capacity maxed out instantly. The average wait time soared past 90 minutes, driving high abandonment numbers.</p><p class="p-space">Because customers couldn't get updates, they double-ticketed across Facebook, email, and live chat, resulting in triplicate data loops. The operation faced an extreme risk of contract penalties due to missing target SLAs across all metrics.</p>`,
-                solution: `<p class="p-space">The CXM immediately locked synchronous voice access for non-urgent tracking inquiries, changing the main interactive voice script to transfer users directly to an enriched WhatsApp/SMS asynchronous gateway via an automated link.</p><p class="p-space">Agents were upskilled onto multi-session dashboard interfaces, raising concurrency ratios from 1:1 voice calls to 1:4 active digital messaging slots. By organizing conversation logs by issue urgency instead of chronologically, the operation cleared the 3-day backup in 24 hours, stabilizing operational SLAs while decreasing handling costs.</p>`
-            },
-            {
-                title: "CASE 04: The Legacy CRM Synch Breakdown",
-                problem: `<p class="p-space">A healthcare provider launched a patient booking application that failed to synchronize records correctly with its 20-year-old on-premise relational database. Patients checking in for urgent appointments were told their reservations did not exist, leading to massive friction at physical clinic front desks.</p><p class="p-space">The front-desk operators, lacking authorization to manually add records without insurance pre-clearance codes, turned patients away. Frustrated customers overwhelmed the centralized telephone support lines, triggering long hold queues that impacted vulnerable populations seeking emergency advice.</p>`,
-                solution: `<p class="p-space">The CX Manager set up a cross-functional triage team that established a real-time cloud data buffer layer. This buffer captured incoming application data independently and displayed it via an emergency standalone web module directly to both clinic desks and support agents.</p><p class="p-space">Desks were given temporary automated validation authorities that allowed them to confirm insurance coverage retrospectively. By removing the strict real-time requirement from the legacy database synchronization link, the patient validation bottleneck dropped from 40 minutes to under 60 seconds.</p>`
-            },
-            {
-                title: "CASE 05: Generative AI Bot Hallucination Incident",
-                problem: `<p class="p-space">An automated generative AI copilot deployed on a premium fashion retail portal began hallucinating policy details during a promotional flash sale. The bot informed roughly 12,000 shoppers that their clearance purchases were completely refundable and eligible for complementary overnight shipping, directly contradicting the company's clear final-sale rules.</p><p class="p-space">When order invoices dropped showing standard shipping costs and non-refundable statuses, buyers immediately accused the merchant of bait-and-switch tactics. This panic caused a major escalation wave across chat and corporate social profiles, threatening severe brand reputational harm.</p>`,
-                solution: `<p class="p-space">The CXM immediately pulled the bot offline and applied rigid programmatic constraints, filtering all generative financial adjustments through a verified lookup table containing actual operational rule lists. For the impacted audience, the manager established an automated reconciliation workflow.</p><p class="p-space">Agents were given specialized layout tools to quickly issue partial store credits that neutralized the shipping cost disputes without honoring full, damaging merchandise returns. This clear, structural approach kept customer retention high while preserving the bottom-line budget.</p>`
-            },
-            {
-                title: "CASE 06: BPO Vendor Blame-Game Bottleneck",
-                problem: `<p class="p-space">An electronics developer used three independent BPO providers to manage different aspects of its customer ecosystem: one for billing, one for technical support, and one for shipping logistics. Following a firmware rollout error, smart home hubs became unresponsive, affecting multiple internal setups.</p><p class="p-space">Because customer issues combined technical faults with shipping requests for replacement hardware, agents from separate vendors began passing callers back and forth. Each provider blamed the others' systems for the delays, trapping customers in an endless loop of frustration that caused CSAT scores to collapse.</p>`,
-                solution: `<p class="p-space">The CX Manager established a unified cross-vendor workflow charter and deployed a shared dashboard layer across all three operational networks. This setup allowed any agent, regardless of their BPO provider, to track an issue through to its final resolution.</p><p class="p-space">The manager set up an automated ticketing routing protocol that eliminated manual transfers entirely. If a ticket required cross-team inputs, the system handled the internal notifications in the background while keeping the customer paired with their original agent, quickly resolving the loop.</p>`
-            },
-            {
-                title: "CASE 07: Real-Time Audio Analytics Alarm Event",
-                problem: `<p class="p-space">A high-profile fintech enterprise encountered a wave of panicked customer requests following an unexpected, false fraud alert notification. The sudden volume surge overwhelmed floor support staff, causing long queues across primary phone channels.</p><p class="p-space">Frontline staff struggled to maintain control as anxious users demanded immediate account reassurance. Traditional manual quality review structures could not catch escalating calls quickly enough, leaving overwhelmed agents without timely backup or leadership guidance during highly tense situations.</p>`,
-                solution: `<p class="p-space">The CX Manager adjusted the real-time speech analytics configuration to monitor voice patterns for high-stress markers, such as shouting or overlapping speech. When a pattern matched, the call was automatically highlighted on a supervisor dashboard for immediate action.</p><p class="p-space">Supervisors could silently listen in, push targeted guidance tips to the agent's display, or take over highly challenging calls with a single click. This automated escalation structure shortened high-stress conversations by 35% and provided immediate leadership support right when agents needed it most.</p>`
-            },
-            {
-                title: "CASE 08: Subscription Cancellation Silent Churn Surge",
-                problem: `<p class="p-space">A streaming entertainment service noted a steady drop in overall renewals, yet its call center and chat metrics showed stellar operational scores with short handle times. A deeper analysis revealed that automated cancel options on the user web portal were completely frictionless.</p><p class="p-space">Customers were canceling their subscriptions silently online without ever interacting with support staff. While this frictionless process kept individual agent operational scores high, it masked a growing customer retention crisis that threatened overall company performance.</p>`,
-                solution: `<p class="p-space">The CX Manager integrated an automated value-retention layer directly into the online cancellation flow. When a user clicked cancel, the system dynamically analyzed their viewing history to offer targeted adjustments, such as a localized lower-tier rate or a temporary pause option.</p><p class="p-space">For complex accounts, a one-click asynchronous chat link connected them directly with customer retention specialists. This strategic intervention re-engaged departing users right at the decision point, lowering silent subscription cancellations by 22% within its first quarter of deployment.</p>`
-            },
-            {
-                title: "CASE 09: Social Media Escalation Echo Chamber",
-                problem: `<p class="p-space">A regional food delivery application experienced an extended payment gateway processing delay that caused thousands of orders to hang in limbo on a weekend evening. App users, unable to get immediate status updates from the overwhelmed in-app text help line, took to public social channels.</p><p class="p-space">A few highly visible posts went viral, creating an online echo chamber that made the localized server hiccup look like a widespread data breach. The digital support desk was completely unequipped to handle the sudden influx of critical online comments and direct messages.</p>`,
-                solution: `<p class="p-space">The CX Manager centralized all public messaging channels under a single operational command view and paused the standard boilerplate automated responses. They published a clear, pinned system update across all social platforms explaining the exact gateway delay and confirming that user data was completely secure.</p><p class="p-space">The manager set up an automated routing filter that sorted direct messages by urgency, allowing agents to systematically credit affected users. This transparent strategy kept the public narrative focused on facts, defusing the online panic and clearing the messaging backlog in under four hours.</p>`
-            },
-            {
-                title: "CASE 10: VIP Account Verification Bottleneck",
-                problem: `<p class="p-space">A luxury car rental platform introduced a strict multi-factor security verification protocol designed to prevent vehicle theft. However, the system required corporate executives and high-value VIP clients to complete repetitive facial uploads and manual document checks right at the pick-up counter.</p><p class="p-space">These high-value customers, who paid premium rates for fast service, found themselves stuck at airport desks waiting for manual back-office security reviews. This friction resulted in cancelled business bookings and dropping satisfaction scores among the brand's most profitable customer segment.</p>`,
-                solution: `<p class="p-space">The CX Manager redesigned the verification engine to introduce a tiered verification system. High-value clients were prompted to complete a one-time identity verification process directly within their secure mobile application well ahead of their travel date.</p><p class="p-space">The manager then linked the app's secure verification status to the local counter systems. When a pre-verified customer arrived, counter staff could confirm the booking with a quick biometric check, completely bypassing the manual review process. This change restored a fast, premium pick-up experience while maintaining full security compliance.</p>`
-            }
-        ],
-        drills: [
-            { id: 1, title: "Drill 01: Multi-Channel Data Mapping Scenario", instruction: "Analyze a complex cross-channel log where a user moves from an automated chatbot to a live phone agent. Draft a clear context-handover summary that a live phone agent can review in under 5 seconds to eliminate customer repetition." },
-            { id: 2, title: "Drill 02: AI Copilot Guardrail Structuring", instruction: "Draft a system prompt rulebook for a generative AI customer service agent handling billing discrepancies. Your guardrails must explicitly prevent the AI from offering unauthorized statement credits while maintaining an empathetic tone." },
-            { id: 3, title: "Drill 03: Speech Analytics Alert Threshold Calibration", instruction: "Define the operational parameters for an automated real-time speech analytics filter. Specify the exact language patterns, tone indicators, and call conditions that should trigger an immediate live supervisor notification." },
-            { id: 4, title: "Drill 04: Asynchronous Queue Prioritization Mapping", instruction: "Design a prioritization logic framework for an incoming asynchronous text queue containing 5,000 unread messages following an app crash. Categorize messages based on intent tags to maximize customer retention." },
-            { id: 5, title: "Drill 05: Faux Resolution Root-Cause Analysis", instruction: "Review a data report showing a high digital channel closure rate coupled with an increase in repeat voice calls within 24 hours. Outline a targeted process modification to identify and eliminate this hidden customer friction point." }
-        ],
-        exam: [
-            {
-                id: 1,
-                scenario: "A Tier-1 retail banking operation rolls out a structural core database overhaul. Within hours, the legacy token integration system fails to map active mobile sessions cleanly over to the regional desktop web messaging software application whenever a customer requests chat escalations. Consequently, customers who began their journeys authenticating inside the application are forced to re-verify their 16-digit account profiles and re-explain their technical issues to live personnel. Given this operational context, which of the following root systemic dynamics and engineering actions are accurate? (Select ALL that apply)",
-                options: [
-                    "The failure describes a critical break in Omnichannel Journey Continuity known as Contextual Amnesia.",
-                    "The failure implies that acoustic pitch fluctuations in the interactive voice response (IVR) hardware caused validation lags.",
-                    "An immediate operational recovery requires deploying a dedicated middleware patch to parse session tokens securely across the API gateway.",
-                    "The operational group should disable all digital entry-points and route 100% of live traffic into synchronous voice lines indefinitely."
-                ],
-                correct: [0, 2]
-            },
-            {
-                id: 2,
-                scenario: "A global enterprise platform experiences an unexpected, severe regional service blackout affecting approximately 1.5 million subscription accounts. Real-time data telemetry indicates that Customer Effort Scores (CES) are spiking dramatically across digital channels, causing the average queue length for live text assistance to surge past 120 minutes. Simultaneously, empty synchronous voice queues remain active because the interactive telephony system has not been calibrated to handle cross-channel diversions. Which strategic operational measures must the CX Manager authorize immediately to balance the load? (Select ALL that apply)",
-                options: [
-                    "Broadcast immediate, systemic real-time notification banners outlining the issue inside the application interface.",
-                    "Increase individual agent target Average Handle Time (AHT) parameters to deliberately slow down text interaction velocities.",
-                    "Dynamically re-allocate idle voice infrastructure agents to handle the backlogged asynchronous messaging text queues.",
-                    "Incorporate automated self-service routing trees that immediately link text inquiries to the primary status page."
-                ],
-                correct: [0, 2, 3]
-            },
-            {
-                id: 3,
-                scenario: "A customer experience management team integrates a generative AI chatbot helper to handle high-volume billing tier updates. During a baseline operational check, the generative engine encounters a highly ambiguous customer response prompt and hallucinations occur, resulting in the bot promising an unauthorized $500 cash statement credit on a basic non-refundable utility package. What programmatic steps and guardrail rules must be codified into the AI platform's environment rules to protect the bottom line while maintaining customer support quality? (Select ALL that apply)",
-                options: [
-                    "Enforce strict algorithmic data-validation guardrails that completely block the AI layer from changing accounting fields directly.",
-                    "Configure a hard code check that holds all system credits above a $0 threshold for human supervisor validation.",
-                    "Program the system to demand full identity validation from the customer before every single chat reply text block is sent.",
-                    "Deploy an automated keyword lookup table that balances the generative engine with pre-set financial parameters."
-                ],
-                correct: [0, 1, 3]
-            },
-            {
-                id: 4,
-                scenario: "A customer success manager identifies an ongoing operational anomaly where the digital self-service dashboard reports a stellar 94% task completion score. However, centralized contact center statistics reveal a corresponding 32% spike in repeat voice call escalations within 48 hours for identical customer accounts. Which of the following statements correctly evaluate this scenario and outline strategic remedies? (Select ALL that apply)",
-                options: [
-                    "This trend presents a classic example of Faux Resolution Masking where tasks are closed on paper without addressing the customer's true root issue.",
-                    "The data shows an ideal execution of the Service Recovery Paradox that naturally increases baseline retention performance.",
-                    "The operational group should analyze post-incident logs to discover where self-service applications are missing final validation gates.",
-                    "The organization must adjust performance indicators to measure long-term resolution success rather than isolated text completions."
-                ],
-                correct: [0, 2, 3]
-            },
-            {
-                id: 5,
-                scenario: "An enterprise BPO operations center manages a multi-tier customer ecosystem utilizing three distinct outside fulfillment vendors: Vendor A handles incoming product inquiries, Vendor B manages regional billing records, and Vendor C supervises transit tracking operations. Following a major shipping container delay, anxious consumers flooded the lines. Agents across all three separate fulfillment centers began transferring customers back and forth across different systems due to overlapping question types. To break this vendor bottleneck, what solutions should the CX structural architect enforce? (Select ALL that apply)",
-                options: [
-                    "Implement a unified cross-vendor workflow dashboard layer that enables any active agent to view the complete history of an issue.",
-                    "Establish a centralized automated ticketing routing protocol that prevents manual phone hand-offs between agents.",
-                    "Completely disable cross-company ticket records to force each separate vendor to work in complete isolation.",
-                    "Deploy an integrated internal tracking setup that updates a single ticket in the background while keeping the customer with the first agent."
-                ],
-                correct: [0, 1, 3]
-            }
-        ]
-    };
-
-    // --- APPLICATION ENGINE ---
-    let examViolated = false;
-
-    function navigate(viewId) {
-        // Clear global window handlers if exiting exam mode
-        if (viewId !== 'exam') {
-            detachExamSecurity();
+        {
+            scenario: "A global enterprise platform experiences an unexpected, severe regional service blackout affecting approximately 1.5 million subscription accounts. Real-time data telemetry indicates that Customer Effort Scores (CES) are spiking dramatically across digital channels, causing the average queue length for live text assistance to surge past 120 minutes. Simultaneously, empty synchronous voice queues remain active because the interactive telephony system has not been calibrated to handle cross-channel diversions. Which strategic operational measures must the CX Manager authorize immediately to balance the load? (Select ALL that apply)",
+            options: [
+                "Broadcast immediate, systemic real-time notification banners outlining the issue inside the application interface.",
+                "Increase individual agent target Average Handle Time (AHT) parameters to deliberately slow down text interaction velocities.",
+                "Dynamically re-allocate idle voice infrastructure agents to handle the backlogged asynchronous messaging text queues.",
+                "Incorporate automated self-service routing trees that immediately link text inquiries to the primary status page."
+            ],
+            correct: [0, 2, 3]
+        },
+        {
+            scenario: "A customer experience management team integrates a generative AI chatbot helper to handle high-volume billing tier updates. During a baseline operational check, the generative engine encounters a highly ambiguous customer response prompt and hallucinations occur, resulting in the bot promising an unauthorized $500 cash statement credit on a basic non-refundable utility package. What programmatic steps and guardrail rules must be codified into the AI platform's environment rules to protect the bottom line while maintaining customer support quality? (Select ALL that apply)",
+            options: [
+                "Enforce strict algorithmic data-validation guardrails that completely block the AI layer from changing accounting fields directly.",
+                "Configure a hard code check that holds all system credits above a $0 threshold for human supervisor validation.",
+                "Program the system to demand full identity validation from the customer before every single chat reply text block is sent.",
+                "Deploy an automated keyword lookup table that balances the generative engine with pre-set financial parameters."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "A customer success manager identifies an ongoing operational anomaly where the digital self-service dashboard reports a stellar 94% task completion score. However, centralized contact center statistics reveal a corresponding 32% spike in repeat voice call escalations within 48 hours for identical customer accounts. Which of the following statements correctly evaluate this scenario and outline strategic remedies? (Select ALL that apply)",
+            options: [
+                "This trend presents a classic example of Faux Resolution Masking where tasks are closed on paper without addressing the customer's true root issue.",
+                "The data shows an ideal execution of the Service Recovery Paradox that naturally increases baseline retention performance.",
+                "The operational group should analyze post-incident logs to discover where self-service applications are missing final validation gates.",
+                "The organization must adjust performance indicators to measure long-term resolution success rather than isolated text completions."
+            ],
+            correct: [0, 2, 3]
+        },
+        {
+            scenario: "An enterprise BPO operations center manages a multi-tier customer ecosystem utilizing three distinct outside fulfillment vendors: Vendor A handles incoming product inquiries, Vendor B manages regional billing records, and Vendor C supervises transit tracking operations. Following a major shipping container delay, anxious consumers flooded the lines. Agents across all three separate fulfillment centers began transferring customers back and forth across different systems due to overlapping question types. To break this vendor bottleneck, what solutions should the CX structural architect enforce? (Select ALL that apply)",
+            options: [
+                "Establish a unified cross-vendor workflow charter and deploy an integrated dashboard system across all networks.",
+                "Instruct each vendor to set rigid firewalls to block ticket view access from adjacent BPO networks.",
+                "Incorporate automated omnichannel ticket tracking protocols to remove manual cross-vendor routing dependencies.",
+                "Redesign routing architectures to pair an escalated client case log with a singular owner through closure."
+            ],
+            correct: [0, 2, 3]
+        },
+        {
+            scenario: "An enterprise updates its corporate interactive voice response (IVR) dynamic routing matrix. The deployment objective is to mitigate the operational costs associated with handling repetitive inbound account inquiries. Which structural architecture adjustments best support long-term metric stability without degrading frontline support standards? (Select ALL that apply)",
+            options: [
+                "Deploy automated text-back APIs to securely transition appropriate caller profiles to asynchronous processing pools.",
+                "Hard-code an arbitrary maximum duration cut-off rule onto all telephone queues to artificially force call termination.",
+                "Integrate real-time API integrations that automatically stream dynamic billing tracking items straight into visual interfaces.",
+                "Completely eliminate standard verification trees to reduce the Average Handle Time (AHT) matrix score parameters."
+            ],
+            correct: [0, 2]
+        },
+        {
+            scenario: "During an ongoing quarterly operational evaluation, a customer experience team monitors a sustained drop in the Net Promoter Score (NPS) matrix. Concurrently, customer satisfaction (CSAT) scores recorded immediately post-interaction remain above 90%. What hidden operational phenomena could explain this statistical divergence? (Select ALL that apply)",
+            options: [
+                "The target sample metrics are capturing surface-level agent politeness while ignoring structural issues in transaction fulfillment.",
+                "The evaluation structure ignores customer effort over an entire end-to-end journey by checking single interaction steps.",
+                "Acoustic line noise levels within regional telephony operations centers are reversing numerical customer inputs.",
+                "The customer lifecycle faces delayed negative touchpoints, such as automated shipping delays or unaligned billing statements."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "An international e-commerce portal undergoes a global pricing calculation failure during an active promotional flash sale campaign. Thousands of consumers were charged standard non-discount rates for premium products. As a direct result, support ticket queues across social media ecosystems surged exponentially. How should an executive command center structurally triage this system issue? (Select ALL that apply)",
+            options: [
+                "Establish an immediate centralized communication team to post real-time updates and clear tracking status information across all public sites.",
+                "Configure automated routing keywords within CRM filters to flag price disputes and assign them directly to high-authority specialists.",
+                "Disable all server connections for automated messaging channels to force users to use telephony arrays.",
+                "Provide frontline staff with specific partial-credit tooling interfaces to resolve customer complaints instantly."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "A high-profile fintech application rolls out an active speech analytics monitoring interface across its centralized regional call center footprint. The core analytical engine detects multiple live agent conversations indicating immediate spikes in vocal stress patterns and overlapping cross-talk thresholds. What procedural automation patterns should occur next? (Select ALL that apply)",
+            options: [
+                "Flag high-stress operational tickets automatically on live supervisor tracking views for real-time review.",
+                "Stream immediate script assistance modifications directly onto affected agent workstations to support recovery.",
+                "Trigger automatic call disconnects to clear high-stress calls from active telephone infrastructure arrays.",
+                "Provide single-click takeover functionality for supervisory tiers directly within active performance dashboards."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "A luxury hospitality brand discovers high levels of customer retention churn occurring on its online subscription management profiles. The analytical logs reveal that the cancellation flow is completely frictionless, taking under 10 seconds to finish. Which adjustments balance user-experience flows with enterprise mitigation metrics? (Select ALL that apply)",
+            options: [
+                "Incorporate dynamic real-time evaluation trees that present custom retention offers based on individual account history.",
+                "Integrate quick asynchronous text access choices right before final cancellation clicks to connect users with retention teams.",
+                "Intentionally introduce system lag states to frustrate users until they abandon the online cancellation attempt.",
+                "Incorporate account pause configuration options as standard self-service features within user dashboards."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "A healthcare provider launches an upgraded patient scheduling dashboard that experiences continuous API data synchronization errors with legacy local database storage engines. What immediate operational architecture adjustments should a technical team deploy to prevent customer service failures at clinic check-in desks? (Select ALL that apply)",
+            options: [
+                "Deploy a real-time cloud data buffer layer to capture application schedules independently from core storage engines.",
+                "Provide counter staff with temporary offline system authority to manually bypass validation rules for verification.",
+                "Require patients to complete manual account registration paperwork at the desk before receiving assistance.",
+                "Provide agents with a standalone web view module to access independent validation data points."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "An enterprise communications system is calibrated to transition standard inbound phone contacts to digital asynchronous chat tools. Which operational metrics provide accurate insight into efficiency changes following this transition? (Select ALL that apply)",
+            options: [
+                "Concurrency ratios, tracking active parallel text conversations managed by single agent footprints.",
+                "Acoustic resonance variations across local physical server hardware environments.",
+                "First Contact Resolution (FCR) logs checked over a multi-day window to evaluate long-term issue closure.",
+                "Customer Effort Scores (CES) focused on identifying multi-channel verification requirements."
+            ],
+            correct: [0, 2, 3]
+        },
+        {
+            scenario: "A global logistics firm relies heavily on generative AI modules to draft operational customer email tracking logs. During an audit, administrators notice that the system is misinterpreting delivery timeline targets and generating unrealistic expectations. Which architectural guardrails fix this problem? (Select ALL that apply)",
+            options: [
+                "Connect the text generation engine directly to real-time verification databases using structured validation tables.",
+                "Configure automated rule checks to hold communications flagged with high delivery changes for human review.",
+                "Block all AI tracking message functions and return to entirely manual template workflows for all agents.",
+                "Enforce clear constraints within system environment parameters to limit dynamic timeline generation capabilities."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "A retail organization experiences an extended localized network disruption that affects its physical point-of-sale systems. Customers are unable to use credit cards, leading to long queues and high levels of frustration. How should the centralized support group handle the resulting customer issues? (Select ALL that apply)",
+            options: [
+                "Deploy mobile data devices immediately to process customer transactions using cellular backup connections.",
+                "Configure IVR announcements to alert callers to the network issue before they connect with support agents.",
+                "Instruct store staff to stop processing transactions and ask customers to return once systems are online.",
+                "Provide digital support channels with immediate account credits to compensate impacted customer profiles."
+            ],
+            correct: [0, 1, 3]
+        },
+        {
+            scenario: "An insurance provider upgrades its primary claims review interface to improve processing speeds. After deployment, operational data reveals that while individual file update speeds dropped, overall claim finalization cycles increased. What underlying system bottlenecks could be causing this discrepancy? (Select ALL that apply)",
+            options: [
+                "The new software layout requires manual information duplication across legacy secondary screening systems.",
+                "The faster processing speeds are causing system errors that trigger automated file reviews.",
+                "The user interface optimization failed to include required validation fields, resulting in higher downstream errors.",
+                "The interface layout changes caused the system to draw high amounts of processing power from local servers."
+            ],
+            correct: [0, 1, 2]
         }
+    ];
 
-        document.querySelectorAll('.nav-link').forEach(link => link.classList.remove('active'));
-        const targetLink = document.getElementById(`nav-${viewId}`);
-        if(targetLink) targetLink.classList.add('active');
+    // Check if user has already failed this exam in this browser session
+    if (localStorage.getItem("exam_status_failed") === "true") {
+        lockExamPermanently();
+    } else {
+        renderExamQuestions();
+    }
 
-        const mainView = document.getElementById('main-view');
+    function renderExamQuestions() {
+        const container = document.getElementById("questions-container");
+        let html = "";
         
-        if (viewId === 'theory') {
-            mainView.innerHTML = `
-                <div class="certification-card">
-                    <h1>${DB.theory.title}</h1>
-                    ${DB.theory.content}
-                </div>
-            `;
-        } 
-        else if (viewId === 'cases') {
-            let html = `<div class="certification-card"><h1>Strategic Case Studies</h1>`;
-            DB.cases.forEach(c => {
-                html += `
-                    <div class="case-wrapper">
-                        <div class="case-header">${c.title}</div>
-                        <div class="case-content"><strong>Strategic Challenge:</strong>${c.problem}</div>
-                        <div class="case-solution"><strong>Executive Resolution:</strong>${c.solution}</div>
-                    </div>
-                `;
-            });
-            html += `</div>`;
-            mainView.innerHTML = html;
-        } 
-        else if (viewId === 'drills') {
-            let html = `<div class="certification-card"><h1>Operational Performance Drills</h1>`;
-            DB.drills.forEach(d => {
-                html += `
-                    <div class="drill-block">
-                        <div class="drill-header">${d.title}</div>
-                        <div class="drill-body">
-                            <p>${d.instruction}</p>
-                            <textarea id="drill-text-${d.id}" style="width:100%; height:120px; padding:15px; border-radius:4px; border:1px solid #cbd5e1; font-family:inherit; font-size:1rem;" placeholder="Type strategic resolution framework here..."></textarea>
-                            <div id="drill-feedback-${d.id}" class="drill-feedback"></div>
-                            <button type="button" class="btn-primary" style="padding:12px; margin-top:15px; font-size:1rem; width:auto;" onclick="submitDrill(${d.id})">Submit Operational Drill</button>
-                        </div>
-                    </div>
-                `;
-            });
-            html += `</div>`;
-            mainView.innerHTML = html;
-        } 
-        else if (viewId === 'exam') {
-            examViolated = false;
-            let html = `
-                <div class="certification-card exam-secure-container" id="secure-card">
-                    <div class="exam-header">
-                        <div class="proctor-badge"><span style="width:8px; height:8px; background:#fff; border-radius:50%; display:inline-block;"></span> SECURE AI PROCTORING ACTIVE</div>
-                        <div class="webcam-feed-simulation">
-                            <div class="webcam-dot"></div>
-                            WEBCAM LIVE<br><span id="cam-coords" style="color:#0af; font-size:0.5rem;">REC...</span>
-                        </div>
-                        <h1 style="color:white; margin-bottom:10px; font-size:2.2rem;">EXECUTIVE CERTIFICATION EXAM</h1>
-                        <p style="margin:5px 0;">Advanced Omnichannel Strategy & Analytics Architecture</p>
-                        <p style="color:var(--gold); font-weight:bold; margin:5px 0;">CRITICAL STATUS: MULTIPLE ANSWER QUESTIONS - SELECT ALL CORRECT OPTIONS</p>
-                        <p><strong>Passing Criteria: 100% Absolute Mastery Required</strong></p>
-                    </div>
-                    
-                    <div id="violation-msg" class="violation-overlay"></div>
-
-                    <form id="exam-form" onsubmit="evaluateExam(event)">
-            `;
-
-            DB.exam.forEach((q, idx) => {
-                html += `
-                    <div class="q-block">
-                        <div class="q-scenario"><strong>Scenario ${idx + 1}:</strong> ${q.scenario}</div>
-                        <span class="q-multi-alert">Select all answers that apply to this operational architecture:</span>
-                        <div class="options-container">
-                `;
-                q.options.forEach((opt, oIdx) => {
-                    html += `
-                        <label class="option-label">
-                            <input type="checkbox" name="q${q.id}" value="${oIdx}">
-                            <span>${opt}</span>
-                        </label>
-                    `;
-                });
-                html += `
-                        </div>
-                    </div>
-                `;
-            });
-
+        EXAM_QUESTIONS.forEach((q, i) => {
             html += `
-                        <div id="result-overlay"></div>
-                        <button type="submit" class="btn-primary" id="btn-submit">Submit Solutions for Verification</button>
-                        <button type="button" class="btn-primary btn-retake" onclick="navigate('exam')" style="display:none;" id="btn-reset">Restart Secure Examination</button>
-                    </form>
+                <div class="q-block">
+                    <span class="q-multi-alert">Multiple-Response Choice (Select All That Apply)</span>
+                    <div class="q-scenario"><strong>QUESTION ${i + 1} of ${EXAM_QUESTIONS.length}:</strong> ${q.scenario}</div>
+                    <div class="options-wrapper">
+            `;
+            q.options.forEach((opt, optIndex) => {
+                html += `
+                    <label class="option-label">
+                        <input type="checkbox" name="q${i}" value="${optIndex}">
+                        <span>${opt}</span>
+                    </label>
+                `;
+            });
+            html += `
+                    </div>
                 </div>
             `;
-            mainView.innerHTML = html;
-            attachExamSecurity();
-        }
-    }
-
-    function submitDrill(drillId) {
-        const textValue = document.getElementById(`drill-text-${drillId}`).value.trim();
-        const feedbackDiv = document.getElementById(`drill-feedback-${drillId}`);
+        });
         
-        if (!textValue) {
-            alert("Please type your response framework before submitting.");
-            return;
-        }
-        
-        feedbackDiv.style.display = "block";
-        feedbackDiv.innerHTML = `<strong>Operational Assessment Confirmed:</strong> Response log accepted into training repository. Your framework aligns with strategic zero-friction omnichannel validation guidelines. Monitor real-time performance attributes closely.`;
-    }
-
-    // --- SECURE EXAM ENGINE & ANTI-CHEAT SYSTEM ---
-    function attachExamSecurity() {
-        // Enforce anti-selection / copy / cut / paste
-        const secureCard = document.getElementById('secure-card');
-        if(!secureCard) return;
-
-        secureCard.addEventListener('contextmenu', preventDefaultAction);
-        secureCard.addEventListener('copy', preventDefaultAction);
-        secureCard.addEventListener('cut', preventDefaultAction);
-        secureCard.addEventListener('paste', preventDefaultAction);
-        secureCard.addEventListener('keydown', handleKeyRestrictions);
-        
-        // Simulating webcam variance array coordinates
-        window.examCamInterval = setInterval(() => {
-            const coords = document.getElementById('cam-coords');
-            if(coords) {
-                coords.innerText = `X:${Math.floor(Math.random()*40+10)} Y:${Math.floor(Math.random()*40+50)} V_FPS:30`;
-            }
-        }, 1200);
-
-        // Visibility API tracking to stop window changing or screen-grabbing programs
-        document.addEventListener('visibilitychange', handleVisibilityViolation);
-    }
-
-    function detachExamSecurity() {
-        document.removeEventListener('visibilitychange', handleVisibilityViolation);
-        clearInterval(window.examCamInterval);
-    }
-
-    function preventDefaultAction(e) {
-        e.preventDefault();
-        triggerViolation("Unauthorized Clipboard action, Copying, or Right-Click Context Menu detected.");
-    }
-
-    function handleKeyRestrictions(e) {
-        // Block Ctrl+C, Ctrl+V, Ctrl+X, Ctrl+P, PrintScreen mechanisms
-        if (e.ctrlKey && ['c', 'v', 'x', 'p', 's'].includes(e.key.toLowerCase())) {
-            e.preventDefault();
-            triggerViolation("Keyboard shortcut security exception triggered.");
-        }
-        if (e.key === 'PrintScreen') {
-            e.preventDefault();
-            triggerViolation("Hardware PrintScreen capture framework intercepted.");
-        }
-    }
-
-    function handleVisibilityViolation() {
-        if (document.hidden) {
-            triggerViolation("Window focus change or screenshot utility workspace swap detected.");
-        }
-    }
-
-    function triggerViolation(reason) {
-        if (examViolated) return;
-        examViolated = true;
-        
-        const form = document.getElementById('exam-form');
-        const violationMsg = document.getElementById('violation-msg');
-        const submitBtn = document.getElementById('btn-submit');
-        const resetBtn = document.getElementById('btn-reset');
-        const secureCard = document.getElementById('secure-card');
-
-        if(secureCard) secureCard.style.filter = "blur(4px)";
-        setTimeout(() => { if(secureCard) secureCard.style.filter = "none"; }, 500);
-
-        if(form) form.style.display = "none";
-        if(violationMsg) {
-            violationMsg.style.display = "block";
-            violationMsg.innerHTML = `
-                <h2>EXAM CANCELLED & LOCKED</h2>
-                <p><strong>Security Violation Reason:</strong> ${reason}</p>
-                <p>Your continuous webcam tracking system and window event observers recorded an external device lookup, screenshot, or copy attempt. This layout is hard locked to prevent mobile phone typing translations.</p>
-            `;
-        }
-        if (submitBtn) submitBtn.style.display = "none";
-        if (resetBtn) resetBtn.style.display = "block";
-        detachExamSecurity();
+        container.innerHTML = html;
     }
 
     function evaluateExam(event) {
         event.preventDefault();
-        if(examViolated) return;
+        
+        // Final Double Check Protection against manual code injection bypasses
+        if (localStorage.getItem("exam_status_failed") === "true") {
+            lockExamPermanently();
+            return;
+        }
 
-        let totalQuestions = DB.exam.length;
-        let score = 0;
+        let totalPassed = 0;
+        const totalQuestions = EXAM_QUESTIONS.length;
 
-        DB.exam.forEach(q => {
-            const checkedBoxes = document.querySelectorAll(`input[name="q${q.id}"]:checked`);
-            const userAnswers = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+        EXAM_QUESTIONS.forEach((q, i) => {
+            const checkedBoxes = document.querySelectorAll(`input[name="q${i}"]:checked`);
+            const selected = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
+            const correct = q.correct;
+
+            const isCorrect = selected.length === correct.length && 
+                              selected.every(val => correct.includes(val));
             
-            // Check if user arrays match completely with the correct selections
-            const matchesAllCorrect = q.correct.every(val => userAnswers.includes(val));
-            const matchesLength = q.correct.length === userAnswers.length;
-
-            if (matchesAllCorrect && matchesLength) {
-                score++;
+            if (isCorrect) {
+                totalPassed++;
             }
         });
 
-        const pct = (score / totalQuestions) * 100;
-        const overlay = document.getElementById('result-overlay');
-        const submitBtn = document.getElementById('btn-submit');
-        const resetBtn = document.getElementById('btn-reset');
+        const scorePercentage = Math.round((totalPassed / totalQuestions) * 100);
+        const resultOverlay = document.getElementById('result-overlay');
+        
+        resultOverlay.style.display = "block";
+        window.scrollTo({ top: resultOverlay.offsetTop + 200, behavior: 'smooth' });
 
-        overlay.style.display = "block";
-        window.scrollTo({ top: overlay.offsetTop + 200, behavior: 'smooth' });
-
-        if (pct === 100) {
-            overlay.style.background = "#dcfce7";
-            overlay.style.color = "#15803d";
-            overlay.style.border = "2px solid #bbf7d0";
-            overlay.innerHTML = `<h2>CERTIFICATION APPROVED</h2><p>You achieved 100% (${score}/${totalQuestions}). Perfect evaluation record. You have demonstrated flawless command over advanced omnichannel system parameters.</p>`;
-            if (submitBtn) submitBtn.style.display = "none";
-            if (resetBtn) resetBtn.style.display = "none";
+        if (scorePercentage >= 80) {
+            // SUCCESS PASSED MATRIX
+            resultOverlay.className = ""; 
+            resultOverlay.style.background = "#dcfce7";
+            resultOverlay.style.color = "#166534";
+            resultOverlay.style.border = "3px solid #22c55e";
+            resultOverlay.innerHTML = `
+                <h2 style="color:#166534; margin:0 0 10px; font-size:2rem; text-transform:uppercase;">CREDENTIAL CONFERRED</h2>
+                <p style="font-size:1.5rem; margin:0;">Final Architecture Score: <strong>${scorePercentage}%</strong> (${totalPassed}/${totalQuestions} Correct)</p>
+                <p style="margin-top:10px; font-weight:normal;">Congratulations. Your operational strategy configurations meet administrative deployment standards.</p>
+            `;
         } else {
-            overlay.style.background = "#fef2f2";
-            overlay.style.color = "#991b1b";
-            overlay.style.border = "2px solid #fecaca";
-            overlay.innerHTML = `<h2>CERTIFICATION DENIED</h2><p>You scored ${pct.toFixed(1)}% (${score}/${totalQuestions} correct). Multi-answer questions require picking ALL strategic selections cleanly. Review system details and try again.</p>`;
-            if (submitBtn) submitBtn.style.display = "none";
-            if (resetBtn) resetBtn.style.display = "block";
+            // CRITICAL SYSTEM FAILURE: LOG ATTEMPT AND LOCK OUT USER
+            localStorage.setItem("exam_status_failed", "true");
+            lockExamPermanently();
         }
-        detachExamSecurity();
     }
 
-    // Direct Boot Assignment
-    window.onload = function() {
-        navigate('theory');
-    };
+    function lockExamPermanently() {
+        document.getElementById('exam-view-wrapper').innerHTML = ""; // Clear and destroy all active test components
+        
+        const resultOverlay = document.getElementById('result-overlay');
+        resultOverlay.style.display = "block";
+        resultOverlay.className = "failed-terminal"; // Trigger intense high-colorful gradient layout styles
+        
+        resultOverlay.innerHTML = `
+            <div class="failed-title">🚨 ACCESS VIOLATION & ATTEMPT LOCKOUT 🚨</div>
+            <div style="font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #fca5a5;">
+                Security Level: CRITICAL_TERMINATION_EVENT
+            </div>
+            <div class="failed-msg">
+                <strong>EVALUATION LEDGER REGISTRATION: FAILED</strong><br><br>
+                Your system architecture configuration score dropped below the required 80% passing threshold. 
+                As a strict proctored protocol for this executive certification, 
+                <strong>YOU ARE NOT ALLOWED TO DO THIS EXAM.</strong><br><br>
+                Your single authorized testing session token has been permanently revoked. 
+                All future attempts to access, review, or submit this architecture ledger from your profile are blocked.
+            </div>
+            <div style="font-size:0.8rem; color:#fca5a5; opacity:0.7; margin-top:15px; font-family: monospace;">
+                ERR_CODE: ATTEMPT_MAX_EXCEEDED // TRANSACTION_LOGGED_TO_ADMINISTRATOR
+            </div>
+        `;
+    }
 </script>
 
 </body>
