@@ -33,7 +33,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            min-height: 100vi;
+            min-height: 100vh;
             background: linear-gradient(135deg, var(--secondary) 0%, var(--primary) 100%);
         }
 
@@ -135,7 +135,7 @@
         .main-layout {
             display: grid;
             grid-template-columns: 280px 1fr;
-            min-height: calc(100vi - 70px);
+            min-height: calc(100vh - 70px);
         }
 
         /* --- SIDEBAR --- */
@@ -212,7 +212,7 @@
         .content-body {
             padding: 2rem;
             overflow-y: auto;
-            max-height: calc(100vi - 70px);
+            max-height: calc(100vh - 70px);
         }
 
         .section-card {
@@ -253,47 +253,73 @@
         .drill-list {
             display: flex;
             flex-direction: column;
-            gap: 0.75rem;
+            gap: 1.25rem;
             margin-top: 1rem;
         }
 
         .drill-item {
             border: 1px solid var(--border);
-            border-radius: 4px;
-            padding: 1rem;
-            display: flex;
-            align-items: flex-start;
-            gap: 1rem;
+            border-radius: 6px;
+            padding: 1.25rem;
             background: #fff;
-            transition: background 0.2s;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.02);
         }
 
-        .drill-item:hover {
-            background: #fafafa;
-        }
-
-        .drill-checkbox {
-            margin-top: 0.25rem;
-            transform: scale(1.2);
-            cursor: pointer;
-        }
-
-        .drill-content {
-            flex: 1;
+        .drill-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 0.5rem;
         }
 
         .drill-content strong {
-            display: block;
             color: var(--secondary);
-            margin-bottom: 0.25rem;
+            font-size: 1.05rem;
         }
 
-        .drill-content code {
-            background: #f1f1f1;
-            padding: 0.1rem 0.3rem;
-            border-radius: 3px;
-            font-family: monospace;
+        .drill-content p {
+            margin-top: 0.25rem;
+            color: #444;
+            font-size: 0.95rem;
+            line-height: 1.4;
+        }
+
+        .solution-box {
+            width: 100%;
+            margin-top: 0.75rem;
+            padding: 0.75rem;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
             font-size: 0.9rem;
+            background-color: #FAFAFA;
+            resize: vertical;
+            transition: border-color 0.2s, background-color 0.2s;
+        }
+
+        .solution-box:focus {
+            outline: none;
+            border-color: var(--primary);
+            background-color: #FFF;
+        }
+
+        .solution-box.completed {
+            border-left: 4px solid var(--success);
+        }
+
+        .example-block {
+            background: #FFFDE7;
+            border-left: 4px solid #FBC02D;
+            padding: 1rem;
+            margin-top: 0.75rem;
+            border-radius: 4px;
+        }
+
+        .example-item {
+            margin-bottom: 0.75rem;
+        }
+        .example-item:last-child {
+            margin-bottom: 0;
         }
     </style>
 </head>
@@ -343,7 +369,7 @@
                         <div class="progress-bar" id="main-progress"></div>
                     </div>
                     <div style="font-size: 0.75rem; color: #666; margin-top: 0.5rem; text-align: center;" id="drill-count">
-                        0 of 210 drills checked
+                        0 of 60 drills completed
                     </div>
                 </div>
 
@@ -361,122 +387,126 @@
     </div>
 
     <script>
-        // Data containing curriculum configuration 
         const authorizedEmails = ["motadisai@outlook.com"];
         
-        // Active curriculum dataset for Days 1-7
+        // Comprehensive training data structure containing 30 standalone drills for Day 1 and Day 2
         const trainingData = {
             1: {
                 title: "Day 1: CX Metrics & Trend Analysis Baseline",
                 desc: "Focuses on extracting high-volume raw data from CRM and telephony logs to track operational core metrics like Average Handle Time (AHT) and First Contact Resolution (FCR). Analytics are pointed toward diagnosing customer friction trends.",
+                instructions: "Review the data structure challenges and raw metrics definitions. Read the syntax requirements in the instructions layout before providing localized processing scripts or technical evaluations in the work boxes below.",
                 problem: "Spike in customer callbacks observed across the e-commerce support business line during post-holiday volume spikes.",
                 challenge: "Unclean raw database systems misclassify disconnected transfers as resolved issues, artificially inflating FCR numbers.",
                 scenario: "An analyst discovers a specific queue is experiencing a 22% handle time increase. You must pull interaction logs to discover whether the driver is agent knowledge gaps or software latency issues.",
+                examples: [
+                    {
+                        task: "Write a base SQL query to pull AHT grouped by Agent_ID.",
+                        expectedType: "SQL Structure",
+                        sample: "SELECT agent_id, AVG(call_duration_seconds) AS aht FROM telephony_logs GROUP BY agent_id;"
+                    },
+                    {
+                        task: "Identify metric anomalies caused by aborted server frames.",
+                        expectedType: "Analytical Logic",
+                        sample: "Evaluate whether tracking arrays show a duration of zero without a closed flag."
+                    }
+                ],
                 drills: [
-                    "Write a base SQL query to pull `AHT` grouped by `Agent_ID` from the `telephony_logs` structure.",
-                    "Isolate call rows where `Call_Duration_Seconds` is less than 5 seconds to flag accidental drop-offs.",
-                    "Calculate the historical variance of `FCR` changes across the last rolling 30 business days.",
-                    "Cleanse null strings in the `Customer_Feedback` column and replace them with standard string variables.",
-                    "Design a basic trend bar chart structure outline mapping volume metrics across hourly shifts.",
-                    "Identify the top 3 outlier agents whose handle time deviates over 2 standard deviations from the team mean."
+                    { id: "D1_01", type: "SQL Query", text: "Write a base SQL query to pull `AHT` grouped by `Agent_ID` from the `telephony_logs` structure.", placeholder: "SELECT agent_id, AVG..." },
+                    { id: "D1_02", type: "SQL Query", text: "Isolate call rows where `Call_Duration_Seconds` is less than 5 seconds to flag accidental drop-offs.", placeholder: "SELECT * FROM telephony_logs WHERE..." },
+                    { id: "D1_03", type: "Statistical Calculation", text: "Write out a mathematical formula or window structure to evaluate the historical variance of `FCR` changes across a rolling 30 business day timeframe.", placeholder: "VARIANCE() OVER or formula implementation..." },
+                    { id: "D1_04", type: "Data Cleansing", text: "Cleanse null strings inside the `Customer_Feedback` column and replace them with a default value alternative string string 'No Comment'.", placeholder: "COALESCE(customer_feedback, 'No Comment')..." },
+                    { id: "D1_05", type: "Visual Architecture", text: "Design a basic trend bar chart configuration schematic text mapping aggregate operational volumes across hourly split-shifts.", placeholder: "Define your fields for x-axis, y-axis groupings..." },
+                    { id: "D1_06", type: "Statistical Analysis", text: "Isolate the top outlier agents whose absolute handle times deviate over 2 standard deviations away from the team historical mean score metrics.", placeholder: "Describe filtering script logic or standard deviation bounds..." },
+                    { id: "D1_07", type: "SQL Query", text: "Extract unique customer records who called the telephony system line more than 3 distinct times within an active 48-hour operational window.", placeholder: "SELECT customer_id FROM... GROUP BY... HAVING count(*)..." },
+                    { id: "D1_08", type: "Data Validation", text: "Draft a data validation syntax checking framework to verify that `Hold_Time` combined with `Talk_Time` does not exceed total `Call_Duration` metrics.", placeholder: "WHERE (hold_time + talk_time) > call_duration..." },
+                    { id: "D1_09", type: "Data Cleansing", text: "Format timestamp elements containing disparate text structures like 'DD/MM/YYYY HH:MI' to conform to standardized system datetimes (`YYYY-MM-DD HH:MI:SS`).", placeholder: "STR_TO_DATE or alternative casting methods..." },
+                    { id: "D1_10", type: "SQL Query", text: "Determine the exact daily drop-off percentage share of interactions dropped while routed inside automated routing structures before matching with an live agent.", placeholder: "SELECT SUM(CASE WHEN routed_status='dropped')..." },
+                    { id: "D1_11", type: "Operational Logic", text: "Develop a logic algorithm rule to isolate logs where agent data logging systems indicate wrap-up duration spans longer than active verbal communication talk time frameworks.", placeholder: "Identify metrics threshold parameters..." },
+                    { id: "D1_12", type: "SQL Query", text: "Determine day-over-day tracking trends mapping percentage change patterns of incoming contact metrics during peak holiday intervals using window operations.", placeholder: "LAG(volume, 1) OVER (ORDER BY date)..." },
+                    { id: "D1_13", type: "Analytical Evaluation", text: "Examine whether a multi-variable scatter plot matrix or a continuous chronological chart matrix serves best when tracking exact links between AHT adjustments and aggregate satisfaction rankings.", placeholder: "Justify asset application models..." },
+                    { id: "D1_14", type: "Statistical Calculation", text: "Isolate and surface median values from a row array tracking telephony hold durations without relying on built-in native average shortcuts.", placeholder: "Detail sorting partitions and row count indexing systems..." },
+                    { id: "D1_15", type: "Analytical Evaluation", text: "Build a hypothesis pattern framework proving technical platform delay disruptions are impacting a localized operational center zone uniformly rather than individual agent profiles.", placeholder: "State parameters to cross-examine..." },
+                    { id: "D1_16", type: "SQL Query", text: "Write a query to pull total talk time grouped by language queue identifier codes.", placeholder: "SELECT language_code, SUM(talk_time)..." },
+                    { id: "D1_17", type: "SQL Query", text: "Calculate the transfer rate per agent code by dividing total transferred calls by total handled contacts.", placeholder: "SELECT agent_id, COUNT(CASE WHEN status='transferred')..." },
+                    { id: "D1_18", type: "Data Cleansing", text: "Identify duplicate rows where identical `Call_ID` values exist with matching timestamps, retaining only the first instance.", placeholder: "ROW_NUMBER() OVER(PARTITION BY call_id ORDER BY...)" },
+                    { id: "D1_19", type: "Data Validation", text: "Flag records where an agent's `Wrap_Up_Time` is negative due to system logging errors.", placeholder: "SELECT * FROM system_logs WHERE wrap_up_time < 0..." },
+                    { id: "D1_20", type: "SQL Query", text: "Find the maximum concurrent active calls handled in the telephony system for any single minute index during the day.", placeholder: "SELECT minute_timestamp, COUNT(*) FROM..." },
+                    { id: "D1_21", type: "Data Cleansing", text: "Extract numeric characters only from a dirty string field containing phone formatting mix-ins like dashes, brackets, and empty spaces.", placeholder: "REGEXP_REPLACE(phone_str, '[^0-9]', '')..." },
+                    { id: "D1_22", type: "Statistical Analysis", text: "Calculate the skewness direction conceptually if 80% of calls have an AHT of under 120 seconds, but a small group of calls extends over 2,000 seconds.", placeholder: "State skewness direction and business impact..." },
+                    { id: "D1_23", type: "Visual Architecture", text: "Map out the metrics parameters necessary to produce a real-time alerting dashboard view for queue volume breaches.", placeholder: "Define refresh rates and trigger limits..." },
+                    { id: "D1_24", type: "Operational Logic", text: "Express a metric rule that identifies 'ghost calls' where an interaction occurs but zero bytes of audio are registered in the transfer log.", placeholder: "Identify filter properties..." },
+                    { id: "D1_25", type: "SQL Query", text: "List out all agents who have never recorded a first contact resolution success status throughout the current logging period.", placeholder: "SELECT agent_id FROM agents WHERE agent_id NOT IN..." },
+                    { id: "D1_26", type: "Data Cleansing", text: "Standardize agent names by removing trailing or leading spaces and forcing proper title casing structures via string transformations.", placeholder: "TRIM() or regex logic..." },
+                    { id: "D1_27", type: "SQL Query", text: "Calculate the average wait time exclusively for customers who hung up before being transferred to an available operational queue.", placeholder: "SELECT AVG(wait_time) WHERE status = 'abandoned'..." },
+                    { id: "D1_28", type: "Statistical Calculation", text: "Compute the 90th percentile threshold baseline value for customer queue wait times over a weekly window dataset.", placeholder: "PERCENTILE_CONT(0.9) WITHIN GROUP..." },
+                    { id: "D1_29", type: "Operational Logic", text: "Formulate a detection metric designed to flag short-call manipulation where agents pick up and immediately hang up to artificially drive down handle statistics.", placeholder: "Define call duration cutoff thresholds..." },
+                    { id: "D1_30", type: "SQL Query", text: "Extract the rolling weekly volume total of incoming interactions for each calendar day using analytical partition queries.", placeholder: "SUM(volume) OVER(ORDER BY date ROWS BETWEEN 6 PRECEDING...)" }
                 ]
             },
             2: {
                 title: "Day 2: CSAT Foundations & VoC Survey Analytics",
                 desc: "Deep dive into Voice of the Customer (VoC) feedback ecosystems, correlation dynamics between operational targets, and explicit customer sentiment responses.",
+                instructions: "Analyze the open sentiment feedback records and rating scale frameworks. Supply standard data manipulations, text filters, or strategic interpretation responses in the entry elements below.",
                 problem: "CSAT scores dropping despite internal QA quality evaluations remaining at an all-time target high of 95%.",
                 challenge: "Low customer response rates (under 3%) make the current dataset highly volatile and prone to selection bias errors.",
                 scenario: "A client demands a granular text classification breakdown showing exactly why customers are marking agent interactions with poor evaluation scores.",
+                examples: [
+                    {
+                        task: "Write a calculation metric defining 'Inactivity Duration' before a user is flagged at risk.",
+                        expectedType: "Metric Formula",
+                        sample: "Inactivity = Current_Date - MAX(Last_Login_Date). Flag if Inactivity > 45 days."
+                    },
+                    {
+                        task: "Isolate customer feedback text containing severe negative sentiment markers.",
+                        expectedType: "SQL Regex",
+                        sample: "SELECT feedback FROM surveys WHERE feedback LIKE '%unacceptable%' OR feedback LIKE '%terrible%';"
+                    }
+                ],
                 drills: [
-                    "Filter post-call survey files to only include rows with scores falling below critical threshold limits (<6/10).",
-                    "Build an operational flag statement classifying open text for critical keywords like 'frustrated' or 'long hold'.",
-                    "Write a query to isolate CSAT metrics exclusively by business vendor lines and localized hub configurations.",
-                    "Cross-reference CSAT datasets against hold time variables using a basic statistical correlation template.",
-                    "Draft an executive reporting summary explaining why a small survey sample size skews aggregate statistics.",
-                    "Calculate total volume shares of non-responsive survey accounts across different shift periods."
+                    { id: "D2_01", type: "SQL Query", text: "Filter post-call survey files to only include rows with scores falling below critical threshold limits (<6/10).", placeholder: "SELECT * FROM survey_responses WHERE score < 6..." },
+                    { id: "D2_02", type: "Data Cleansing", text: "Build an operational flag statement classifying open text for critical keywords like 'frustrated' or 'long hold'.", placeholder: "CASE WHEN feedback LIKE '%long hold%' THEN 'Issue'..." },
+                    { id: "D2_03", type: "SQL Query", text: "Write a query to isolate CSAT metrics exclusively by business vendor lines and localized hub configurations.", placeholder: "SELECT vendor_id, hub_loc, AVG(csat) GROUP BY..." },
+                    { id: "D2_04", type: "Statistical Analysis", text: "Cross-reference CSAT datasets against hold time variables using a basic statistical correlation template schema strategy.", placeholder: "Outline covariance or Pearson correlation steps..." },
+                    { id: "D2_05", type: "Analytical Evaluation", text: "Draft an executive reporting summary explaining why a small survey sample size skews aggregate statistics and creates selection bias errors.", placeholder: "Explain how extreme responses skew metrics..." },
+                    { id: "D2_06", type: "Statistical Calculation", text: "Calculate total volume shares of non-responsive survey accounts across different operational shift periods to locate response variance gaps.", placeholder: "SELECT shift, COUNT(case when response IS NULL)..." },
+                    { id: "D2_07", type: "SQL Query", text: "Isolate customers who left a Top-Box CSAT rating (9 or 10) but left feedback containing structural critique words like 'expensive' or 'slow'.", placeholder: "SELECT customer_id WHERE score >= 9 AND (text LIKE...)" },
+                    { id: "D2_08", type: "Data Cleansing", text: "Normalize disparate survey scales (one legacy tool tracks 1-5 scales, another tracks 1-10) onto a single, uniform 0-100 mathematical scale index.", placeholder: "Formula: (Score - Min) / (Max - Min) * 100..." },
+                    { id: "D2_09", type: "SQL Query", text: "Calculate the response rate metric per agent by comparing total closed interactions with verified survey response counts.", placeholder: "COUNT(survey_id) / COUNT(interaction_id)..." },
+                    { id: "D2_10", type: "Text Processing", text: "Write an optimized regular expression snippet to remove automated email signature templates out of raw customer open-text survey logs.", placeholder: "REGEXP_REPLACE(feedback_text, '--\\\\s*\\\\n.*', '')..." },
+                    { id: "D2_11", type: "Analytical Evaluation", text: "Differentiate the operational value and statistical distribution models of tracking a simple binary Yes/No FCR survey against a multi-point scalar CSAT metric.", placeholder: "Contrast nominal metrics with interval metrics..." },
+                    { id: "D2_12", type: "SQL Query", text: "Extract the bottom 5% of agents based on rolling 30-day survey scores, utilizing rank parsing window functions.", placeholder: "PERCENT_RANK() OVER (ORDER BY avg_score)..." },
+                    { id: "D2_13", type: "Data Validation", text: "Create a filter verification script to isolate records where users generated a completed survey response timestamp that occurs prior to the logged interaction closure timestamp.", placeholder: "WHERE survey_time < call_end_time..." },
+                    { id: "D2_14", type: "Visual Architecture", text: "Map out the chart groupings and field linkages needed to visualize a Voice of Customer (VoC) keyword density cloud map based on volume counts.", placeholder: "Describe token counts and filtering criteria..." },
+                    { id: "D2_15", type: "Operational Logic", text: "Design an alert system model logic rule that automatically flags accounts for executive save-outreach when a historically loyal client tracks two consecutive CSAT scores below 4.", placeholder: "Define the join or state machine logic..." },
+                    { id: "D2_16", type: "SQL Query", text: "Calculate the Net Promoter Score (NPS) from raw survey classification arrays by subtracting Detractors (%) from Promoters (%).", placeholder: "COUNT(promoters) - COUNT(detractors)..." },
+                    { id: "D2_17", type: "SQL Query", text: "Group survey responses into volume buckets based on customer tenure months to evaluate if newer clients give harsher ratings.", placeholder: "SELECT tenure_bucket, AVG(csat_score) FROM..." },
+                    { id: "D2_18", type: "Data Cleansing", text: "Strip out standard non-informational English words (stop-words like 'the', 'is', 'at') from feedback strings before run-count grouping.", placeholder: "Describe parsing array replace structure..." },
+                    { id: "D2_19", type: "Data Validation", text: "Identify cases where a single customer submitted multiple distinct survey ratings within a 5-minute window, flagging potential bot behavior.", placeholder: "GROUP BY customer_id, minute_window HAVING COUNT(*) > 1..." },
+                    { id: "D2_20", type: "SQL Query", text: "Find the average CSAT score exclusively for calls that experienced a transfer operation versus direct-resolved contacts.", placeholder: "SELECT transfer_flag, AVG(csat_score) FROM..." },
+                    { id: "D2_21", type: "Text Processing", text: "Isolate instances where a feedback field contains strings in ALL CAPS to flag highly expressive customer emotional states.", placeholder: "WHERE feedback = UPPER(feedback) AND feedback REGEXP '[A-Z]'..." },
+                    { id: "D2_22", type: "Statistical Analysis", text: "Determine the confidence interval calculation requirements when stating that an agent's true monthly CSAT average is 8.4 based on 15 samples.", placeholder: "Mention sample sizing, margin of error, and standard error fields..." },
+                    { id: "D2_23", type: "Visual Architecture", text: "Propose an optimal dashboard visual format to compare supervisor team performance against organizational global target lines.", placeholder: "Describe target bullet graphs or multi-line benchmarks..." },
+                    { id: "D2_24", type: "Operational Logic", text: "Formulate a weighted satisfaction calculation index that gives 70% value to phone interaction surveys and 30% to self-service portal ratings.", placeholder: "Formula: (phone_csat * 0.7) + (portal_csat * 0.3)..." },
+                    { id: "D2_25", type: "SQL Query", text: "Find the count of survey records that have an evaluation score but are completely missing accompanying open text commentary details.", placeholder: "SELECT COUNT(*) FROM surveys WHERE score IS NOT NULL AND comment IS NULL..." },
+                    { id: "D2_26", type: "Data Cleansing", text: "Convert numerical feedback ratings submitted as text formats with mixed notation strings (e.g. '8 out of 10') into clean integer types.", placeholder: "CAST(SUBSTRING_INDEX(rating_str, ' ', 1) AS UNSIGNED)..." },
+                    { id: "D2_27", type: "SQL Query", text: "Identify the top 3 agents in each supervisor team who achieved the largest positive month-over-month CSAT increase score.", placeholder: "DENSE_RANK() OVER(PARTITION BY supervisor ORDER BY score_diff DESC)..." },
+                    { id: "D2_28", type: "Statistical Calculation", text: "Isolate the modal response value from an ordinal survey rating dataset to discover the most common client score marker.", placeholder: "GROUP BY score ORDER BY COUNT(*) DESC LIMIT 1..." },
+                    { id: "D2_29", type: "Operational Logic", text: "Define the operational criteria needed to flag a survey response as a 'mismatched entry' (e.g. customer writes heavy praise but clicks a 1/10 score).", placeholder: "Outline string matches checked against numeric score thresholds..." },
+                    { id: "D2_30", type: "SQL Query", text: "Aggregate average customer effort scores (CES) grouped by the primary transaction type code to determine the most difficult workflow.", placeholder: "SELECT transaction_type, AVG(ces_score) GROUP BY..." }
                 ]
             },
-            3: {
-                title: "Day 3: Data Management, Extraction, & Database Warehousing",
-                desc: "Practical pipeline mechanics: Connecting to internal storage, extracting unstructured interaction details, and setting up initial data clean rooms.",
-                problem: "Telephony data structures and CRM contact system architectures record contrasting session identifier records.",
-                challenge: "Handling complex, heavily nested JSON data strings stored directly inside transactional logging tables.",
-                scenario: "You are tasked with engineering an automated query mechanism that extracts and sanitizes raw daily records for delivery into regional analytics tables.",
-                drills: [
-                    "Write an explicit SQL inner join statement matching `Call_ID` across CRM tables and system switchboards.",
-                    "Deploy logic to convert raw database millisecond integers into standardized `MM:SS` tracking layouts.",
-                    "Construct an optimization structure to index queries searching through the historical `Interaction_Timestamp` logs.",
-                    "Parse a nested operational string object to pull out specific parameters like transferred destination routing numbers.",
-                    "Create a temporary staging table framework designed to filter out double-posted transactional rows.",
-                    "Flag records displaying systemic clock discrepancies where interaction end moments occur prior to start times."
-                ]
-            },
-            4: {
-                title: "Day 4: Data Quality Frameworks & Cleaning Mechanics",
-                desc: "Developing structural checks and cleaning processes to protect data integrity across high-velocity contact centers.",
-                problem: "Missing customer account ID profiles inside historical performance logs skew tracking metrics.",
-                challenge: "Correcting agent typing mistakes and tracking irregularities in critical code input fields without altering underlying source facts.",
-                scenario: "You receive an export containing mismatched data formats from dual global operating sites that requires uniform formatting before building dashboard presentations.",
-                drills: [
-                    "Write an execution rule to normalize user input text streams to standard lowercase formats.",
-                    "Convert differing date parameters into standard corporate ISO configurations (`YYYY-MM-DD`).",
-                    "Build a structural lookup logic array to dynamically match missing agent details using active roster tables.",
-                    "Locate rows containing empty data attributes across critical performance columns.",
-                    "Develop an outlier isolation rule using standard interquartile range (IQR) formulas on handle times.",
-                    "Implement text-trimming processes to wipe out accidental whitespace additions from manual database updates."
-                ]
-            },
-            5: {
-                title: "Day 5: Real-Time Visualization & Dashboard Infrastructure",
-                desc: "Structuring real-time information processing structures for operations management using Tableau or Power BI data schemas.",
-                problem: "Operational stakeholders report that automated analytics pages load too slowly to support intraday shift planning.",
-                challenge: "Balancing high-frequency live reporting requests against structural data processing performance constraints.",
-                scenario: "Build out a wireframe specification sheet for a command center layout used to track queue volume spikes instantly.",
-                drills: [
-                    "Organize performance metrics into color-coded logic groups based on target performance thresholds.",
-                    "Define standard interface guidelines for prioritizing top-level KPIs above secondary detail elements.",
-                    "Write an expression using conditional logic rules to highlight underperforming metric lines.",
-                    "Construct a query format designed to feed data directly into live-updating reporting layers.",
-                    "Create customized filtering options to segment data screens by location hubs or individual account teams.",
-                    "Establish a rolling data refresh cycle pattern to clear old visual elements without requiring full database reload cycles."
-                ]
-            },
-            6: {
-                title: "Day 6: Predictive Modeling for Workload Forecasting",
-                desc: "Using historical baseline metrics to project near-term capacity changes, call volume trends, and agent allocation models.",
-                problem: "Unexpected spikes in customer contact volumes cause long hold lines and lower service quality metrics.",
-                challenge: "Account for unpredictable operational volatility stemming from marketing shifts or systems issues.",
-                scenario: "Build a basic workload forecast structure to help shift managers adjust staff levels before volume peaks occur.",
-                drills: [
-                    "Calculate baseline volume trends by taking a rolling average of contact center traffic over the past 4 weeks.",
-                    "Isolate historical data variations caused by specific holiday periods or recurring seasonal events.",
-                    "Build a basic workload projection calculation based on changes in volume and average handle times.",
-                    "Identify periods of high volatility where actual contact volumes differed significantly from forecast baselines.",
-                    "Test forecast models against past operational datasets to measure prediction accuracy scores.",
-                    "Create a calculation rule to flag when current traffic trends outpace standard forecast bands by 15%."
-                ]
-            },
-            7: {
-                title: "Day 7: Stakeholder Translation & Root Cause Presentations",
-                desc: "Translating complex performance calculations into practical recommendations that support operations leaders and external clients.",
-                problem: "Operational managers ignore technical reports because the charts and data structures feel too complicated.",
-                challenge: "Distilling complex statistical metrics into clear business insights that prompt practical process changes.",
-                scenario: "Prepare an executive review detailing why an account missed its FCR target, along with a clear plan to address the root causes.",
-                drills: [
-                    "Draft an introductory summary that focuses on clear operational outcomes rather than technical statistics.",
-                    "Convert a complex data distribution chart into a clean, simple summary table highlighting key takeaways.",
-                    "Group performance issues into specific, addressable categories like training gaps or system lag.",
-                    "Calculate the estimated cost impact of operational delays across the targeted account team.",
-                    "Design a tracking framework to monitor performance changes after new process updates are implemented.",
-                    "Create a concise presentation outline that connects analytical findings directly to key business priorities."
-                ]
-            }
+            3: { title: "Day 3: Data Management & Warehousing", desc: "Locked Section. Under development.", drills: [] },
+            4: { title: "Day 4: Data Quality & Cleaning Mechanics", desc: "Locked Section. Under development.", drills: [] },
+            5: { title: "Day 5: Real-Time Visualization Frameworks", desc: "Locked Section. Under development.", drills: [] },
+            6: { title: "Day 6: Predictive Modeling & Forecasting", desc: "Locked Section. Under development.", drills: [] },
+            7: { title: "Day 7: Stakeholder Translation & Presentations", desc: "Locked Section. Under development.", drills: [] }
         };
 
-        let completedDrills = JSON.parse(localStorage.getItem('alorica_completed_drills')) || {};
-        let currentDay = 1;
+        // Core State Objects
+        let userSolutions = JSON.parse(localStorage.getItem('alorica_user_solutions')) || {};
+        let currentDay = parseInt(localStorage.getItem('alorica_current_day')) || 1;
 
-        // Login Logic
+        // Login Handler
         function handleLogin() {
             const emailInput = document.getElementById('email').value.trim();
             if (authorizedEmails.includes(emailInput)) {
@@ -488,33 +518,38 @@
             }
         }
 
+        // Logout Handler
         function handleLogout() {
             document.getElementById('portal-container').style.display = 'none';
             document.getElementById('login-container').style.display = 'flex';
         }
 
-        // Portal Initialization
+        // Portal Initialization Lifecycle
         function initPortal() {
             renderTabs();
             renderContent(currentDay);
             updateProgressBar();
         }
 
+        // Navigation Menu Builder
         function renderTabs() {
             const container = document.getElementById('day-tabs-container');
             container.innerHTML = '';
 
             for (let i = 1; i <= 30; i++) {
                 const tab = document.createElement('button');
-                tab.className = `day-tab ${i === currentDay ? 'active' : ''} ${i > 7 ? 'locked' : ''}`;
+                const isLocked = i > 2; // Only days 1 and 2 are active with the expanded dataset
+                tab.className = `day-tab ${i === currentDay ? 'active' : ''} ${isLocked ? 'locked' : ''}`;
                 
-                // Calculate completion for the day
                 let statusIcon = '<i class="fa-regular fa-circle" style="color:#ccc;"></i>';
-                if (i <= 7) {
-                    const dayDrillCount = 30; // 5 per drill item visually mapped for user completion
+                if (!isLocked) {
+                    const dayDrills = trainingData[i].drills;
                     let completedInDay = 0;
-                    for(let d=0; d<5; d++) { if(completedDrills[`${i}-${d}`]) completedInDay++; }
-                    if (completedInDay === 5) {
+                    dayDrills.forEach(d => {
+                        if (userSolutions[d.id] && userSolutions[d.id].trim() !== "") completedInDay++;
+                    });
+
+                    if (completedInDay === dayDrills.length && dayDrills.length > 0) {
                         statusIcon = '<i class="fa-solid fa-circle-check" style="color:var(--success);"></i>';
                     } else if (completedInDay > 0) {
                         statusIcon = '<i class="fa-solid fa-circle-half-stroke" style="color:var(--primary);"></i>';
@@ -523,13 +558,21 @@
                     statusIcon = '<i class="fa-solid fa-lock" style="font-size:0.8rem;"></i>';
                 }
 
-                tab.innerHTML = `<span>Day ${i} ${i <= 7 ? '<small style="display:block;font-size:0.7rem;opacity:0.7;">Core Phase</small>' : '<small style="display:block;font-size:0.7rem;opacity:0.5;">Advanced Phase</small>'}</span> ${statusIcon}`;
+                tab.innerHTML = `
+                    <span>Day ${i} 
+                        <small style="display:block;font-size:0.7rem;opacity:0.7;">
+                            ${i <= 7 ? 'Core Phase' : 'Advanced Phase'}
+                        </small>
+                    </span> 
+                    ${statusIcon}
+                `;
                 
-                if (i <= 7) {
+                if (!isLocked) {
                     tab.onclick = () => {
                         currentDay = i;
+                        localStorage.setItem('alorica_current_day', currentDay);
                         document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
+                        tab.className = `day-tab active`;
                         renderContent(currentDay);
                     };
                 }
@@ -537,28 +580,61 @@
             }
         }
 
+        // Content Work Area Builder
         function renderContent(day) {
             const viewport = document.getElementById('content-viewport');
             
-            if (day > 7) {
-                viewport.innerHTML = `<div class="section-card"><h2>Day ${day} Curriculum</h2><p>Locked Section. Complete Phase 1 foundational requirements first.</p></div>`;
+            if (day > 2) {
+                viewport.innerHTML = `
+                    <div class="section-card">
+                        <h2>Day ${day} Curriculum</h2>
+                        <p>Locked Section. Complete Phase 1 foundational tracking days first.</p>
+                    </div>
+                `;
                 return;
             }
 
             const data = trainingData[day];
             
-            // Generate Drills block. 6 blocks, each containing 5 distinct sample drill iterations to map out the user's requested 30 metrics.
+            // Build Dynamic Blueprint Core Examples Block HTML
+            let examplesHTML = '';
+            if (data.examples && data.examples.length > 0) {
+                examplesHTML = `<div class="example-block">
+                    <h4 style="color:#856404; margin-bottom:0.5rem;"><i class="fa-solid fa-lightbulb"></i> Baseline Practice Examples</h4>`;
+                data.examples.forEach(ex => {
+                    examplesHTML += `
+                        <div class="example-item">
+                            <span class="badge" style="background:#FFF9C4; color:#F57F17; font-size:0.75rem;">${ex.expectedType}</span>
+                            <p style="font-size:0.85rem; font-weight:600; margin-top:0.25rem;">Task: ${ex.task}</p>
+                            <code style="display:block; background:rgba(0,0,0,0.04); padding:0.4rem; border-radius:3px; font-size:0.8rem; margin-top:0.25rem; font-family:monospace;">${ex.sample}</code>
+                        </div>
+                    `;
+                });
+                examplesHTML += `</div>`;
+            }
+
+            // Build Drills Textarea Input Interface HTML
             let drillsHTML = '';
-            data.drills.forEach((drillText, index) => {
-                const isChecked = completedDrills[`${day}-${index}`] ? 'checked' : '';
+            data.drills.forEach((drill, index) => {
+                const existingSolution = userSolutions[drill.id] || '';
+                const completedClass = existingSolution.trim() !== '' ? 'completed' : '';
                 drillsHTML += `
                     <div class="drill-item">
-                        <input type="checkbox" class="drill-checkbox" data-day="${day}" data-drill="${index}" ${isChecked} onchange="toggleDrill(this)">
-                        <div class="drill-content">
-                            <strong>Strategic Focus Block ${index + 1} (Includes 5 Parallel Practice Iterations)</strong>
-                            <p>${drillText}</p>
-                            <div style="margin-top:0.5rem;"><span class="badge"><i class="fa-solid fa-laptop-code"></i> 5 Analytical Iterations Assigned</span></div>
+                        <div class="drill-header">
+                            <span class="badge"><i class="fa-solid fa-code"></i> ${drill.type}</span>
+                            <span style="font-size:0.8rem; color:#666; font-weight:bold;">Drill ${index + 1} of 30</span>
                         </div>
+                        <div class="drill-content">
+                            <strong>Operational Focus Scenario Target</strong>
+                            <p>${drill.text}</p>
+                        </div>
+                        <textarea 
+                            class="solution-box ${completedClass}" 
+                            data-id="${drill.id}" 
+                            rows="3" 
+                            placeholder="Type your solution schema/script here... (e.g. ${drill.placeholder})"
+                            oninput="saveSolution(this)"
+                        >${existingSolution}</textarea>
                     </div>
                 `;
             });
@@ -571,7 +647,9 @@
 
                 <div class="section-card">
                     <h2><i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Strategic Overview & Instructions</h2>
-                    <p style="line-height: 1.6; color: #444;">${data.desc}</p>
+                    <p style="line-height: 1.6; color: #444; margin-bottom:0.5rem;">${data.desc}</p>
+                    <p style="font-size:0.9rem; color:#666;">${data.instructions}</p>
+                    ${examplesHTML}
                 </div>
 
                 <div class="grid-2">
@@ -591,8 +669,8 @@
                 </div>
 
                 <div class="section-card">
-                    <h2><i class="fa-solid fa-list-check" style="color: var(--success);"></i> Hands-on Lab Drills <span style="font-size:1rem; font-weight:normal; float:right; color:#666;">30 Total Technical Scenarios</span></h2>
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Complete all core operational focus blocks below. Checking a block tracks your progress across all 5 corresponding drills for that focus area.</p>
+                    <h2><i class="fa-solid fa-list-check" style="color: var(--success);"></i> Hands-on Lab Drills <span style="font-size:1rem; font-weight:normal; float:right; color:#666;">30 Active Lab Items</span></h2>
+                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Complete all entry boxes below. Progress state evaluates field tracking metrics dynamically on type actions.</p>
                     <div class="drill-list">
                         ${drillsHTML}
                     </div>
@@ -600,35 +678,43 @@
             `;
         }
 
-        function toggleDrill(checkbox) {
-            const day = checkbox.getAttribute('data-day');
-            const drill = checkbox.getAttribute('data-drill');
+        // Live State Tracking & Saving Engine
+        function saveSolution(textarea) {
+            const drillId = textarea.getAttribute('data-id');
+            const content = textarea.value;
             
-            if (checkbox.checked) {
-                completedDrills[`${day}-${drill}`] = true;
+            userSolutions[drillId] = content;
+            localStorage.setItem('alorica_user_solutions', JSON.stringify(userSolutions));
+            
+            // Visual feedback toggle
+            if (content.trim() !== '') {
+                textarea.classList.add('completed');
             } else {
-                delete completedDrills[`${day}-${drill}`];
+                textarea.classList.remove('completed');
             }
             
-            localStorage.setItem('alorica_completed_drills', JSON.stringify(completedDrills));
             updateProgressBar();
-            renderTabs(); // Refresh layout validation highlights
         }
 
+        // Progress Calculation Module
         function updateProgressBar() {
-            // 7 days * 5 drill groups = 35 modules total. Each module maps to 5 variations, completing the 30 daily requirements.
-            const totalModules = 7 * 6; 
-            const checkedCount = Object.keys(completedDrills).length;
-            
-            // Calculate absolute target values matching the 210 subset variants requested
-            const absoluteDrillsCompleted = checkedCount * 5;
-            const absoluteTotalDrills = totalModules * 5;
-            
-            const percent = absoluteTotalDrills > 0 ? Math.round((absoluteDrillsCompleted / absoluteTotalDrills) * 100) : 0;
+            // Evaluates overall active curriculum paths (Day 1 and Day 2 total 60 items)
+            const totalActiveDrills = trainingData[1].drills.length + trainingData[2].drills.length;
+            let completedCount = 0;
+
+            // Interrogate arrays for non-blank text value configurations
+            trainingData[1].drills.forEach(d => {
+                if (userSolutions[d.id] && userSolutions[d.id].trim() !== "") completedCount++;
+            });
+            trainingData[2].drills.forEach(d => {
+                if (userSolutions[d.id] && userSolutions[d.id].trim() !== "") completedCount++;
+            });
+
+            const percent = totalActiveDrills > 0 ? Math.round((completedCount / totalActiveDrills) * 100) : 0;
             
             document.getElementById('main-progress').style.width = `${percent}%`;
             document.getElementById('progress-percent').innerText = `${percent}%`;
-            document.getElementById('drill-count').innerText = `${absoluteDrillsCompleted} of ${absoluteTotalDrills} individual exercises verified`;
+            document.getElementById('drill-count').innerText = `${completedCount} of ${totalActiveDrills} exercises completed`;
         }
     </script>
 </body>
