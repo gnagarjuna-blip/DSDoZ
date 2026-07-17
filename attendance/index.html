@@ -141,14 +141,14 @@
         }
 
         .form-group {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
         }
 
         label {
             display: block;
-            margin-bottom: 10px;
+            margin-bottom: 8px;
             font-weight: 600;
-            font-size: 0.95rem;
+            font-size: 0.85rem;
             color: #e2e8f0;
             text-transform: uppercase;
             letter-spacing: 0.08em;
@@ -156,12 +156,12 @@
 
         input, select {
             width: 100%;
-            padding: 16px 20px;
+            padding: 14px 18px;
             background: var(--input-bg);
             border: 1px solid var(--card-border);
             border-radius: 12px;
             color: var(--text-main);
-            font-size: 1.1rem;
+            font-size: 1rem;
             transition: all 0.2s;
         }
 
@@ -245,7 +245,6 @@
             font-size: 3.6rem;
             font-weight: 800;
             color: #ffffff;
-            letter-spacing: -0.02em;
             text-shadow: 0 0 25px rgba(0, 123, 181, 0.3);
             font-variant-numeric: tabular-nums;
             line-height: 1.1;
@@ -440,12 +439,24 @@
                 </div>
                 <span class="virtual-badge">Attendance</span>
             </div>
-            <p style="font-size:1.1rem; color: var(--text-muted); margin-bottom: 30px;">Internal Identity Verification Gateway</p>
+            <p style="font-size:1.1rem; color: var(--text-muted); margin-bottom: 25px;">Internal Identity Verification Gateway</p>
             <form onsubmit="handleLogin(event)">
                 <div class="form-group">
-                    <label for="login-email">Authorized Corporate Email</label>
-                    <input type="email" id="login-email" placeholder="username@aloricaservice.com" required>
-                    <div class="error-text" id="login-error">Access Denied: Email identity code alignment not flagged in internal server tracking roster.</div>
+                    <label for="login-username">Username</label>
+                    <input type="text" id="login-username" placeholder="Enter Username" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-email">Corporate Email</label>
+                    <input type="email" id="login-email" placeholder="yaminiyuktapeethala@aloricaservice.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-password">Password</label>
+                    <input type="password" id="login-password" placeholder="••••••••" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-employeeid">Employee ID</label>
+                    <input type="text" id="login-employeeid" placeholder="e.g. 24896571" required>
+                    <div class="error-text" id="login-error">Access Denied: Corporate credentials and Identity mapping could not be matched.</div>
                 </div>
                 <button type="submit" class="btn-primary">Authenticate Identity</button>
             </form>
@@ -530,7 +541,7 @@
                         <div class="manager-routing-box">
                             <input type="checkbox" id="route-manager" checked>
                             <label for="route-manager" style="margin:0; font-size:0.85rem; text-transform:none; letter-spacing:0;">
-                                Route to Manager:<br><strong>Jagadeesh addankee</strong>
+                                Route to Manager:<br><strong>Jagadeesh Addankee</strong>
                             </label>
                         </div>
                         <button type="submit" class="btn-warn">🔧 Process Regularization</button>
@@ -550,7 +561,7 @@
     </div>
 
     <script>
-        // Data Registry mapping enterprise profile emails to specific user databases
+        // Data Registry mapping enterprise profile emails & specific ID checks
         const USER_PROFILES = {
             "yaminiyuktapeethala@aloricaservice.com": { name: "Yamini Yuktapeethala", code: "24896571" },
             "raghavendramane@aloricaservice.com": { name: "Raghavendra Mane", code: "15396523" },
@@ -591,9 +602,13 @@
         function handleLogin(e) {
             e.preventDefault();
             const email = document.getElementById('login-email').value.trim().toLowerCase();
+            const empId = document.getElementById('login-employeeid').value.trim();
             const errDiv = document.getElementById('login-error');
 
-            if (USER_PROFILES[email]) {
+            const profile = USER_PROFILES[email];
+
+            // Verify both the email exists and the input Employee ID matches the profile register
+            if (profile && profile.code === empId) {
                 errDiv.style.display = 'none';
                 localStorage.setItem('active_session_user', email);
                 initializeSession(email);
@@ -619,7 +634,12 @@
         function handleLogout() {
             localStorage.removeItem('active_session_user');
             currentActiveUser = null;
+            
+            // Reset input values
+            document.getElementById('login-username').value = '';
             document.getElementById('login-email').value = '';
+            document.getElementById('login-password').value = '';
+            document.getElementById('login-employeeid').value = '';
             
             const s1 = document.getElementById('log-status');
             const s2 = document.getElementById('reg-status');
@@ -747,7 +767,7 @@
             
             let statusText = `Successfully Regularized: Entry saved for [${inputDate}].`;
             if (routeCheckbox) {
-                statusText += ` Forwarded validation request parameters directly to Manager Raghavendra Mane.`;
+                statusText += ` Forwarded validation request parameters directly to Manager Jagadeesh Addankee.`;
             }
             
             displayInlineStatus('reg-status', statusText, 'success');
