@@ -3,678 +3,1233 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Proctored Executive Certification & Operational Drills</title>
+    <title>Alorica Operations Support Enterprise - Advanced Diagnostics Training (Windows Edition)</title>
     <style>
         :root {
-            --navy: #0f172a;
-            --slate: #1e293b;
-            --ghost: #f8fafc;
-            --alorica-red: #de2127;
-            --gold: #b45309;
-            --emerald: #059669;
-            --crimson: #991b1b;
+            --primary: #004685;
+            --secondary: #0082ca;
+            --accent: #ff6b00;
+            --dark: #0f172a;
+            --light: #f8fafc;
+            --danger: #ef4444;
+            --success: #22c55e;
+            --warning: #f59e0b;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
-            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-            background: var(--ghost);
-            color: var(--slate);
-            margin: 0;
-            padding: 40px 10%;
-            line-height: 1.8;
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            overflow-x: hidden;
         }
 
-        .certification-card {
-            background: white;
-            border-radius: 8px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.05);
-            padding: 60px;
-            border-top: 8px solid var(--alorica-red);
-            position: relative;
-            margin-bottom: 40px;
+        .screen {
+            display: none;
+            width: 100%;
+            min-height: 100vh;
         }
 
-        .section-title {
-            font-size: 2rem;
-            color: var(--navy);
-            margin-bottom: 30px;
-            border-left: 6px solid var(--alorica-red);
-            padding-left: 20px;
-            font-weight: 800;
-        }
-
-        .exam-secure-container {
-            user-select: none !important;
-            -webkit-user-select: none !important;
-        }
-
-        .exam-header {
-            text-align: center;
-            background: var(--navy);
-            color: white;
-            padding: 40px;
-            margin: -60px -60px 60px;
-            position: relative;
-            border-top-left-radius: 4px;
-            border-top-right-radius: 4px;
-        }
-
-        .proctor-badge {
-            background: #b91c1c;
-            color: white;
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 0.85rem;
-            font-weight: 700;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            margin-bottom: 15px;
-            letter-spacing: 1px;
-            animation: pulse 2s infinite;
-        }
-
-        @keyframes pulse {
-            0% { opacity: 1; }
-            50% { opacity: 0.6; }
-            100% { opacity: 1; }
-        }
-
-        .webcam-feed-simulation {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            width: 100px;
-            height: 75px;
-            background: #000;
-            border: 2px solid #b91c1c;
-            border-radius: 4px;
-            color: #0f0;
-            font-family: monospace;
-            font-size: 0.6rem;
+        .screen.active {
             display: flex;
             flex-direction: column;
+        }
+
+        /* Login Screen */
+        #login-screen {
             justify-content: center;
             align-items: center;
-            text-align: center;
-            font-weight: bold;
+            background: linear-gradient(135deg, #001e3d 0%, #004685 100%);
         }
 
-        .webcam-dot {
-            width: 8px;
-            height: 8px;
-            background: #0f0;
-            border-radius: 50%;
-            margin-bottom: 4px;
-            animation: pulse 1s infinite;
-        }
-
-        .q-block {
-            margin-bottom: 40px;
-            padding: 40px;
-            background: #f8fafc;
-            border-radius: 12px;
-            border: 2px solid #e2e8f0;
-        }
-
-        .q-scenario {
-            color: var(--navy);
-            margin-bottom: 25px;
-            border-bottom: 2px solid #cbd5e1;
-            padding-bottom: 20px;
-            font-size: 1.05rem;
-            font-weight: 600;
-            text-align: justify;
-        }
-
-        .q-multi-alert {
-            color: var(--gold);
-            font-size: 0.9rem;
-            font-weight: 700;
-            margin-bottom: 15px;
-            text-transform: uppercase;
-            display: block;
-        }
-
-        .option-label {
-            display: flex;
-            align-items: flex-start;
-            padding: 20px 25px;
+        .login-card {
             background: white;
-            border: 2px solid #e2e8f0;
-            border-radius: 8px;
-            margin-top: 15px;
-            cursor: pointer;
-            transition: 0.2s;
-            font-weight: 500;
-            font-size: 0.95rem;
-        }
-
-        .option-label:hover {
-            border-color: var(--alorica-red);
-            background: #fef2f2;
-        }
-
-        .option-label input {
-            margin-right: 20px;
-            margin-top: 5px;
-            transform: scale(1.3);
-        }
-
-        .drill-textarea {
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.4);
             width: 100%;
-            padding: 20px;
-            border: 2px solid #cbd5e1;
-            border-radius: 8px;
-            font-family: inherit;
+            max-width: 480px;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+
+        .brand-header h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            letter-spacing: 1px;
+        }
+
+        .brand-header p {
+            color: #64748b;
+            font-size: 0.85rem;
+            font-weight: 700;
+            margin-top: 0.2rem;
+        }
+
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            color: #334155;
+            font-size: 0.9rem;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
             font-size: 1rem;
-            resize: vertical;
-            margin-top: 15px;
-            box-sizing: border-box;
         }
 
-        .drill-textarea:focus {
-            border-color: var(--navy);
-            outline: none;
-        }
-
-        .drill-btn {
-            width: auto;
-            padding: 12px 30px;
-            background: var(--navy);
+        .btn {
+            background: var(--primary);
             color: white;
             border: none;
+            padding: 0.8rem 1.5rem;
+            border-radius: 6px;
             font-size: 1rem;
-            font-weight: 700;
-            text-transform: uppercase;
+            font-weight: 600;
             cursor: pointer;
-            margin-top: 15px;
-            border-radius: 4px;
+            width: 100%;
             transition: background 0.2s;
         }
 
-        .drill-btn:hover {
-            background: #1e293b;
+        .btn:hover {
+            background: var(--secondary);
         }
 
-        .drill-feedback {
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.85);
             display: none;
-            padding: 15px 20px;
-            margin-top: 15px;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 650px;
+            width: 90%;
+            border-top: 6px solid var(--danger);
+        }
+
+        /* Main Screen Layout */
+        header {
+            background: var(--primary);
+            color: white;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-container {
+            width: 100%;
+            background-color: #cbd5e1;
+            height: 10px;
+            position: sticky;
+            top: 65px;
+            z-index: 99;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background-color: var(--accent);
+            transition: width 0.4s ease;
+        }
+
+        .main-container {
+            display: flex;
+            flex: 1;
+            padding: 2rem;
+            gap: 2rem;
+            max-width: 1600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .content-area {
+            flex: 3;
+        }
+
+        .sidebar {
+            flex: 1;
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            height: fit-content;
+            position: sticky;
+            top: 90px;
+        }
+
+        .card {
+            background: white;
+            padding: 1.8rem;
+            border-radius: 8px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+        }
+
+        .card h2 {
+            color: var(--primary);
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Code / Console Styling */
+        pre, code {
+            background-color: #0f172a;
+            color: #38bdf8;
+            padding: 0.8rem 1rem;
             border-radius: 6px;
+            font-family: 'Consolas', 'Courier New', Courier, monospace;
+            font-size: 0.88rem;
+            display: block;
+            white-space: pre-wrap;
+            margin: 0.8rem 0;
+            user-select: none;
+        }
+
+        .example-box {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-left: 5px solid var(--secondary);
+            padding: 1.25rem;
+            margin-bottom: 1.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .badge {
+            padding: 0.25rem 0.6rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .badge-p1 { background: #fee2e2; color: #991b1b; }
+        .badge-p2 { background: #fef3c7; color: #92400e; }
+        .badge-p3 { background: #e0f2fe; color: #075985; }
+        .badge-p4 { background: #f3e8ff; color: #6b21a8; }
+
+        textarea {
+            width: 100%;
+            height: 120px;
+            padding: 0.75rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            margin-top: 0.8rem;
+            resize: vertical;
+            font-size: 0.9rem;
+            font-family: inherit;
+        }
+
+        textarea:focus {
+            outline: none;
+            border-color: var(--secondary);
+        }
+
+        .submit-scenario-btn {
+            background: var(--secondary);
+            color: white;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-top: 0.5rem;
             font-weight: 600;
         }
 
-        .drill-success {
-            background: #f0fdf4;
-            border: 1px solid #bbf7d0;
-            color: #15803d;
+        .submit-scenario-btn:disabled {
+            background: #94a3b8;
+            cursor: not-allowed;
         }
 
-        .drill-error {
-            background: #fef2f2;
-            border: 1px solid #fca5a5;
-            color: #991b1b;
+        .quiz-question {
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid #e2e8f0;
         }
 
-        .btn-primary {
-            width: 100%;
-            padding: 25px;
-            background: var(--alorica-red);
-            color: white;
-            border: none;
-            font-size: 1.2rem;
-            font-weight: 800;
-            text-transform: uppercase;
+        .quiz-options label {
+            display: flex;
+            align-items: flex-start;
+            padding: 0.8rem;
+            background: #f8fafc;
+            margin-bottom: 0.5rem;
+            border-radius: 6px;
             cursor: pointer;
-            margin-top: 40px;
-            border-radius: 4px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+            border: 1px solid #e2e8f0;
+            font-size: 0.95rem;
+            line-height: 1.4;
         }
 
-        .btn-primary:hover {
-            background: #b91c1c;
+        .quiz-options label:hover {
+            background: #f1f5f9;
         }
 
-        #result-overlay {
-            display: none;
-            padding: 50px;
-            border-radius: 12px;
-            text-align: center;
-            margin-top: 40px;
-            font-weight: bold;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.15);
+        .quiz-options input {
+            margin-right: 0.8rem;
+            margin-top: 0.2rem;
         }
 
-        .failed-terminal {
-            background: linear-gradient(135deg, #450a0a 0%, #7f1d1d 100%) !important;
-            color: #fef2f2 !important;
-            border: 4px dashed #ef4444 !important;
-            animation: shake 0.5s ease-in-out;
-        }
-
-        .failed-title {
-            color: #fee2e2 !important;
-            font-size: 2.5rem !important;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            margin-bottom: 20px;
-            text-shadow: 0 4px 10px rgba(0,0,0,0.5);
-        }
-
-        .failed-msg {
-            font-size: 1.5rem !important;
-            line-height: 2rem;
-            background: rgba(0, 0, 0, 0.3);
-            padding: 25px;
-            border-radius: 8px;
-            border-left: 8px solid #f87171;
-            margin: 20px 0;
-            text-align: left;
-        }
-
-        @keyframes shake {
-            0%, 100% { transform: translateX(0); }
-            20%, 60% { transform: translateX(-10px); }
-            40%, 80% { transform: translateX(10px); }
+        .security-banner {
+            background: #fef2f2;
+            color: #991b1b;
+            padding: 0.8rem 2rem;
+            font-size: 0.85rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #fecaca;
         }
     </style>
 </head>
-<body>
+<body oncontextmenu="return false;">
 
-<div id="drills-view-wrapper" class="certification-card">
-    <div class="section-title">Operational Strategy Drills</div>
-    <p style="margin-bottom: 40px; color: #475569;">Complete all written operational analyses before submitting the final proctored certification examination interface below. Each drill response <strong>must be at least 3 lines long</strong> to be accepted.</p>
-    
-    <div class="q-block">
-        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 01: Multi-Channel Data Mapping Scenario</span>
-        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
-            Analyze a complex cross-channel log where a user moves from an automated chatbot to a live phone agent. Draft a clear context-handover summary that a live phone agent can review in under 5 seconds to eliminate customer repetition.
-        </div>
-        <textarea id="drill-text-1" class="drill-textarea" rows="4" placeholder="Type your strategic handover framework here...&#10;(Press Enter to break text lines manually if needed)"></textarea>
-        <button type="button" class="drill-btn" onclick="submitDrill(1)">Submit Operational Analysis</button>
-        <div id="drill-feedback-1" class="drill-feedback"></div>
+    <div class="security-banner">
+        <span>SECURITY NOTICE: Enterprise Proctoring Active. AI Tools, Copy/Paste, Screen Capture & Alt-Tab actions are strictly flagged.</span>
+        <span id="p-status" style="color: var(--success);">● SECURE SESSION</span>
     </div>
 
-    <div class="q-block">
-        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 02: AI Copilot Guardrail Structuring</span>
-        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
-            Draft a system prompt rulebook for a generative AI customer service agent handling billing discrepancies. Your guardrails must explicitly prevent the AI from offering unauthorized statement credits while maintaining an empathetic tone.
-        </div>
-        <textarea id="drill-text-2" class="drill-textarea" rows="4" placeholder="Type your algorithmic prompt guardrails here..."></textarea>
-        <button type="button" class="drill-btn" onclick="submitDrill(2)">Submit Operational Analysis</button>
-        <div id="drill-feedback-2" class="drill-feedback"></div>
-    </div>
-
-    <div class="q-block">
-        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 03: Speech Analytics Alert Threshold Calibration</span>
-        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
-            Define the operational parameters for an automated real-time speech analytics filter. Specify the exact language patterns, tone indicators, and call conditions that should trigger an immediate live supervisor notification.
-        </div>
-        <textarea id="drill-text-3" class="drill-textarea" rows="4" placeholder="Type your acoustic metric parameters here..."></textarea>
-        <button type="button" class="drill-btn" onclick="submitDrill(3)">Submit Operational Analysis</button>
-        <div id="drill-feedback-3" class="drill-feedback"></div>
-    </div>
-
-    <div class="q-block">
-        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 04: Asynchronous Queue Prioritization Mapping</span>
-        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
-            Design a prioritization logic framework for an incoming asynchronous text queue containing 5,000 unread messages following an app crash. Categorize messages based on intent tags to maximize customer retention.
-        </div>
-        <textarea id="drill-text-4" class="drill-textarea" rows="4" placeholder="Type your traffic allocation algorithms here..."></textarea>
-        <button type="button" class="drill-btn" onclick="submitDrill(4)">Submit Operational Analysis</button>
-        <div id="drill-feedback-4" class="drill-feedback"></div>
-    </div>
-
-    <div class="q-block">
-        <span class="q-multi-alert" style="color: var(--alorica-red);">Drill 05: Faux Resolution Root-Cause Analysis</span>
-        <div class="q-scenario" style="border: none; padding: 0; margin: 0;">
-            Review a data report showing a high digital channel closure rate coupled with an increase in repeat voice calls within 24 hours. Outline a targeted process modification to identify and eliminate this hidden customer friction point.
-        </div>
-        <textarea id="drill-text-5" class="drill-textarea" rows="4" placeholder="Type your root-cause analytical process blueprint here..."></textarea>
-        <button type="button" class="drill-btn" onclick="submitDrill(5)">Submit Operational Analysis</button>
-        <div id="drill-feedback-5" class="drill-feedback"></div>
-    </div>
-</div>
-
-
-<div class="certification-card exam-secure-container">
-    <div class="exam-header">
-        <span class="proctor-badge">● PROCTOR ACTIVE</span>
-        <h1 style="color: white; margin: 10px 0 0; font-weight: 800; font-size: 2.2rem;">Executive Certification Assessment</h1>
-        <p style="margin: 5px 0 0; opacity: 0.9;">Omnichannel Operations & Strategic Customer Experience Architecture</p>
-        <div class="webcam-feed-simulation">
-            <div class="webcam-dot"></div>
-            <span>FEED LOCK</span>
-            <span style="font-size:0.5rem; color:#888;">ENV_SECURE</span>
+    <!-- LOGIN SCREEN -->
+    <div id="login-screen" class="screen active">
+        <div class="login-card">
+            <div class="brand-header">
+                <h1>ALORICA</h1>
+                <p>Operations Support Enterprise Tier-2/3 Training Portal (Windows OS)</p>
+            </div>
+            <form id="login-form">
+                <div class="form-group">
+                    <label for="userid">User ID (Corporate Email)</label>
+                    <input type="email" id="userid" value="yaminiyuktapeethala@aloricaservice.com" required>
+                </div>
+                <div class="form-group">
+                    <label for="password">Password (Employee ID)</label>
+                    <input type="password" id="password" value="24896571" required>
+                </div>
+                <div id="login-error" style="color: var(--danger); font-size: 0.85rem; margin-bottom: 1rem; display: none;">
+                    Authentication Failure. Please enter your valid corporate email and Employee ID.
+                </div>
+                <button type="submit" class="btn">Authenticate Session</button>
+            </form>
         </div>
     </div>
 
-    <div id="exam-view-wrapper">
-        <form id="cx-exam-form" onsubmit="evaluateExam(event)">
-            <div id="questions-container"></div>
-            <button type="submit" class="btn-primary">Submit Proctored Architecture Ledger</button>
-        </form>
+    <!-- PROCTORING / COMPLIANCE MODAL -->
+    <div id="policy-modal" class="modal">
+        <div class="modal-content">
+            <h2 style="color: var(--danger); margin-bottom: 1rem;">ENTERPRISE PROCTORING MANDATE</h2>
+            <p style="margin-bottom: 1rem; line-height: 1.5;">You are launching an advanced operational assessment environment tailored for Windows Enterprise Infrastructure. Review compliance guidelines:</p>
+            <ul style="margin-left: 1.5rem; line-height: 1.8; margin-bottom: 1.5rem;">
+                <li><strong>Fullscreen Locking:</strong> Pressing <code>ESC</code> or switching tabs triggers immediate security logging.</li>
+                <li><strong>AI & Clipboard Blocking:</strong> Copy/Paste and automated utilities terminate your active session.</li>
+                <li><strong>Comprehensive Evaluation:</strong> Complete all 20 scenario responses and achieve ≥80% on the Windows exam.</li>
+            </ul>
+            <button class="btn" style="background: var(--danger);" onclick="enterProctoredEnvironment()">I Accept & Start Enterprise Assessment</button>
+        </div>
     </div>
 
-    <div id="result-overlay"></div>
-</div>
+    <!-- MAIN TRAINING PORTAL SCREEN -->
+    <div id="portal-screen" class="screen">
+        <header>
+            <div>
+                <h2>Operations Support Enterprise</h2>
+                <small>Tier-2/Tier-3 Windows Infrastructure Diagnostics & ITSM Execution</small>
+            </div>
+            <div style="text-align: right; font-size: 0.85rem;">
+                <div id="user-display-email" style="font-weight: bold;">yaminiyuktapeethala@aloricaservice.com</div>
+                <div id="user-display-id" style="color: #cbd5e1;">EMP ID: 24896571</div>
+            </div>
+        </header>
 
-<script>
-    const EXAM_QUESTIONS = [
-        {
-            scenario: "A Tier-1 retail banking operation rolls out a structural core database overhaul. Within hours, the legacy token integration system fails to map active mobile sessions cleanly over to the regional desktop web messaging software application whenever a customer requests chat escalations. Consequently, customers who began their journeys authenticating inside the application are forced to re-verify their 16-digit account profiles and re-explain their technical issues to live personnel. Given this operational context, which of the following root systemic dynamics and engineering actions are accurate? (Select ALL that apply)",
-            options: [
-                "The failure describes a critical break in Omnichannel Journey Continuity known as Contextual Amnesia.",
-                "The failure implies that acoustic pitch fluctuations in the interactive voice response (IVR) hardware caused validation lags.",
-                "An immediate operational recovery requires deploying a dedicated middleware patch to parse session tokens securely across the API gateway.",
-                "The operational group should disable all digital entry-points and route 100% of live traffic into synchronous voice lines indefinitely."
-            ],
-            correct: [0, 2]
-        },
-        {
-            scenario: "A global enterprise platform experiences an unexpected, severe regional service blackout affecting approximately 1.5 million subscription accounts. Real-time data telemetry indicates that Customer Effort Scores (CES) are spiking dramatically across digital channels, causing the average queue length for live text assistance to surge past 120 minutes. Simultaneously, empty synchronous voice queues remain active because the interactive telephony system has not been calibrated to handle cross-channel diversions. Which strategic operational measures must the CX Manager authorize immediately to balance the load? (Select ALL that apply)",
-            options: [
-                "Broadcast immediate, systemic real-time notification banners outlining the issue inside the application interface.",
-                "Increase individual agent target Average Handle Time (AHT) parameters to deliberately slow down text interaction velocities.",
-                "Dynamically re-allocate idle voice infrastructure agents to handle the backlogged asynchronous messaging text queues.",
-                "Incorporate automated self-service routing trees that immediately link text inquiries to the primary status page."
-            ],
-            correct: [0, 2, 3]
-        },
-        {
-            scenario: "A customer experience management team integrates a generative AI chatbot helper to handle high-volume billing tier updates. During a baseline operational check, the generative engine encounters a highly ambiguous customer response prompt and hallucinations occur, resulting in the bot promising an unauthorized $500 cash statement credit on a basic non-refundable utility package. What programmatic steps and guardrail rules must be codified into the AI platform's environment rules to protect the bottom line while maintaining customer support quality? (Select ALL that apply)",
-            options: [
-                "Enforce strict algorithmic data-validation guardrails that completely block the AI layer from changing accounting fields directly.",
-                "Configure a hard code check that holds all system credits above a $0 threshold for human supervisor validation.",
-                "Program the system to demand full identity validation from the customer before every single chat reply text block is sent.",
-                "Deploy an automated keyword lookup table that balances the generative engine with pre-set financial parameters."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "A customer success manager identifies an ongoing operational anomaly where the digital self-service dashboard reports a stellar 94% task completion score. However, centralized contact center statistics reveal a corresponding 32% spike in repeat voice call escalations within 48 hours for identical customer accounts. Which of the following statements correctly evaluate this scenario and outline strategic remedies? (Select ALL that apply)",
-            options: [
-                "This trend presents a classic example of Faux Resolution Masking where tasks are closed on paper without addressing the customer's true root issue.",
-                "The data shows an ideal execution of the Service Recovery Paradox that naturally increases baseline retention performance.",
-                "The operational group should analyze post-incident logs to discover where self-service applications are missing final validation gates.",
-                "The organization must adjust performance indicators to measure long-term resolution success rather than isolated text completions."
-            ],
-            correct: [0, 2, 3]
-        },
-        {
-            scenario: "An enterprise BPO operations center manages a multi-tier customer ecosystem utilizing three distinct outside fulfillment vendors: Vendor A handles incoming product inquiries, Vendor B manages regional billing records, and Vendor C supervises transit tracking operations. Following a major shipping container delay, anxious consumers flooded the lines. Agents across all three separate fulfillment centers began transferring customers back and forth across different systems due to overlapping question types. To break this vendor bottleneck, what solutions should the CX structural architect enforce? (Select ALL that apply)",
-            options: [
-                "Establish a unified cross-vendor workflow charter and deploy an integrated dashboard system across all networks.",
-                "Instruct each vendor to set rigid firewalls to block ticket view access from adjacent BPO networks.",
-                "Incorporate automated omnichannel ticket tracking protocols to remove manual cross-vendor routing dependencies.",
-                "Redesign routing architectures to pair an escalated client case log with a singular owner through closure."
-            ],
-            correct: [0, 2, 3]
-        },
-        {
-            scenario: "An enterprise updates its corporate interactive voice response (IVR) dynamic routing matrix. The deployment objective is to mitigate the operational costs associated with handling repetitive inbound account inquiries. Which structural architecture adjustments best support long-term metric stability without degrading frontline support standards? (Select ALL that apply)",
-            options: [
-                "Deploy automated text-back APIs to securely transition appropriate caller profiles to asynchronous processing pools.",
-                "Hard-code an arbitrary maximum duration cut-off rule onto all telephone queues to artificially force call termination.",
-                "Integrate real-time API integrations that automatically stream dynamic billing tracking items straight into visual interfaces.",
-                "Completely eliminate standard verification trees to reduce the Average Handle Time (AHT) matrix score parameters."
-            ],
-            correct: [0, 2]
-        },
-        {
-            scenario: "During an ongoing quarterly operational evaluation, a customer experience team monitors a sustained drop in the Net Promoter Score (NPS) matrix. Concurrently, customer satisfaction (CSAT) scores recorded immediately post-interaction remain above 90%. What hidden operational phenomena could explain this statistical divergence? (Select ALL that apply)",
-            options: [
-                "The target sample metrics are capturing surface-level agent politeness while ignoring structural issues in transaction fulfillment.",
-                "The evaluation structure ignores customer effort over an entire end-to-end journey by checking single interaction steps.",
-                "Acoustic line noise levels within regional telephony operations centers are reversing numerical customer inputs.",
-                "The customer lifecycle faces delayed negative touchpoints, such as automated shipping delays or unaligned billing statements."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "An international e-commerce portal undergoes a global pricing calculation failure during an active promotional flash sale campaign. Thousands of consumers were charged standard non-discount rates for premium products. As a direct result, support ticket queues across social media ecosystems surged exponentially. How should an executive command center structurally triage this system issue? (Select ALL that apply)",
-            options: [
-                "Establish an immediate centralized communication team to post real-time updates and clear tracking status information across all public sites.",
-                "Configure automated routing keywords within CRM filters to flag price disputes and assign them directly to high-authority specialists.",
-                "Disable all server connections for automated messaging channels to force users to use telephony arrays.",
-                "Provide frontline staff with specific partial-credit tooling interfaces to resolve customer complaints instantly."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "A high-profile fintech application rolls out an active speech analytics monitoring interface across its centralized regional call center footprint. The core analytical engine detects multiple live agent conversations indicating immediate spikes in vocal stress patterns and overlapping cross-talk thresholds. What procedural automation patterns should occur next? (Select ALL that apply)",
-            options: [
-                "Flag high-stress operational tickets automatically on live supervisor tracking views for real-time review.",
-                "Stream immediate script assistance modifications directly onto affected agent workstations to support recovery.",
-                "Trigger automatic call disconnects to clear high-stress calls from active telephone infrastructure arrays.",
-                "Provide single-click takeover functionality for supervisory tiers directly within active performance dashboards."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "A luxury hospitality brand discovers high levels of customer retention churn occurring on its online subscription management profiles. The analytical logs reveal that the cancellation flow is completely frictionless, taking under 10 seconds to finish. Which adjustments balance user-experience flows with enterprise mitigation metrics? (Select ALL that apply)",
-            options: [
-                "Incorporate dynamic real-time evaluation trees that present custom retention offers based on individual account history.",
-                "Integrate quick asynchronous text access choices right before final cancellation clicks to connect users with retention teams.",
-                "Intentionally introduce system lag states to frustrate users until they abandon the online cancellation attempt.",
-                "Incorporate account pause configuration options as standard self-service features within user dashboards."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "A healthcare provider launches an upgraded patient scheduling dashboard that experiences continuous API data synchronization errors with legacy local database storage engines. What immediate operational architecture adjustments should a technical team deploy to prevent customer service failures at clinic check-in desks? (Select ALL that apply)",
-            options: [
-                "Deploy a real-time cloud data buffer layer to capture application schedules independently from core storage engines.",
-                "Provide counter staff with temporary offline system authority to manually bypass validation rules for verification.",
-                "Require patients to complete manual account registration paperwork at the desk before receiving assistance.",
-                "Provide agents with a standalone web view module to access independent validation data points."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "An enterprise communications system is calibrated to transition standard inbound phone contacts to digital asynchronous chat tools. Which operational metrics provide accurate insight into efficiency changes following this transition? (Select ALL that apply)",
-            options: [
-                "Concurrency ratios, tracking active parallel text conversations managed by single agent footprints.",
-                "Acoustic resonance variations across local physical server hardware environments.",
-                "First Contact Resolution (FCR) logs checked over a multi-day window to evaluate long-term issue closure.",
-                "Customer Effort Scores (CES) focused on identifying multi-channel verification requirements."
-            ],
-            correct: [0, 2, 3]
-        },
-        {
-            scenario: "A global logistics firm relies heavily on generative AI modules to draft operational customer email tracking logs. During an audit, administrators notice that the system is misinterpreting delivery timeline targets and generating unrealistic expectations. Which architectural guardrails fix this problem? (Select ALL that apply)",
-            options: [
-                "Connect the text generation engine directly to real-time verification databases using structured validation tables.",
-                "Configure automated rule checks to hold communications flagged with high delivery changes for human review.",
-                "Block all AI tracking message functions and return to entirely manual template workflows for all agents.",
-                "Enforce clear constraints within system environment parameters to limit dynamic timeline generation capabilities."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "A retail organization experiences an extended localized network disruption that affects its physical point-of-sale systems. Customers are unable to use credit cards, leading to long queues and high levels of frustration. How should the centralized support group handle the resulting customer issues? (Select ALL that apply)",
-            options: [
-                "Deploy mobile data devices immediately to process customer transactions using cellular backup connections.",
-                "Configure IVR announcements to alert callers to the network issue before they connect with support agents.",
-                "Instruct store staff to stop processing transactions and ask customers to return once systems are online.",
-                "Provide digital support channels with immediate account credits to compensate impacted customer profiles."
-            ],
-            correct: [0, 1, 3]
-        },
-        {
-            scenario: "An insurance provider upgrades its primary claims review interface to improve processing speeds. After deployment, operational data reveals that while individual file update speeds dropped, overall claim finalization cycles increased. What underlying system bottlenecks could be causing this discrepancy? (Select ALL that apply)",
-            options: [
-                "The new software layout requires manual information duplication across legacy secondary screening systems.",
-                "The faster processing speeds are causing system errors that trigger automated file reviews.",
-                "The user interface optimization failed to include required validation fields, resulting in higher downstream errors.",
-                "The interface layout changes caused the system to draw high amounts of processing power from local servers."
-            ],
-            correct: [0, 1, 2]
-        }
-    ];
+        <div class="progress-container">
+            <div class="progress-bar" id="main-progress"></div>
+        </div>
 
-    // ATTEMPT CONTROL MANAGEMENT ENGINE
-    const attemptsUsed = parseInt(localStorage.getItem("exam_attempts_count") || "0");
-    const permanentLockout = localStorage.getItem("exam_permanently_locked") === "true";
+        <div class="main-container">
+            <div class="content-area">
+                
+                <!-- SECTION 1: OVERVIEW -->
+                <div class="card">
+                    <h2 style="font-weight: bold;">1. Windows Operations & Diagnostics Overview</h2>
+                    <p style="line-height: 1.6;">In the <strong>Operations Support Enterprise</strong> tier at Alorica, engineers troubleshoot high-priority Windows Enterprise environments. Diagnostics involve analyzing Active Directory Domain Services (AD DS), Group Policy Objects (GPO), Windows Management Instrumentation (WMI), IIS Web Servers, WSUS/SCCM updates, Hyper-V/Citrix VDI, and PowerShell administrative modules. Resolving incidents efficiently requires precise execution of PowerShell scripts, Event Viewer logging, and Windows command-line tools.</p>
+                </div>
 
-    if (permanentLockout) {
-        lockExamPermanently();
-    } else {
-        renderExamQuestions();
+                <!-- SECTION 2: 20 ADVANCED DETAILED EXAMPLES -->
+                <div class="card">
+                    <h2 style="font-weight: bold;">2. Knowledge Base: 20 Advanced Windows Enterprise SOPs</h2>
+                    <p style="margin-bottom: 1.5rem; color: #64748b;">Review these real-world enterprise incident runbooks featuring PowerShell scripts and Windows CMD diagnostics.</p>
+                    <div id="examples-container"></div>
+                </div>
+
+                <!-- SECTION 3: COMPLEX PRACTICAL SCENARIO EXERCISES -->
+                <div class="card">
+                    <h2 style="font-weight: bold;">3. Practical Scenario Exercises & Windows Technical Analysis</h2>
+                    <p style="margin-bottom: 1.5rem; color: #64748b;">Analyze the enterprise Windows operational tickets below. Provide structured, multi-step technical diagnostic and resolution steps in the provided input boxes to update your overall progress bar.</p>
+                    <div id="scenarios-container"></div>
+                </div>
+
+                <!-- SECTION 4: COMPLEX FINAL EXAM -->
+                <div class="card" id="exam-card">
+                    <h2 style="font-weight: bold;">4. Final Enterprise Assessment Exam (Multi-Answer Questions)</h2>
+                    <p style="margin-bottom: 1.5rem; color: #64748b;">Read each Windows technical scenario carefully. Select <strong>ALL correct options</strong> for each question. Minimum passing grade: <strong>80%</strong>.</p>
+                    <div id="quiz-container"></div>
+                    <button class="btn" style="margin-top: 1.5rem; background: var(--success);" onclick="submitExam()">Submit Final Enterprise Assessment</button>
+                </div>
+
+            </div>
+
+            <!-- SIDEBAR STATUS -->
+            <div class="sidebar">
+                <h3 style="margin-top: 0; border-bottom: 1px solid #e2e8f0; padding-bottom: 0.5rem; color: var(--primary);">Training Tracking</h3>
+                <div style="margin: 1.2rem 0;">
+                    <p style="font-size: 0.85rem; color: #64748b;">Practical Scenarios Done</p>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: var(--primary);" id="completed-count">0 / 20 Complete</p>
+                </div>
+                <div style="margin: 1.2rem 0;">
+                    <p style="font-size: 0.85rem; color: #64748b;">Overall Module Progress</p>
+                    <p style="font-size: 1.5rem; font-weight: bold; color: var(--accent);" id="completion-percent">0%</p>
+                </div>
+                <hr style="margin: 1rem 0; border: none; border-top: 1px solid #e2e8f0;">
+                <h4 style="margin-bottom: 0.5rem; font-size: 0.85rem; text-transform: uppercase; color: #64748b;">Proctoring Monitors</h4>
+                <p style="font-size: 0.8rem; color: var(--success);" id="mon-fs">✔ Fullscreen Active</p>
+                <p style="font-size: 0.8rem; color: var(--success);" id="mon-clip">✔ Clipboard Protection Lock</p>
+                <p style="font-size: 0.8rem; color: var(--success);" id="mon-focus">✔ Window Focus Verified</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // --- AUTHENTICATION CREDENTIALS ---
+        const VALID_USER = "yaminiyuktapeethala@aloricaservice.com";
+        const VALID_PASS = "24896571";
+
+        let completedScenarios = new Set();
+
+        // --- 20 ADVANCED ENTERPRISE TECHNICAL EXAMPLES (WINDOWS SPECIFIC) ---
+       const advancedExamples = [
+  // ==========================================
+  // PART 1: THEORY & CONCEPT-BASED (IDs 1 - 15)
+  // ==========================================
+  {
+    id: 1,
+    title: "P1 Theory: SD-WAN Path MTU & Fragmentation Mechanics",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "Explain the theoretical root cause of voice chopping over IPsec/MPLS tunnels when MTU/MSS mismatches occur across SD-WAN gateways.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- IP Header Overhead: 20 bytes IPv4 header + 8 bytes UDP/ICMP + 50+ bytes ESP/IPsec encapsulation.\n- Fragmentation Breakdown: When payload + headers exceed PMTU (e.g., 1500 bytes), intermediate routers must fragment packets. If DF (Don't Fragment) bit is set, ICMP Type 3 Code 4 (Fragmentation Needed) packets are generated.\n- Black Hole Routing: Firewalls dropping ICMP Type 3 Code 4 prevent PMTU Discovery (PMTUD) from functioning, causing silent packet drops.",
+    sop: "1. Analyze packet header structure and protocol encapsulation overhead.\n2. Verify ICMP Path MTU Discovery (PMTUD) behavior across firewall boundaries.\n3. Evaluate TCP Maximum Segment Size (MSS) clamping strategy at network edges.\n4. Document recommended MTU baseline (e.g., 1400-1472) across SD-WAN transport tiers."
+  },
+  {
+    id: 2,
+    title: "P2 Theory: Azure AD Hybrid Identity & Token Lifecycle Security",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Analyze the architectural propagation delay and security implications of Azure AD Connect delta vs. full synchronization cycles on OAuth/SAML token revocation.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Synchronization Latency: Azure AD Connect runs delta syncs every 30 minutes by default. Account disablement in local Active Directory does not instantly revoke cloud active tokens.\n- Token Lifetime vs. Revocation: OAuth 2.0 access tokens remain valid until expiration (default 60-90 minutes) unless Continuous Access Evaluation (CAE) is enabled.\n- CAE Impact: CAE allows Azure AD services (Exchange Online, Teams) to react to critical events (account disabled, IP change) in near-real-time without waiting for token expiration.",
+    sop: "1. Evaluate Azure AD Connect sync architecture and schedule thresholds.\n2. Review OAuth 2.0 Access Token Lifetime and Refresh Token revocation policies.\n3. Verify Continuous Access Evaluation (CAE) configuration across Microsoft 365 tenant.\n4. Design emergency deprovisioning workflows for high-risk account termination."
+  },
+  {
+    id: 3,
+    title: "P1 Theory: SQL Server Write-Ahead Logging & DB Error 9002 Mechanics",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "Explain the internal architecture of SQL Server Write-Ahead Logging (WAL) and why transaction logs fill up under Full Recovery Model.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Write-Ahead Logging (WAL): SQL Server writes transaction changes to the log file (LDF) before committing them to data files (MDF).\n- VLF Architecture: Transaction logs are subdivided into Virtual Log Files (VLFs). Active VLFs cannot be truncated until backed up.\n- Error 9002 Triggers: High transaction volume combined with missing log backups, open long-running transactions, or unindexed CDC/replication jobs prevents log truncation, leading to log exhaustion.",
+    sop: "1. Analyze log_reuse_wait_desc states (e.g., LOG_BACKUP, ACTIVE_TRANSACTION).\n2. Differentiate between log truncation (marking VLFs reusable) and log shrinking (reclaiming OS space).\n3. Evaluate risks of switching to SIMPLE recovery model in enterprise production environments.\n4. Design automated transaction log backup schedules aligned with RPO targets."
+  },
+  {
+    id: 4,
+    title: "P3 Theory: Windows Profile Architecture & Registry Hive Locks",
+    priority: "P3 - Moderate (SLA: 1-hr Response / 8-hr Resolution)",
+    issue: "Describe the underlying operating system mechanics that trigger temporary user profiles (`TEMP`) in Windows VDI environments.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Profile Loading Process: During logon, Winlogon/User Profile Service mounts `NTUSER.DAT` from `%SystemDrive%\\Users\\<Username>` into `HKCU`.\n- Exclusive Lock Failure: If an unclosed process or antivirus hook holds a handle on `NTUSER.DAT`, Windows cannot load the registry hive exclusively.\n- Fallback Mechanics: Windows creates a fallback profile `C:\\Users\\TEMP` and appends a `.bak` extension to the user's SID in `HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList`.",
+    sop: "1. Review Windows User Profile Service (ProfSvc) initialization workflow.\n2. Inspect profile lock dependencies caused by third-party filter drivers and antivirus agents.\n3. Analyze SID structure and `ProfileList` registry key schema.\n4. Formulate profile persistence strategies (e.g., FSLogix, Citrix Profile Management)."
+  },
+  {
+    id: 5,
+    title: "P2 Theory: SIP Trunking Architecture & 486 Busy Here Diagnostics",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Explain the SIP call setup process and theoretical reasons for `486 Busy Here` response codes under high voice traffic loads.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- SIP Signaling Flow: Handshake consists of `INVITE` -> `100 Trying` -> `180 Ringing` -> `200 OK` -> `ACK`.\n- Error 486 Dynamics: SIP 486 indicates destination endpoint or Session Border Controller (SBC) cannot accept the call.\n- Root Causes: Trunk channel capacity limits reached, destination agent endpoint queue saturation, or misconfigured B-channel allocation on PRI/SIP gateways.",
+    sop: "1. Examine SIP session negotiation and Session Description Protocol (SDP) parameters.\n2. Audit carrier SBC trunk capacity and concurrent call session thresholds.\n3. Evaluate call routing tables, PBX hunt groups, and agent ACD queue mechanics.\n4. Develop burst-capacity sizing frameworks for contact center voice infrastructure."
+  },
+  {
+    id: 6,
+    title: "P3 Theory: Role-Based Access Control (RBAC) & Principle of Least Privilege",
+    priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
+    issue: "Explain the theoretical difference between AGDLP architecture and modern Azure RBAC role assignments.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- AGDLP Principle: Account -> Global Group -> Domain Local Group -> Permission. Enforces clean separation between user identity and resource authorization in Active Directory.\n- Azure RBAC Model: Identity (User/Group/SPN) -> Role Definition (Permissions) -> Scope (Management Group/Subscription/Resource Group/Resource).\n- Theoretical Advantage: AGDLP reduces access token bloating, while Azure RBAC provides fine-grained control and dynamic scope inheritance.",
+    sop: "1. Review access governance framework and zero-trust alignment.\n2. Compare Kerberos token size constraints against modern OAuth scopes.\n3. Define group nesting strategies and auditing lifecycles.\n4. Design RBAC hierarchies following the Principle of Least Privilege (PoLP)."
+  },
+  {
+    id: 7,
+    title: "P2 Theory: DNS Spoofing, Cache Poisoning, and Forward Lookup Resolution",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Describe the mechanics of DNS cache poisoning and how local resolver caches process TTLs and forwarding loops.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Poisoning Mechanics: An attacker injects forged Resource Records (RRs) into a recursive resolver's cache by matching the 16-bit DNS Transaction ID and UDP port.\n- Routing Loops: Caused by misconfigured Conditional Forwarders forwarding requests back to upstream servers that forward back to the original host.\n- Mitigations: DNSSEC validates digital signatures; Source Port Randomization makes Transaction ID prediction computationally unfeasible.",
+    sop: "1. Trace recursive vs. iterative DNS resolution workflows.\n2. Analyze TTL (Time to Live) decay in local DNS resolver caches.\n3. Evaluate DNSSEC chain-of-trust authentication mechanisms.\n4. Inspect Conditional Forwarders and Root Hints hierarchy configuration."
+  },
+  {
+    id: 8,
+    title: "P3 Theory: RESTful API Integration & HTTP Status Architecture",
+    priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
+    issue: "Explain the theoretical structure of RESTful web services, JSON payload structures, and HTTP authentication mechanisms.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- REST Principles: Statelessness, Client-Server separation, Cacheability, Uniform Interface.\n- Authentication Types: Basic Auth (Base64 encoded string), OAuth 2.0 Bearer Tokens (JWTs containing header, payload, signature), API Keys.\n- Response Semantics: 2xx (Success), 4xx (Client Errors - 401 Unauthorized vs 403 Forbidden), 5xx (Server Errors).",
+    sop: "1. Evaluate API security models (OAuth 2.0 PKCE vs. Service Principals).\n2. Analyze JSON/XML payload schemas and data serialization performance.\n3. Establish rate-limiting and exponential backoff retry logic standards.\n4. Design enterprise application integration mapping schemas."
+  },
+  {
+    id: 9,
+    title: "P1 Theory: Switch Stacking, LACP Mechanics, and Split-Brain Prevention",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "Explain how switch stack backplane failure leads to split-brain scenarios and how LACP protocol prevents network loops.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Stack Backplane: Multi-switch stack acts as a single logical switch with a unified Control and Management plane.\n- Split-Brain Condition: If stack cable fails, stack master lost communication, causing both stack nodes to assume primary role with identical IP/MAC addresses.\n- LACP Mechanics: Link Aggregation Control Protocol (IEEE 802.1AX) sends LACPDU frames to dynamically bundle physical links into a single logical channel with fallback protection.",
+    sop: "1. Analyze StackWise / VSS split-brain detection algorithms.\n2. Evaluate Dual-Active Detection (DAD) mechanisms across switch stacks.\n3. Review Link Aggregation Control Protocol (LACP) negotiation parameters.\n4. Design resilient physical network topology for virtual cluster hosts."
+  },
+  {
+    id: 10,
+    title: "P2 Theory: BITS Protocol Architecture and Network Throttling",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Explain how Background Intelligent Transfer Service (BITS) utilizes idle network bandwidth without degrading interactive application traffic.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Bandwidth Optimization: BITS monitors network traffic at the transport layer and transfers files using only unused background bandwidth.\n- TCP Window Adjustment: Measures TCP round-trip time (RTT) and adjusts window size dynamically. When foreground traffic increases, BITS instantly throttles back.\n- Resiliency: Supports asynchronous transfers, resuming downloads after system reboots or network interruptions without re-downloading existing chunks.",
+    sop: "1. Evaluate transport protocol dynamics between foreground interactive and background tasks.\n2. Review BITS Group Policy bandwidth throttling window rules.\n3. Analyze SCCM Distribution Point boundary group configurations.\n4. Design WAN bandwidth protection strategies for enterprise patch cycles."
+  },
+  {
+    id: 11,
+    title: "P1 Theory: EDR Architecture, Heuristic Detections, and Isolation Vectors",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "Explain the theoretical operating model of Endpoint Detection and Response (EDR) kernel drivers and network containment engines.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Kernel Drivers: EDR agents use ELAM (Early Launch Anti-Malware) and Kernel-mode drivers (e.g., Microsoft-Windows-Threat-Intelligence) to monitor system calls (`NtCreateThread`, `NtWriteVirtualMemory`).\n- Behavioral Heuristics: Identifies process injection, LOLBins (Living off the Land Binaries) execution, and anomalous parent-child process chains.\n- Network Containment: Drops all IP traffic via Windows Filtering Platform (WFP) drivers except the agent's secure TLS tunnel back to the EDR cloud.",
+    sop: "1. Analyze OS kernel hooking mechanisms and telemetry generation.\n2. Inspect EDR false-positive mitigation lifecycle and rule exclusions.\n3. Review EDR network isolation routing rules via Windows Filtering Platform.\n4. Define SOC incident response escalation protocols for endpoint isolation."
+  },
+  {
+    id: 12,
+    title: "P3 Theory: SMTP Relay Mechanics and TLS Mutual Authentication",
+    priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
+    issue: "Analyze the SMTP protocol exchange, transport layer encryption (STARTTLS), and certificate validation chains.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- SMTP Session: Handshake sequence (`EHLO` -> `STARTTLS` -> `TLS Negotiation` -> `MAIL FROM` -> `RCPT TO` -> `DATA` -> `QUIT`).\n- STARTTLS Upgrading: Converts plain-text connection into encrypted TLS session over standard port (25 or 587).\n- Mutual TLS (mTLS): Both client and server present X.509 digital certificates to establish trusted identity based on a shared Certificate Authority (CA) root.",
+    sop: "1. Review SMTP protocol command flow and response status codes (e.g., 250, 451, 550).\n2. Evaluate TLS handshake and X.509 certificate trust verification steps.\n3. Analyze Exchange Hybrid Connector relay authentication restrictions.\n4. Design secure internal application email relay architecture."
+  },
+  {
+    id: 13,
+    title: "P2 Theory: Windows Kernel Memory Architecture (Paged vs Non-Paged Pools)",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Explain the architectural difference between Paged and Non-Paged Memory Pools in Windows Server kernel and what causes exhaustion.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Paged Pool: Virtual memory allocated to kernel components that can be paged out to disk (`pagefile.sys`) when physical RAM is low.\n- Non-Paged Pool: Guaranteed kernel memory that must reside in physical RAM at all times; cannot be paged out (used for network buffers, thread contexts, driver objects).\n- Exhaustion Impact: Kernel memory leaks in third-party drivers (e.g., VPN, AV) exhaust Non-Paged pool, causing OS lockups and network dropouts.",
+    sop: "1. Examine Windows memory manager allocation mechanics.\n2. Differentiate between kernel pool types and physical RAM address space.\n3. Review process context switching overhead and driver object tracking.\n4. Establish diagnostic baselines using Poolmon telemetry data."
+  },
+  {
+    id: 14,
+    title: "P3 Theory: TLS Protocol Suite Architecture and SCHANNEL Security",
+    priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
+    issue: "Describe the cryptographic mechanics of TLS 1.2 vs TLS 1.3 and Windows Secure Channel (SCHANNEL) provider architecture.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- TLS 1.2 vs 1.3: TLS 1.2 requires 2 round-trips for handshake; TLS 1.3 optimizes to 1 round-trip (or 0-RTT) and eliminates insecure cipher suites (RC4, 3DES, CBC mode).\n- Cipher Suites: Combination of Key Exchange (e.g., ECDHE), Authentication (RSA/ECDSA), Bulk Encryption (AES-GCM), and MAC (SHA256).\n- SCHANNEL SSP: The Security Support Provider in Windows that implements SSL/TLS protocols via registry configurations under `HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL`.",
+    sop: "1. Analyze TLS cryptographic handshake sequences and cipher suite negotiation.\n2. Review legacy protocol vulnerability vectors (e.g., POODLE, BEAST, SWEET32).\n3. Inspect Windows SCHANNEL SSP architecture and registry structure.\n4. Design enterprise web server cryptographic hardening standard."
+  },
+  {
+    id: 15,
+    title: "P2 Theory: IIS Process Model & Worker Process Recycled States",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Explain the architecture of IIS Application Pools, Worker Processes (`w3wp.exe`), and HTTP.sys driver interaction.",
+    cli: "THEORY & CONCEPTUAL ANALYSIS:\n- HTTP.sys: Kernel-mode HTTP listener driver that intercepts incoming TCP connections and routes requests to the correct AppPool queue.\n- W3WP Process: User-mode worker process executing ASP.NET code.\n- Rapid Fail Protection: If `w3wp.exe` crashes repeatedly within a specified timeframe (default 5 crashes in 5 mins), IIS automatically disables the AppPool to protect system stability (Event ID 5079 / HTTP 503 Service Unavailable).",
+    sop: "1. Map HTTP request path through HTTP.sys to user-mode `w3wp.exe` instances.\n2. Analyze Application Pool isolation models and identity contexts.\n3. Evaluate IIS Rapid Fail Protection thresholds and recycling policies.\n4. Formulate IIS performance diagnostic and crash dump collection strategies."
+  },
+
+  // ==========================================
+  // PART 2: COMMAND & CODE-BASED (IDs 16 - 30)
+  // ==========================================
+  {
+    id: 16,
+    title: "P1 Incident: SD-WAN Path MTU Adjustments & Packet Drop Remediation",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "Network MTU mismatch across Windows 11 VDI gateways is causing packet drops and softphone disconnections.",
+    cli: "REM Step 1: Trace route to identify network path\ntracert -d 10.240.12.1\n\nREM Step 2: Show current subinterface settings\nnetsh interface ipv4 show subinterfaces\n\nREM Step 3: Run ICMP Path MTU Discovery (Don't Fragment)\nping -n 20 -l 1472 10.240.12.1 -f\n\nREM Step 4: Set MTU size permanently on primary interface\nnetsh interface ipv4 set subinterface \"Ethernet 0\" mtu=1472 store=persistent",
+    sop: "1. Open administrative CMD or PowerShell.\n2. Run `tracert` and `ping -f` commands to find maximum non-fragmented packet size.\n3. Adjust local network interface MTU using `netsh` command line.\n4. Validate packet loss elimination with 50-packet ping verification."
+  },
+  {
+    id: 17,
+    title: "P2 Incident: Force Azure AD Connect Sync & Session Revocation",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Terminated employee access persists due to delayed Azure AD Connect sync cycles.",
+    cli: "# Step 1: Import ADSync module on primary DC\nImport-Module ADSync\n\n# Step 2: Trigger Delta Sync Cycle\nStart-ADSyncSyncCycle -PolicyType Delta\n\n# Step 3: Verify Scheduler Status\nGet-ADSyncScheduler\n\n# Step 4: Connect to Azure AD & Force Instant Revocation\nConnect-AzureAD\nRevoke-AzureADUserAllRefreshToken -ObjectId \"user.email@aloricaservice.com\"",
+    sop: "1. Log into Azure AD Connect server with admin credentials.\n2. Open PowerShell and trigger Delta Sync using `Start-ADSyncSyncCycle`.\n3. Run `Revoke-AzureADUserAllRefreshToken` to invalidate active OAuth tokens instantly.\n4. Confirm revocation completion in Azure AD Sign-in Logs."
+  },
+  {
+    id: 18,
+    title: "P1 Incident: SQL Server Transaction Log Emergency Truncation & Shrink",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "Ticketing database failed with Error 9002 due to full transaction log drive `L:\\`.",
+    cli: "-- Step 1: Check reason for log truncation wait\nUSE [Alorica_Ops];\nGO\nSELECT name, log_reuse_wait_desc FROM sys.databases WHERE name = 'Alorica_Ops';\n\n-- Step 2: Switch to Simple Recovery to clear VLFs\nALTER DATABASE [Alorica_Ops] SET RECOVERY SIMPLE;\nGO\n\n-- Step 3: Shrink log file to 1000 MB\nDBCC SHRINKFILE (N'Alorica_Ops_Log', 1000);\nGO\n\n-- Step 4: Revert to Full Recovery Model\nALTER DATABASE [Alorica_Ops] SET RECOVERY FULL;\nGO",
+    sop: "1. Open SSMS or execute `sqlcmd` on the database host.\n2. Query `sys.databases` to determine log reuse wait reasons.\n3. Execute T-SQL commands to switch database to Simple Recovery and run `DBCC SHRINKFILE`.\n4. Immediately return database to Full Recovery Model and schedule a full backup."
+  },
+  {
+    id: 19,
+    title: "P3 Incident: Citrix VDI Corrupt User Profile Removal",
+    priority: "P3 - Moderate (SLA: 1-hr Response / 8-hr Resolution)",
+    issue: "Agent logins stall due to orphaned temporary user profiles on Citrix session host.",
+    cli: "# Step 1: Terminate stuck user profile agent processes\nGet-Process -Name \"upmUserAgent\" -ErrorAction SilentlyContinue | Stop-Process -Force\n\n# Step 2: Query and remove corrupted TEMP WMI User Profiles\nGet-CimInstance -ClassName Win32_UserProfile | \n    Where-Object {$_.Special -eq $false -and $_.LocalPath -like \"*TEMP*\"} | \n    Remove-CimInstance\n\n# Step 3: Rename corrupt disk profile path\nIf (Test-Path \"C:\\Users\\username\") {\n    Rename-Item -Path \"C:\\Users\\username\" -NewName \"C:\\Users\\username.old\"\n}",
+    sop: "1. Verify user is logged off from Citrix Workspace portal.\n2. Run PowerShell script to terminate orphan profile processes.\n3. Remove temporary CIM profile instances programmatically.\n4. Clear bad registry profile entries under `ProfileList` and re-test user login."
+  },
+  {
+    id: 20,
+    title: "P2 Incident: SIP Softphone Packet Capture & Socket Diagnostics",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "SIP softphones encounter high packet drops and 486 errors during peak hours.",
+    cli: "REM Step 1: Start Netsh network trace on port 5060\nnetsh trace start capture=yes tracefile=C:\\Logs\\telephony_capture.etl maxsize=512\n\nREM Step 2: Query active listening sockets on SIP port\nnetstat -ano | findstr :5060\n\nREM Step 3: Stop trace capture after reproducing issue\nnetsh trace stop\n\nREM Step 4: Export socket connections to log file\nnetstat -b > C:\\Logs\\active_sockets.txt",
+    sop: "1. Launch elevated Command Prompt on affected client computer.\n2. Start packet capture via `netsh trace`.\n3. Inspect bound sockets using `netstat` to identify port exhaustion.\n4. Review output ETL files using Wireshark or Microsoft Message Analyzer."
+  },
+  {
+    id: 21,
+    title: "P3 Request: Bulk Active Directory Group Member Provisioning",
+    priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
+    issue: "Bulk onboard 45 new specialists into security group `GSG-OPS-ENTERPRISE-T2`.",
+    cli: "# Step 1: Import AD Module and CSV File\nImport-Module ActiveDirectory\n$Users = Import-Csv -Path \"C:\\Onboarding\\NewHires.csv\"\n\n# Step 2: Iterate and assign users to Active Directory Group\nforeach ($User in $Users) {\n    Add-ADGroupMember -Identity \"GSG-OPS-ENTERPRISE-T2\" -Members $User.SamAccountName -ErrorAction Continue\n    Write-Host \"Successfully added $($User.SamAccountName) to GSG-OPS-ENTERPRISE-T2\" -ForegroundColor Green\n}\n\n# Step 3: Validate Group Membership\nGet-ADGroupMember -Identity \"GSG-OPS-ENTERPRISE-T2\" | Select-Object Name, SamAccountName",
+    sop: "1. Stage target user list CSV file on DC local path.\n2. Execute bulk PowerShell import loop using `Add-ADGroupMember`.\n3. Validate group updates using `Get-ADGroupMember`.\n4. Log output file for compliance auditing."
+  },
+  {
+    id: 22,
+    title: "P2 Incident: Flush Poisoned DNS Cache & Server Clearing",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Workstations resolving internal application to spoofed address `127.0.0.1`.",
+    cli: "REM Step 1: Flush client DNS resolver cache\nipconfig /flushdns\n\nREM Step 2: Perform targeted lookup against DNS server\nnslookup crm.aloricaservice.com 10.100.1.254\n\nREM Step 3: Clear server-side DNS cache via command line\ndnscmd 10.100.1.254 /clearcache\n\nREM Step 4: PowerShell client flush fallback\npowershell -Command \"Clear-DnsClientCache\"",
+    sop: "1. Execute client-side DNS cache flush via `ipconfig /flushdns`.\n2. Connect to primary Domain Controller/DNS Server.\n3. Run `dnscmd /clearcache` to purge corrupt cached forward lookup entries.\n4. Verify record resolution consistency with `nslookup`."
+  },
+  {
+    id: 23,
+    title: "P3 Request: PowerShell REST API Automated Ticket Extractor",
+    priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
+    issue: "Automate ServiceNow REST API ticket data retrieval for internal dashboard reporting.",
+    cli: "# Step 1: Setup Authentication Header\n$User = \"api_user\"\n$Pass = \"SecretPass123!\"\n$Pair = \"$($User):$($Pass)\"\n$Encoded = [Convert]::ToBase64String([Text.Encoding]::ASCII.GetBytes($Pair))\n$Headers = @{ Authorization = \"Basic $Encoded\" }\n\n# Step 2: Query REST Endpoint\n$Uri = \"https://alorica.service-now.com/api/now/table/incident?sysparm_limit=10\"\n$Response = Invoke-RestMethod -Uri $Uri -Headers $Headers -Method Get\n\n# Step 3: Parse and Format Results\n$Response.result | Select-Object number, short_description, priority, state",
+    sop: "1. Build base64 authentication string using target API service account.\n2. Invoke API request using `Invoke-RestMethod` in PowerShell.\n3. Validate JSON payload structure and filter fields.\n4. Schedule script execution via Windows Task Scheduler."
+  },
+  {
+    id: 24,
+    title: "P1 Incident: Windows NIC Teaming & LBFO Cluster Failover",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "Core switch stack cable loss triggered network flapping across Hyper-V host clusters.",
+    cli: "# Step 1: Check NIC Teaming status and interface status\nGet-NetLbfoTeam\n\n# Step 2: Inspect individual adapter properties for LACP/VLAN faults\nGet-NetAdapterAdvancedProperty -Name \"Ethernet*\" | \n    Where-Object {$_.DisplayName -like \"*LACP*\" -or $_.DisplayName -like \"*VLAN*\"}\n\n# Step 3: Reset degraded team interface\nReset-NetAdapterAdvancedProperty -Name \"Ethernet1\"\n\n# Step 4: Validate Active/Passive failover mapping\nGet-NetLbfoTeamMember",
+    sop: "1. Open PowerShell on affected Hyper-V cluster host.\n2. Query team health status via `Get-NetLbfoTeam`.\n3. Rebind failing physical interfaces to restore secondary link redundancy.\n4. Confirm virtual network switch stability in Failover Cluster Manager."
+  },
+  {
+    id: 25,
+    title: "P2 Incident: Enforce SCCM BITS Bandwidth Throttling via PowerShell",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "SCCM software update deployment saturating WAN links across regional branches.",
+    cli: "# Step 1: Apply global BITS background transfer limit (500 KBps)\nImport-Module BitsTransfer\nSet-BITSTransfer -AllUsers -BandwidthThrottlingKBPS 500 -ErrorAction SilentlyContinue\n\n# Step 2: Query active CCM softmgmt updates\nGet-WmiObject -Namespace root\\ccm\\softmgmt-Group -Class CCM_SoftwareUpdate\n\n# Step 3: Force client Group Policy update\ngpupdate /force /target:computer",
+    sop: "1. Open administrative PowerShell console on affected endpoints.\n2. Throttling active BITS transfers using `Set-BITSTransfer`.\n3. Force immediate Group Policy update (`gpupdate /force`).\n4. Monitor router WAN link usage to verify traffic stabilization."
+  },
+  {
+    id: 26,
+    title: "P1 Incident: Release Endpoint from EDR Isolation via CLI",
+    priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+    issue: "False positive ransomware detection triggered automatic network isolation on 30 hosts.",
+    cli: "REM Step 1: Release isolate state using agent administrative CLI\n\"C:\\Program Files\\SentinelOne\\SentinelAgent.exe\" uncontain \"Workstation-ID-9921\" --passphrase \"AdminSecret123\"\n\nREM Step 2: Verify Defender for Endpoint agent status\npowershell -Command \"Get-MpComputerStatus | Select-Object RealTimeProtectionEnabled, AntivirusEnabled\"\n\nREM Step 3: Re-test local gateway ping connectivity\nping 10.100.1.1",
+    sop: "1. Verify script integrity with Security Operations Center (SOC).\n2. Obtain administrative bypass passphrase for isolated EDR agent.\n3. Execute release command via agent CLI executable.\n4. Verify full network stack recovery and application connectivity."
+  },
+  {
+    id: 27,
+    title: "P3 Incident: Exchange Transport Service Restart & Queue Drain",
+    priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
+    issue: "System notification emails failed to send due to expired SMTP certificate bindings.",
+    cli: "# Step 1: Check Exchange certificates on relay server\nGet-ExchangeCertificate -Server \"SMTP-Relay-01\"\n\n# Step 2: Query current Exchange transport mail queues\nGet-Queue -Server \"SMTP-Relay-01\"\n\n# Step 3: Restart Transport service to re-read certificate bindings\nRestart-Service -Name MSExchangeTransport -Force\n\n# Step 4: Verify queue status after restart\nGet-Queue -Server \"SMTP-Relay-01\" | Where-Object {$_.MessageCount -gt 0}",
+    sop: "1. Open Exchange Management Shell on primary relay host.\n2. Inspect certificate validity using `Get-ExchangeCertificate`.\n3. Restart `MSExchangeTransport` service to clear hung socket threads.\n4. Monitor queue processing using `Get-Queue`."
+  },
+  {
+    id: 28,
+    title: "P2 Incident: Restart Windows VPN Remote Access Service & Diagnostics",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "RRAS VPN Gateway memory exhaustion causing dropped client tunnel connections.",
+    cli: "# Step 1: Identify top 5 memory-consuming processes\nGet-Process | Sort-Object -Property WorkingSet64 -Descending | \n    Select-Object -First 5 -Property ProcessName, ID, @{N='Memory(MB)';E={$_.WorkingSet64/1MB}}\n\n# Step 2: Restart Routing and Remote Access Service (RRAS)\nGet-Service -Name RemoteAccess | Restart-Service -Force\n\n# Step 3: Verify RRAS operational status\nGet-Service -Name RemoteAccess",
+    sop: "1. Open PowerShell elevated on VPN Gateway host.\n2. Audit system memory utilization across active processes.\n3. Force restart of RemoteAccess service to clear non-paged pool memory leakage.\n4. Confirm remote client re-connection success."
+  },
+  {
+    id: 29,
+    title: "P3 Request: Enforce TLS 1.2 Protocol via Windows Registry Script",
+    priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
+    issue: "Security audit requires disabling weak SSL/TLS protocols and enforcing TLS 1.2 on IIS hosts.",
+    cli: "# Step 1: Create TLS 1.2 Server Registry Key Path\n$Path = 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.2\\Server'\nNew-Item -Path $Path -Force | Out-Null\n\n# Step 2: Set Enabled and DisabledByDefault values\nNew-ItemProperty -Path $Path -Name 'Enabled' -Value 1 -PropertyType DWORD -Force | Out-Null\nNew-ItemProperty -Path $Path -Name 'DisabledByDefault' -Value 0 -PropertyType DWORD -Force | Out-Null\n\n# Step 3: Confirm Registry Key Values\nGet-ItemProperty -Path $Path",
+    sop: "1. Stage PowerShell registry update script.\n2. Execute registry modifications across IIS web servers using `Invoke-Command`.\n3. Schedule server reboot within upcoming maintenance window.\n4. Audit port 443 cipher support using SSL scanning utilities."
+  },
+  {
+    id: 30,
+    title: "P2 Incident: IIS Application Pool Recycling & Event Log Inspection",
+    priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+    issue: "Ticketing web application pool crashing repeatedly with Event ID 5079.",
+    cli: "# Step 1: Import Web Administration module\nImport-Module WebAdministration\n\n# Step 2: Check target AppPool state\nGet-WebAppPoolState -Name \"AloricaAppPool\"\n\n# Step 3: Recycle target IIS Application Pool\nRestart-WebAppPool -Name \"AloricaAppPool\"\n\n# Step 4: Query system event logs for Event ID 5079\nGet-EventLog -LogName System -InstanceId 5079 -Newest 5 | \n    Select-Object TimeGenerated, Message",
+    sop: "1. Launch PowerShell as Administrator on target IIS server.\n2. Check and restart target Application Pool via `Restart-WebAppPool`.\n3. Query system logs to analyze crash frequency and failure reasons.\n4. Adjust AppPool Ping & Shutdown timeout settings in IIS Manager if necessary."
+  }
+];
+
+        // --- PRACTICAL SCENARIO EXERCISES (WINDOWS SPECIFIC) ---
+        const scenarios = [
+            {
+                id: 1,
+                title: "Scenario 1: Active Directory User Lockout Loops",
+                desc: "An enterprise user experiences continuous AD account lockouts every 5 minutes despite changing their password. Troubleshoot using Windows event logging and administrative utilities."
+            },
+            {
+                id: 2,
+                title: "Scenario 2: Group Policy Object (GPO) Failed Processing",
+                desc: "A newly created security GPO fails to apply to remote Windows 11 laptops connected via VPN. Diagnose RSOP / GPResult failures."
+            },
+            {
+                id: 3,
+                title: "Scenario 3: Print Spooler Service Crash on Enterprise Print Server",
+                desc: "The Windows Print Spooler service on `PRN-SRV-01` terminates unexpectedly due to a corrupt third-party print driver. Provide mitigation steps."
+            },
+            {
+                id: 4,
+                title: "Scenario 4: High CPU Utilization on Windows Server IIS Host",
+                desc: "Windows Server IIS host `WEB-OPS-01` CPU spikes to 100% due to an unhandled exception in `w3wp.exe`. Outline root cause analysis procedure."
+            },
+            {
+                id: 5,
+                title: "Scenario 5: Hyper-V Virtual Machine Network Unreachable",
+                desc: "A mission-critical VM running on a Hyper-V cluster loses network connectivity following a virtual switch configuration change. Detail recovery steps."
+            },
+            {
+                id: 6,
+                title: "Scenario 6: Windows Server System Volume C:\\ Full",
+                desc: "System drive C:\\ on a primary Domain Controller has 100 MB remaining due to bloated WinSxS and log files. Execute emergency cleanup."
+            },
+            {
+                id: 7,
+                title: "Scenario 7: BitLocker Recovery Key Deployment Failure",
+                desc: "100 corporate laptops fail to back up their BitLocker recovery keys to Active Directory Domain Services. Provide PowerShell solution."
+            },
+            {
+                id: 8,
+                title: "Scenario 8: Windows Update / WSUS Client Synchronization Error",
+                desc: "WSUS clients report error `0x8024401F` when checking for updates. Detail steps to reset Windows Update components."
+            },
+            {
+                id: 9,
+                title: "Scenario 9: Remote Desktop Services (RDS) License Server Exhaustion",
+                desc: "Users receive error 'No Remote Desktop License Servers Available' when connecting to RDS terminal servers. Resolve licensing issue."
+            },
+            {
+                id: 10,
+                title: "Scenario 10: DNS Subnet Misconfiguration Blocking Domain Logins",
+                desc: "A new branch office cannot authenticate against local Domain Controllers due to AD Sites and Services subnet assignment mismatch."
+            },
+            {
+                id: 11,
+                title: "Scenario 11: PowerShell Remoting (WinRM) Access Denied",
+                desc: "System administrators are unable to manage remote Windows servers using `Enter-PSSession` due to WinRM TrustedHosts policy blocks."
+            },
+            {
+                id: 12,
+                title: "Scenario 12: Network Drive Mapping GPO Script Failure",
+                desc: "Users report missing mapped network drives (`S:\\`, `P:\\`) after a Windows Feature Update deployment. Troubleshoot logon script."
+            },
+            {
+                id: 13,
+                title: "Scenario 13: Windows Failover Cluster Quorum Lost",
+                desc: "A two-node Windows Failover Cluster loses witness disk connection and enters down state. Restore cluster quorum."
+            },
+            {
+                id: 14,
+                title: "Scenario 14: Certificate Authority (CA) CRL Expiration",
+                desc: "Internal HTTPS portals trigger SSL security warnings because the Enterprise Root CA Certificate Revocation List (CRL) expired."
+            },
+            {
+                id: 15,
+                title: "Scenario 15: File Server Resource Manager (FSRM) Quota Exceeded",
+                desc: "Departments are blocked from saving files to shared folders because FSRM hard quotas were hit. Adjust volume quotas."
+            },
+            {
+                id: 16,
+                title: "Scenario 16: Windows Firewall Blocking Custom LOB Port",
+                desc: "A line-of-business app cannot communicate over port 8443 after a Windows Security Baseline update. Create inbound firewall rule."
+            },
+            {
+                id: 17,
+                title: "Scenario 17: Orphaned SID in File NTFS Permissions",
+                desc: "An audit identifies orphaned SIDs across sensitive folder shares following Active Directory migration. Clean security descriptors."
+            },
+            {
+                id: 18,
+                title: "Scenario 18: Azure AD Connect Password Hash Sync Delayed",
+                desc: "Users changing passwords locally wait over 40 minutes for cloud password sync. Troubleshoot PHS sync cycle."
+            },
+            {
+                id: 19,
+                title: "Scenario 19: Windows Event Log Security Audit Full",
+                desc: "Domain Controller stops processing logins because the Security Event Log reached max size and overwrite is disabled."
+            },
+            {
+                id: 20,
+                title: "Scenario 20: DHCP Scope Exhaustion in Agent Subnet",
+                desc: "Agent workstations fail to receive IP addresses (`169.254.x.x` APIPA) due to full DHCP lease scopes. Resolve lease saturation."
+            }
+        ];
+
+        // --- FINAL EXAM MULTI-CHOICE QUESTIONS (WINDOWS SPECIFIC) ---
+ const quizQuestions = [
+    {
+        id: 1,
+        question: `1. INCIDENT SCENARIO: A high-priority incident has been declared after multiple users reported intermittent DNS resolution failures across enterprise workstations. 
+During initial triage, the SOC team suspects local DNS cache poisoning targeting core internal web services. 
+To mitigate the threat immediately, you must flush client-side caches and query real-time forward lookup records across internal domain controllers. 
+
+TROUBLESHOOTING SEQUENCE:
+1. Clear the client DNS resolver cache via Command Prompt: [ Missing Command 1 ]
+2. Flush client-side cache using PowerShell natively: [ Missing Command 2 ]
+3. Query detailed DNS resource records directly against domain controller 10.100.1.254: [ Missing Command 3 ]
+
+Which of the following commands represent valid steps in this remediation sequence? (Select ALL that apply)`,
+        options: [
+            "ipconfig /flushdns",
+            "Clear-DnsClientCache",
+            "nslookup -type=all crm.enterprise.internal 10.100.1.254",
+            "netsh interface ip reset"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 2,
+        question: `2. INCIDENT SCENARIO: A security audit flags 45 orphaned Active Directory user accounts following a corporate restructuring. 
+To prevent unauthorized access and enforce Compliance standards, the identity team needs to audit user attributes, disable the stale accounts, 
+and clear active kerberos tickets. You are tasked with writing an automated PowerShell script to process these accounts.
+
+POWERSHELL EXECUTION SEQUENCE:
+1. Query detailed attributes for a target account: [ Missing Command 1 ]
+2. Disable the target user account in Active Directory: [ Missing Command 2 ]
+3. Unlock locked accounts following password resets: [ Missing Command 3 ]
+
+Which of the following PowerShell cmdlets are used for Active Directory identity lifecycle management? (Select ALL that apply)`,
+        options: [
+            "Get-ADUser -Identity 'jdoe' -Properties *",
+            "Set-ADUser -Identity 'jdoe' -Enabled $false",
+            "Unlock-ADAccount -Identity 'jdoe'",
+            "New-LocalUser -Name 'jdoe'"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 3,
+        question: `3. INCIDENT SCENARIO: Users in a regional branch office report that Kerberos authentication is failing across all local file shares and web portals. 
+The Event Viewer logs indicate a severe Kerberos time skew error (Event ID 4), caused by clock drift between local workstations and the primary domain controller. 
+The local Windows Time Service (w32time) must be reconfigured and forced to resynchronize with the domain controller hierarchy immediately.
+
+REMEDIATION SEQUENCE:
+1. Update local NTP configuration to target domain controller: [ Missing Command 1 ]
+2. Restart the local Windows Time service: [ Missing Command 2 ]
+3. Force immediate time resynchronization: [ Missing Command 3 ]
+
+Which of the following commands must be executed to resolve this clock drift issue? (Select ALL that apply)`,
+        options: [
+            "w32tm /config /manualpeerlist:\"dc01.corp.local\" /syncfromflags:manual /update",
+            "net stop w32time && net start w32time",
+            "w32tm /resync /force",
+            "iisreset /restart"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 4,
+        question: `4. INCIDENT SCENARIO: An enterprise software push via Group Policy (GPO) failed across 200 Finance department laptops. 
+Initial reports indicate that security filtering and WMI filters are blocking GPO application. 
+You must gather diagnostic execution logs and HTML status reports directly from affected endpoints to isolate whether the issue stems from processing failures or network delays.
+
+DIAGNOSTIC SEQUENCE:
+1. Export complete Resultant Set of Policy (RSoP) data into a structured HTML report: [ Missing Command 1 ]
+2. Launch the legacy MMC Resultant Set of Policy graphical user interface: [ Missing Command 2 ]
+3. Force immediate Group Policy refresh in background mode: [ Missing Command 3 ]
+
+Which of the following commands and diagnostic utilities are valid for analyzing GPO processing errors? (Select ALL that apply)`,
+        options: [
+            "gpresult /h C:\\Logs\\GPO_Report.html /f",
+            "rsop.msc",
+            "gpupdate /force",
+            "chkdsk C: /f /r"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 5,
+        question: `5. INCIDENT SCENARIO: System Center Configuration Manager (SCCM) agent installations are failing across several Windows 11 hosts with error code 0x80041002. 
+Diagnostics reveal that the local Windows Management Instrumentation (WMI) repository has become corrupted due to unexpected power outages. 
+You are tasked with executing standard OS-level repair routines to salvage or rebuild the WMI repository without reinstalling the operating system.
+
+REPAIR SEQUENCE:
+1. Stop the core WMI service process: [ Missing Command 1 ]
+2. Perform a non-destructive inconsistency check and salvage on WMI repository: [ Missing Command 2 ]
+3. Perform a full reset of the WMI repository to factory defaults: [ Missing Command 3 ]
+
+Which of the following commands are part of the standard WMI repository repair process? (Select ALL that apply)`,
+        options: [
+            "net stop winmgmt /y",
+            "winmgmt /salvagerepository",
+            "winmgmt /resetrepository",
+            "format C: /fs:ntfs /q"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 6,
+        question: `6. INCIDENT SCENARIO: A SQL Server database hosting a critical ticketing engine is throwing Error 9002 (The transaction log for database is full). 
+The production application has gone completely read-only because drive L:\\ (Transaction Log Volume) has 0 MB of remaining space. 
+To restore write operations immediately, you must shrink the transaction log file and clear uncommitted Virtual Log Files (VLFs).
+
+REMEDIATION SEQUENCE:
+1. Check transaction log truncation block status: [ Missing Command 1 ]
+2. Temporarily set recovery model to Simple to allow truncation: [ Missing Command 2 ]
+3. Shrink physical transaction log file size down to 1000MB: [ Missing Command 3 ]
+
+Which of the following T-SQL commands are required to clear log pressure and restore system operation? (Select ALL that apply)`,
+        options: [
+            "SELECT name, log_reuse_wait_desc FROM sys.databases WHERE name = 'TicketingDB';",
+            "ALTER DATABASE [TicketingDB] SET RECOVERY SIMPLE;",
+            "DBCC SHRINKFILE (N'TicketingDB_Log', 1000);",
+            "DROP DATABASE [TicketingDB];"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 7,
+        question: `7. INCIDENT SCENARIO: Multiple VDI agent sessions on a Citrix Hypervisor host are stalling during user logon at the "Preparing Windows" screen. 
+Investigation shows that orphaned temporary registry hives (`NTUSER.DAT`) are remaining locked by background antivirus filter drivers. 
+Windows is falling back to creating temporary profiles (`C:\\Users\\TEMP`), which breaks application persistence for incoming remote call center staff.
+
+REMEDIATION SEQUENCE:
+1. Query and list temporary user profiles present on system via CIM: [ Missing Command 1 ]
+2. Terminate stuck user profile synchronization process: [ Missing Command 2 ]
+3. Programmatically remove corrupted temporary profiles from system: [ Missing Command 3 ]
+
+Which of the following PowerShell commands are valid for isolating and removing corrupt temporary user profiles? (Select ALL that apply)`,
+        options: [
+            "Get-CimInstance -ClassName Win32_UserProfile | Where-Object {$_.LocalPath -like '*TEMP*'}",
+            "Stop-Process -Name 'upmUserAgent' -Force",
+            "Get-CimInstance -ClassName Win32_UserProfile | Where-Object {$_.LocalPath -like '*TEMP*'} | Remove-CimInstance",
+            "Remove-Item -Path 'C:\\Windows\\System32' -Recurse -Force"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 8,
+        question: `8. INCIDENT SCENARIO: Voice quality on softphones across regional call centers has degraded severely, resulting in dropped calls and SIP 486 Busy errors. 
+Network engineers suspect packet fragmentation and MTU mismatch over IPsec/SD-WAN VPN tunnels. 
+You must calculate the Maximum Transmission Unit (MTU) size without IP fragmentation and adjust client interface properties accordingly.
+
+DIAGNOSTIC & FIX SEQUENCE:
+1. Test network path for Maximum Segment Size using DF (Don't Fragment) flag: [ Missing Command 1 ]
+2. Show current active network subinterface MTU values: [ Missing Command 2 ]
+3. Permanently set Ethernet subinterface MTU to 1472 bytes: [ Missing Command 3 ]
+
+Which of the following CLI commands are valid for Path MTU Discovery and interface adjustment? (Select ALL that apply)`,
+        options: [
+            "ping -n 10 -l 1472 10.240.12.1 -f",
+            "netsh interface ipv4 show subinterfaces",
+            "netsh interface ipv4 set subinterface \"Ethernet 0\" mtu=1472 store=persistent",
+            "route delete 0.0.0.0 MASK 0.0.0.0"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 9,
+        question: `9. INCIDENT SCENARIO: A rogue malware infection was detected on a corporate laptop, triggering an automated endpoint isolation rule in EDR. 
+After performing malware remediation and confirming system safety with the Security Operations Center (SOC), 
+the workstation remains locked out of the network by Windows Filtering Platform (WFP) drivers. You need to release isolation and restore local gateway communication.
+
+UNCONTAINMENT SEQUENCE:
+1. Issue EDR administrative agent CLI command to remove network containment: [ Missing Command 1 ]
+2. Inspect Microsoft Defender real-time operational status via PowerShell: [ Missing Command 2 ]
+3. Validate local network stack IP connectivity to default gateway: [ Missing Command 3 ]
+
+Which of the following CLI/PowerShell commands are appropriate steps during endpoint unisolation? (Select ALL that apply)`,
+        options: [
+            "\"C:\\Program Files\\SentinelOne\\SentinelAgent.exe\" uncontain \"Host-ID-8812\" --passphrase \"AuthPass123!\"",
+            "Get-MpComputerStatus | Select-Object RealTimeProtectionEnabled, AntivirusEnabled",
+            "ping 10.100.1.1",
+            "Disable-NetAdapter -Name \"Ethernet 0\" -Confirm:$false"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 10,
+        question: `10. INCIDENT SCENARIO: An IIS-hosted ASP.NET enterprise web application is throwing HTTP 503 (Service Unavailable) errors to incoming clients. 
+Application log analysis shows that the primary worker process (\`w3wp.exe\`) crashed repeatedly, triggering IIS Rapid Fail Protection. 
+You must assess Application Pool status, restart the application pool instance, and collect crash details from Windows Event logs.
+
+OPERATIONAL SEQUENCE:
+1. Import Web Administration PowerShell module: [ Missing Command 1 ]
+2. Query state of target IIS Application Pool: [ Missing Command 2 ]
+3. Force immediate restart/recycle of Application Pool: [ Missing Command 3 ]
+
+Which of the following PowerShell commands are correct for managing IIS Application Pools and querying web logs? (Select ALL that apply)`,
+        options: [
+            "Import-Module WebAdministration",
+            "Get-WebAppPoolState -Name 'EnterpriseAppPool'",
+            "Restart-WebAppPool -Name 'EnterpriseAppPool'",
+            "Stop-Service -Name 'W3SVC' -NoWait"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 11,
+        question: `11. INCIDENT SCENARIO: An automated patch management deployment saturates WAN bandwidth across branch sites during peak hours. 
+The network Operations team demands an immediate cap on Background Intelligent Transfer Service (BITS) job download rates. 
+You need to throttle BITS transfer rates, inspect active CCM update jobs, and update client system policies immediately.
+
+REMEDIATION SEQUENCE:
+1. Apply global BITS download speed limit (e.g., 500 KBps) across all active users: [ Missing Command 1 ]
+2. Query active CCM software update deployment status via WMI: [ Missing Command 2 ]
+3. Force immediate machine Group Policy evaluation update: [ Missing Command 3 ]
+
+Which of the following commands can be executed to throttle network utilization during software distribution? (Select ALL that apply)`,
+        options: [
+            "Set-BITSTransfer -AllUsers -BandwidthThrottlingKBPS 500",
+            "Get-WmiObject -Namespace root\\ccm\\softmgmt-Group -Class CCM_SoftwareUpdate",
+            "gpupdate /force /target:computer",
+            "Stop-Service -Name \"BITS\" -Force"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 12,
+        question: `12. INCIDENT SCENARIO: A security compliance standard requires enforcing TLS 1.2 and disabling legacy cipher protocols (SSL 3.0, TLS 1.0, TLS 1.1) 
+across all Windows Server web servers. You are preparing an automated PowerShell script to make the necessary SCHANNEL registry updates 
+and ensure insecure cryptographic protocols are explicitly disabled at the OS kernel level.
+
+REGISTRY AUTOMATION SEQUENCE:
+1. Create registry subkey for TLS 1.2 Server configuration: [ Missing Command 1 ]
+2. Set 'Enabled' DWORD registry property value to 1: [ Missing Command 2 ]
+3. Set 'DisabledByDefault' DWORD registry property value to 0: [ Missing Command 3 ]
+
+Which of the following PowerShell cmdlets correctly manipulate registry keys for SCHANNEL hardening? (Select ALL that apply)`,
+        options: [
+            "New-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL\\Protocols\\TLS 1.2\\Server' -Force",
+            "New-ItemProperty -Path $Path -Name 'Enabled' -Value 1 -PropertyType DWORD -Force",
+            "New-ItemProperty -Path $Path -Name 'DisabledByDefault' -Value 0 -PropertyType DWORD -Force",
+            "Remove-Item -Path 'HKLM:\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL' -Recurse"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 13,
+        question: `13. INCIDENT SCENARIO: Internal system notification emails sent through an on-premises Exchange Hybrid SMTP relay server are queuing up and failing to deliver. 
+Preliminary checks indicate that an expired TLS certificate binding is preventing SMTP handshakes between the relay server and Office 365 cloud endpoints. 
+You must inspect local certificates, check queue sizes, and restart transport services to clear stalled socket threads.
+
+TROUBLESHOOTING SEQUENCE:
+1. Query installed Exchange TLS certificates on local relay host: [ Missing Command 1 ]
+2. Retrieve current status and message counts of all active transport queues: [ Missing Command 2 ]
+3. Force restart of the Exchange Transport Service: [ Missing Command 3 ]
+
+Which of the following commands are valid for managing Exchange Transport and SMTP Queues? (Select ALL that apply)`,
+        options: [
+            "Get-ExchangeCertificate -Server 'SMTP-Relay-01'",
+            "Get-Queue -Server 'SMTP-Relay-01'",
+            "Restart-Service -Name MSExchangeTransport -Force",
+            "Uninstall-WindowsFeature -Name Exchange-Transport"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 14,
+        question: `14. INCIDENT SCENARIO: Employees connected via Windows Remote Access Service (RRAS) VPN report dropped connections every 15 minutes. 
+Kernel telemetry reveals that a non-paged memory pool leak in a third-party driver is causing system memory exhaustion on the gateway server. 
+Until a vendor driver update is released, you must monitor top process memory consumption and safely restart the Remote Access service.
+
+OPERATIONAL SEQUENCE:
+1. List top memory-consuming processes ordered by Working Set size: [ Missing Command 1 ]
+2. Query operational status of Remote Access service: [ Missing Command 2 ]
+3. Force restart of the Routing and Remote Access service: [ Missing Command 3 ]
+
+Which of the following PowerShell commands are appropriate for memory diagnostics and service restart? (Select ALL that apply)`,
+        options: [
+            "Get-Process | Sort-Object WorkingSet64 -Descending | Select-Object -First 5 ProcessName, ID",
+            "Get-Service -Name RemoteAccess",
+            "Restart-Service -Name RemoteAccess -Force",
+            "Stop-Computer -Force"
+        ],
+        correct: [0, 1, 2]
+    },
+    {
+        id: 15,
+        question: `15. INCIDENT SCENARIO: Hyper-V virtual machine migration failures occur during a host node upgrade sequence. 
+Network diagnostics point to a misconfiguration in NIC Teaming (LBFO) on the host system, causing link flapping across trunk ports. 
+You must inspect team bindings, verify physical adapter advanced properties for LACP faults, and re-establish network link aggregation balance.
+
+REMEDIATION SEQUENCE:
+1. Get configuration and operational status of LBFO Net Adapter teams: [ Missing Command 1 ]
+2. Inspect physical interface LACP/VLAN advanced properties: [ Missing Command 2 ]
+3. Check team member adapter state mapping: [ Missing Command 3 ]
+
+Which of the following PowerShell cmdlets are valid steps for analyzing and fixing Windows NIC Teams? (Select ALL that apply)`,
+        options: [
+            "Get-NetLbfoTeam",
+            "Get-NetAdapterAdvancedProperty -Name 'Ethernet*'",
+            "Get-NetLbfoTeamMember",
+            "Remove-NetAdapter -Name 'Ethernet1' -Confirm:$false"
+        ],
+        correct: [0, 1, 2]
     }
+];
 
-    // INTERACTIVE LINE-COUNT DRILL VALIDATOR ENGINE
-    function submitDrill(drillId) {
-        const textarea = document.getElementById(`drill-text-${drillId}`);
-        const feedback = document.getElementById(`drill-feedback-${drillId}`);
-        const textValue = textarea.value.trim();
-
-        // 1. Calculate lines based on explicit newlines
-        let lineCount = textValue === "" ? 0 : textValue.split('\n').length;
-
-        // 2. Wrap-Around Calculation: Calculate columns and row length dynamically 
-        // to prevent users from bypassing validation with single massive strings.
-        const approximateCharsPerLine = 75; 
-        if (lineCount === 1 && textValue.length > approximateCharsPerLine) {
-            lineCount = Math.ceil(textValue.length / approximateCharsPerLine);
+        // --- RENDER FUNCTIONS ---
+        function renderExamples() {
+            const container = document.getElementById("examples-container");
+            container.innerHTML = advancedExamples.map(ex => `
+                <div class="example-box">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.5rem;">
+                        <strong style="color: var(--primary); font-size: 1.05rem;">Example ${ex.id}: ${ex.title}</strong>
+                        <span class="badge ${ex.priority.includes('P1') ? 'badge-p1' : ex.priority.includes('P2') ? 'badge-p2' : ex.priority.includes('P3') ? 'badge-p3' : 'badge-p4'}">${ex.priority.split(' ')[0]}</span>
+                    </div>
+                    <p style="font-size: 0.9rem; margin-bottom: 0.5rem;"><strong>Issue:</strong> ${ex.issue}</p>
+                    <pre><code>${ex.cli}</code></pre>
+                    <p style="font-size: 0.85rem; color: #334155; white-space: pre-line; margin-top: 0.5rem;"><strong>SOP Resolution Steps:</strong>\n${ex.sop}</p>
+                </div>
+            `).join('');
         }
 
-        feedback.style.display = "block";
-
-        // LINE CRITERIA ACTION CONSTRAINT GUARD
-        if (lineCount < 3) {
-            feedback.className = "drill-feedback drill-error";
-            feedback.innerHTML = `⚠️ SUBMISSION REJECTED: Your response contains roughly ${lineCount} line(s). You must draft at least 3 lines of deep tactical strategy text before logging ledger.`;
-        } else {
-            feedback.className = "drill-feedback drill-success";
-            feedback.innerHTML = `✓ ANALYSIS REGISTERED: Operational deployment analysis saved into active performance matrices (${lineCount} lines evaluated).`;
+        function renderScenarios() {
+            const container = document.getElementById("scenarios-container");
+            container.innerHTML = scenarios.map(sc => `
+                <div class="example-box" style="border-left-color: var(--accent);" id="scenario-card-${sc.id}">
+                    <strong style="color: var(--dark); font-size: 1rem;">${sc.title}</strong>
+                    <p style="font-size: 0.9rem; color: #475569; margin: 0.5rem 0;">${sc.desc}</p>
+                    <textarea id="scenario-input-${sc.id}" placeholder="Type technical diagnostic commands, PowerShell scripts, or step-by-step resolution steps here..."></textarea>
+                    <button class="submit-scenario-btn" id="scenario-btn-${sc.id}" onclick="submitScenario(${sc.id})">Submit Technical Response</button>
+                </div>
+            `).join('');
         }
-    }
 
-    function renderExamQuestions() {
-        const container = document.getElementById("questions-container");
-        let html = "";
-        
-        EXAM_QUESTIONS.forEach((q, i) => {
-            html += `
-                <div class="q-block">
-                    <span class="q-multi-alert">Multiple-Response Choice (Select All That Apply)</span>
-                    <div class="q-scenario"><strong>QUESTION ${i + 1} of ${EXAM_QUESTIONS.length}:</strong> ${q.scenario}</div>
-                    <div class="options-wrapper">
-            `;
-            q.options.forEach((opt, optIndex) => {
-                html += `
-                    <label class="option-label">
-                        <input type="checkbox" name="q${i}" value="${optIndex}">
-                        <span>${opt}</span>
-                    </label>
-                `;
-            });
-            html += `
+        function renderQuiz() {
+            const container = document.getElementById("quiz-container");
+            container.innerHTML = quizQuestions.map(q => `
+                <div class="quiz-question" id="quiz-q-${q.id}">
+                    <p style="font-weight: 600; margin-bottom: 0.8rem;">${q.question}</p>
+                    <div class="quiz-options">
+                        ${q.options.map((opt, idx) => `
+                            <label>
+                                <input type="checkbox" name="q_${q.id}" value="${idx}">
+                                <span>${opt}</span>
+                            </label>
+                        `).join('')}
                     </div>
                 </div>
-            `;
-        });
-        
-        container.innerHTML = html;
-    }
-
-    function evaluateExam(event) {
-        event.preventDefault();
-        
-        if (localStorage.getItem("exam_permanently_locked") === "true") {
-            lockExamPermanently();
-            return;
+            `).join('');
         }
 
-        let totalPassed = 0;
-        const totalQuestions = EXAM_QUESTIONS.length;
-
-        EXAM_QUESTIONS.forEach((q, i) => {
-            const checkedBoxes = document.querySelectorAll(`input[name="q${i}"]:checked`);
-            const selected = Array.from(checkedBoxes).map(cb => parseInt(cb.value));
-            const correct = q.correct;
-
-            const isCorrect = selected.length === correct.length && 
-                              selected.every(val => correct.includes(val));
+        // --- INTERACTION LOGIC ---
+        function submitScenario(id) {
+            const input = document.getElementById(`scenario-input-${id}`);
+            const btn = document.getElementById(`scenario-btn-${id}`);
             
-            if (isCorrect) {
-                totalPassed++;
+            if (input.value.trim().length < 15) {
+                alert("Please provide a detailed technical resolution plan (minimum 15 characters).");
+                return;
+            }
+
+            completedScenarios.add(id);
+            btn.disabled = true;
+            btn.innerText = "✔ Response Saved";
+            btn.style.background = "var(--success)";
+            input.disabled = true;
+
+            updateProgress();
+        }
+
+        function updateProgress() {
+            const totalScenarios = scenarios.length;
+            const completed = completedScenarios.size;
+            const percentage = Math.round((completed / totalScenarios) * 100);
+
+            document.getElementById("completed-count").innerText = `${completed} / ${totalScenarios} Complete`;
+            document.getElementById("completion-percent").innerText = `${percentage}%`;
+            document.getElementById("main-progress").style.width = `${percentage}%`;
+        }
+
+        function submitExam() {
+            if (completedScenarios.size < scenarios.length) {
+                alert(`Please complete all 20 practical scenario exercises before submitting the final exam. (${completedScenarios.size}/20 completed)`);
+                return;
+            }
+
+            let totalScore = 0;
+            let totalQuestions = quizQuestions.length;
+
+            quizQuestions.forEach(q => {
+                const checkboxes = document.querySelectorAll(`input[name="q_${q.id}"]:checked`);
+                const selected = Array.from(checkboxes).map(cb => parseInt(cb.value));
+                
+                const isCorrect = JSON.stringify(selected.sort()) === JSON.stringify(q.correct.sort());
+                if (isCorrect) {
+                    totalScore++;
+                }
+            });
+
+            const scorePercent = Math.round((totalScore / totalQuestions) * 100);
+
+            if (scorePercent >= 80) {
+                alert(`CONGRATULATIONS! You passed the Windows Enterprise Assessment with a score of ${scorePercent}% (${totalScore}/${totalQuestions}). Your completion record has been logged.`);
+            } else {
+                alert(`ASSESSMENT FAILED: You scored ${scorePercent}% (${totalScore}/${totalQuestions}). Minimum required score is 80%. Review the SOP examples and attempt again.`);
+            }
+        }
+
+        // --- PROCTORING SIMULATION ---
+        function enterProctoredEnvironment() {
+            document.getElementById("policy-modal").style.display = "none";
+            document.getElementById("portal-screen").classList.add("active");
+
+            // Attempt fullscreen
+            if (document.documentElement.requestFullscreen) {
+                document.documentElement.requestFullscreen().catch(() => {});
+            }
+        }
+
+        document.getElementById("login-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const user = document.getElementById("userid").value.trim();
+            const pass = document.getElementById("password").value.trim();
+
+            if (user === VALID_USER && pass === VALID_PASS) {
+                document.getElementById("login-screen").classList.remove("active");
+                document.getElementById("policy-modal").style.display = "flex";
+            } else {
+                document.getElementById("login-error").style.display = "block";
             }
         });
 
-        const scorePercentage = Math.round((totalPassed / totalQuestions) * 100);
-        const resultOverlay = document.getElementById('result-overlay');
-        
-        resultOverlay.style.display = "block";
-        window.scrollTo({ top: resultOverlay.offsetTop + 200, behavior: 'smooth' });
-
-        if (scorePercentage >= 80) {
-            resultOverlay.className = ""; 
-            resultOverlay.style.background = "#dcfce7";
-            resultOverlay.style.color = "#166534";
-            resultOverlay.style.border = "3px solid #22c55e";
-            resultOverlay.innerHTML = `
-                <h2 style="color:#166534; margin:0 0 10px; font-size:2rem; text-transform:uppercase;">CREDENTIAL CONFERRED</h2>
-                <p style="font-size:1.5rem; margin:0;">Final Architecture Score: <strong>${scorePercentage}%</strong> </p>
-                <p style="margin-top:10px; font-weight:normal;">Congratulations. Your operational strategy configurations meet administrative deployment standards.</p>
-            `;
-        } else {
-            let currentAttempts = parseInt(localStorage.getItem("exam_attempts_count") || "0");
-            currentAttempts++;
-            localStorage.setItem("exam_attempts_count", currentAttempts);
-
-            if (currentAttempts === 1) {
-                resultOverlay.className = "";
-                resultOverlay.style.background = "#fffbeb";
-                resultOverlay.style.color = "#b45309";
-                resultOverlay.style.border = "3px solid #f59e0b";
-                resultOverlay.innerHTML = `
-                    <h2 style="color:#b45309; margin:0 0 10px; font-size:1.8rem; text-transform:uppercase;">ATTEMPT 1 FAILED (${scorePercentage}%)</h2>
-                    <p style="font-size:1.2rem; margin:0;">You missed the passing line standard threshold of 80%.</p>
-                    <p style="margin-top:10px; font-weight:normal;"><strong>Notice:</strong> Your access profile has been granted <strong>ONE FINAL ATTEMPT</strong>. If you fail the next entry session, your testing interface tokens will be locked permanently.</p>
-                    <button type="button" class="btn-primary" style="background:var(--navy); margin-top:20px;" onclick="resetFormAndTryAgain()">Initialize Final Authorized Attempt</button>
-                `;
-            } else {
-                localStorage.setItem("exam_permanently_locked", "true");
-                lockExamPermanently();
-            }
-        }
-    }
-
-    function resetFormAndTryAgain() {
-        document.getElementById("cx-exam-form").reset();
-        document.getElementById('result-overlay').style.display = "none";
-        window.scrollTo({ top: document.getElementById("questions-container").offsetTop, behavior: 'smooth' });
-    }
-
-    function lockExamPermanently() {
-        document.getElementById('exam-view-wrapper').innerHTML = ""; 
-        document.getElementById('drills-view-wrapper').innerHTML = ""; 
-        
-        const resultOverlay = document.getElementById('result-overlay');
-        resultOverlay.style.display = "block";
-        resultOverlay.className = "failed-terminal"; 
-        
-        resultOverlay.innerHTML = `
-            <div class="failed-title">🚨 ACCESS VIOLATION & ATTEMPT LOCKOUT 🚨</div>
-            <div style="font-size: 1.4rem; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; color: #fca5a5;">
-                Security Level: CRITICAL_TERMINATION_EVENT
-            </div>
-            <div class="failed-msg">
-                <strong>EVALUATION LEDGER REGISTRATION: PERMANENT BLOCK</strong><br><br>
-                Your enterprise system architecture configuration score has dropped below the 80% passing threshold for the second consecutive time. 
-                As a strict proctored operational security rule, 
-                <strong>YOU ARE NOT ALLOWED TO DO THIS EXAM.</strong><br><br>
-                All verification attempts have been completely exhausted. Your authorized testing tokens are revoked, and access profile allocations to this examination script are blocked from your environment parameters.
-            </div>
-            <div style="font-size:0.8rem; color:#fca5a5; opacity:0.7; margin-top:15px; font-family: monospace;">
-                ERR_CODE: ATTEMPT_MAX_EXCEEDED // TRANSACTION_LOGGED_TO_ADMINISTRATOR
-            </div>
-        `;
-    }
-</script>
-
+        // Initialize components on window load
+        window.onload = function() {
+            renderExamples();
+            renderScenarios();
+            renderQuiz();
+        };
+    </script>
 </body>
 </html>
