@@ -443,394 +443,471 @@
 
         // --- 20 ADVANCED ENTERPRISE TECHNICAL EXAMPLES (WINDOWS SPECIFIC) ---
         const advancedExamples = [
-          {
-            id: 1,
-            title: "P1 Theory: SD-WAN Path MTU & Fragmentation Mechanics",
-            priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
-            issue: "Explain the theoretical root cause of voice chopping over IPsec/MPLS tunnels when MTU/MSS mismatches occur across SD-WAN gateways.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- IP Header Overhead: 20 bytes IPv4 header + 8 bytes UDP/ICMP + 50+ bytes ESP/IPsec encapsulation.\n- Fragmentation Breakdown: When payload + headers exceed PMTU (e.g., 1500 bytes), intermediate routers must fragment packets. If DF (Don't Fragment) bit is set, ICMP Type 3 Code 4 (Fragmentation Needed) packets are generated.\n- Black Hole Routing: Firewalls dropping ICMP Type 3 Code 4 prevent PMTU Discovery (PMTUD) from functioning, causing silent packet drops.",
-            sop: "1. Analyze packet header structure and protocol encapsulation overhead.\n2. Verify ICMP Path MTU Discovery (PMTUD) behavior across firewall boundaries.\n3. Evaluate TCP Maximum Segment Size (MSS) clamping strategy at network edges.\n4. Document recommended MTU baseline (e.g., 1400-1472) across SD-WAN transport tiers."
-          },
-          {
-            id: 2,
-            title: "P2 Theory: Azure AD Hybrid Identity & Token Lifecycle Security",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Analyze the architectural propagation delay and security implications of Azure AD Connect delta vs. full synchronization cycles on OAuth/SAML token revocation.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Synchronization Latency: Azure AD Connect runs delta syncs every 30 minutes by default. Account disablement in local Active Directory does not instantly revoke cloud active tokens.\n- Token Lifetime vs. Revocation: OAuth 2.0 access tokens remain valid until expiration (default 60-90 minutes) unless Continuous Access Evaluation (CAE) is enabled.\n- CAE Impact: CAE allows Azure AD services (Exchange Online, Teams) to react to critical events (account disabled, IP change) in near-real-time without waiting for token expiration.",
-            sop: "1. Evaluate Azure AD Connect sync architecture and schedule thresholds.\n2. Review OAuth 2.0 Access Token Lifetime and Refresh Token revocation policies.\n3. Verify Continuous Access Evaluation (CAE) configuration across Microsoft 365 tenant.\n4. Design emergency deprovisioning workflows for high-risk account termination."
-          },
-          {
-            id: 3,
-            title: "P1 Theory: SQL Server Write-Ahead Logging & DB Error 9002 Mechanics",
-            priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
-            issue: "Explain the internal architecture of SQL Server Write-Ahead Logging (WAL) and why transaction logs fill up under Full Recovery Model.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Write-Ahead Logging (WAL): SQL Server writes transaction changes to the log file (LDF) before committing them to data files (MDF).\n- VLF Architecture: Transaction logs are subdivided into Virtual Log Files (VLFs). Active VLFs cannot be truncated until backed up.\n- Error 9002 Triggers: High transaction volume combined with missing log backups, open long-running transactions, or unindexed CDC/replication jobs prevents log truncation, leading to log exhaustion.",
-            sop: "1. Analyze log_reuse_wait_desc states (e.g., LOG_BACKUP, ACTIVE_TRANSACTION).\n2. Differentiate between log truncation (marking VLFs reusable) and log shrinking (reclaiming OS space).\n3. Evaluate risks of switching to SIMPLE recovery model in enterprise production environments.\n4. Design automated transaction log backup schedules aligned with RPO targets."
-          },
-          {
-            id: 4,
-            title: "P3 Theory: Windows Profile Architecture & Registry Hive Locks",
-            priority: "P3 - Moderate (SLA: 1-hr Response / 8-hr Resolution)",
-            issue: "Describe the underlying operating system mechanics that trigger temporary user profiles (`TEMP`) in Windows VDI environments.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Profile Loading Process: During logon, Winlogon/User Profile Service mounts `NTUSER.DAT` from `%SystemDrive%\\Users\\<Username>` into `HKCU`.\n- Exclusive Lock Failure: If an unclosed process or antivirus hook holds a handle on `NTUSER.DAT`, Windows cannot load the registry hive exclusively.\n- Fallback Mechanics: Windows creates a fallback profile `C:\\Users\\TEMP` and appends a `.bak` extension to the user's SID in `HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList`.",
-            sop: "1. Review Windows User Profile Service (ProfSvc) initialization workflow.\n2. Inspect profile lock dependencies caused by third-party filter drivers and antivirus agents.\n3. Analyze SID structure and `ProfileList` registry key schema.\n4. Formulate profile persistence strategies (e.g., FSLogix, Citrix Profile Management)."
-          },
-          {
-            id: 5,
-            title: "P2 Theory: SIP Trunking Architecture & 486 Busy Here Diagnostics",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Explain the SIP call setup process and theoretical reasons for `486 Busy Here` response codes under high voice traffic loads.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- SIP Signaling Flow: Handshake consists of `INVITE` -> `100 Trying` -> `180 Ringing` -> `200 OK` -> `ACK`.\n- Error 486 Dynamics: SIP 486 indicates destination endpoint or Session Border Controller (SBC) cannot accept the call.\n- Root Causes: Trunk channel capacity limits reached, destination agent endpoint queue saturation, or misconfigured B-channel allocation on PRI/SIP gateways.",
-            sop: "1. Examine SIP session negotiation and Session Description Protocol (SDP) parameters.\n2. Audit carrier SBC trunk capacity and concurrent call session thresholds.\n3. Evaluate call routing tables, PBX hunt groups, and agent ACD queue mechanics.\n4. Develop burst-capacity sizing frameworks for contact center voice infrastructure."
-          },
-          {
-            id: 6,
-            title: "P3 Theory: Role-Based Access Control (RBAC) & Principle of Least Privilege",
-            priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
-            issue: "Explain the theoretical difference between AGDLP architecture and modern Azure RBAC role assignments.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- AGDLP Principle: Account -> Global Group -> Domain Local Group -> Permission. Enforces clean separation between user identity and resource authorization in Active Directory.\n- Azure RBAC Model: Identity (User/Group/SPN) -> Role Definition (Permissions) -> Scope (Management Group/Subscription/Resource Group/Resource).\n- Theoretical Advantage: AGDLP reduces access token bloating, while Azure RBAC provides fine-grained control and dynamic scope inheritance.",
-            sop: "1. Review access governance framework and zero-trust alignment.\n2. Compare Kerberos token size constraints against modern OAuth scopes.\n3. Define group nesting strategies and auditing lifecycles.\n4. Design RBAC hierarchies following the Principle of Least Privilege (PoLP)."
-          },
-          {
-            id: 7,
-            title: "P2 Theory: DNS Spoofing, Cache Poisoning, and Forward Lookup Resolution",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Describe the mechanics of DNS cache poisoning and how local resolver caches process TTLs and forwarding loops.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Poisoning Mechanics: An attacker injects forged Resource Records (RRs) into a recursive resolver's cache by matching the 16-bit DNS Transaction ID and UDP port.\n- Routing Loops: Caused by misconfigured Conditional Forwarders forwarding requests back to upstream servers that forward back to the original host.\n- Mitigations: DNSSEC validates digital signatures; Source Port Randomization makes Transaction ID prediction computationally unfeasible.",
-            sop: "1. Trace recursive vs. iterative DNS resolution workflows.\n2. Analyze TTL (Time to Live) decay in local DNS resolver caches.\n3. Evaluate DNSSEC chain-of-trust authentication mechanisms.\n4. Inspect Conditional Forwarders and Root Hints hierarchy configuration."
-          },
-          {
-            id: 8,
-            title: "P3 Theory: RESTful API Integration & HTTP Status Architecture",
-            priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
-            issue: "Explain the theoretical structure of RESTful web services, JSON payload structures, and HTTP authentication mechanisms.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- REST Principles: Statelessness, Client-Server separation, Cacheability, Uniform Interface.\n- Authentication Types: Basic Auth (Base64 encoded string), OAuth 2.0 Bearer Tokens (JWTs containing header, payload, signature), API Keys.\n- Response Semantics: 2xx (Success), 4xx (Client Errors - 401 Unauthorized vs 403 Forbidden), 5xx (Server Errors).",
-            sop: "1. Evaluate API security models (OAuth 2.0 PKCE vs. Service Principals).\n2. Analyze JSON/XML payload schemas and data serialization performance.\n3. Establish rate-limiting and exponential backoff retry logic standards.\n4. Design enterprise application integration mapping schemas."
-          },
-          {
-            id: 9,
-            title: "P1 Theory: Switch Stacking, LACP Mechanics, and Split-Brain Prevention",
-            priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
-            issue: "Explain how switch stack backplane failure leads to split-brain scenarios and how LACP protocol prevents network loops.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Stack Backplane: Multi-switch stack acts as a single logical switch with a unified Control and Management plane.\n- Split-Brain Condition: If stack cable fails, stack master lost communication, causing both stack nodes to assume primary role with identical IP/MAC addresses.\n- LACP Mechanics: Link Aggregation Control Protocol (IEEE 802.1AX) sends LACPDU frames to dynamically bundle physical links into a single logical channel with fallback protection.",
-            sop: "1. Analyze StackWise / VSS split-brain detection algorithms.\n2. Evaluate Dual-Active Detection (DAD) mechanisms across switch stacks.\n3. Review Link Aggregation Control Protocol (LACP) negotiation parameters.\n4. Design resilient physical network topology for virtual cluster hosts."
-          },
-          {
-            id: 10,
-            title: "P2 Theory: BITS Protocol Architecture and Network Throttling",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Explain how Background Intelligent Transfer Service (BITS) utilizes idle network bandwidth without degrading interactive application traffic.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Bandwidth Optimization: BITS monitors network traffic at the transport layer and transfers files using only unused background bandwidth.\n- TCP Window Adjustment: Measures TCP round-trip time (RTT) and adjusts window size dynamically. When foreground traffic increases, BITS instantly throttles back.\n- Resiliency: Supports asynchronous transfers, resuming downloads after system reboots or network interruptions without re-downloading existing chunks.",
-            sop: "1. Evaluate transport protocol dynamics between foreground interactive and background tasks.\n2. Review BITS Group Policy bandwidth throttling window rules.\n3. Analyze SCCM Distribution Point boundary group configurations.\n4. Design WAN bandwidth protection strategies for enterprise patch cycles."
-          },
-          {
-            id: 11,
-            title: "P1 Theory: EDR Architecture, Heuristic Detections, and Isolation Vectors",
-            priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
-            issue: "Explain the theoretical operating model of Endpoint Detection and Response (EDR) kernel drivers and network containment engines.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Kernel Drivers: EDR agents use ELAM (Early Launch Anti-Malware) and Kernel-mode drivers (e.g., Microsoft-Windows-Threat-Intelligence) to monitor system calls (`NtCreateThread`, `NtWriteVirtualMemory`).\n- Behavioral Heuristics: Identifies process injection, LOLBins (Living off the Land Binaries) execution, and anomalous parent-child process chains.\n- Network Containment: Drops all IP traffic via Windows Filtering Platform (WFP) drivers except the agent's secure TLS tunnel back to the EDR cloud.",
-            sop: "1. Analyze OS kernel hooking mechanisms and telemetry generation.\n2. Inspect EDR false-positive mitigation lifecycle and rule exclusions.\n3. Review EDR network isolation routing rules via Windows Filtering Platform.\n4. Define SOC incident response escalation protocols for endpoint isolation."
-          },
-          {
-            id: 12,
-            title: "P3 Theory: SMTP Relay Mechanics and TLS Mutual Authentication",
-            priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
-            issue: "Analyze the SMTP protocol exchange, transport layer encryption (STARTTLS), and certificate validation chains.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- SMTP Session: Handshake sequence (`EHLO` -> `STARTTLS` -> `TLS Negotiation` -> `MAIL FROM` -> `RCPT TO` -> `DATA` -> `QUIT`).\n- STARTTLS Upgrading: Converts plain-text connection into encrypted TLS session over standard port (25 or 587).\n- Mutual TLS (mTLS): Both client and server present X.509 digital certificates to establish trusted identity based on a shared Certificate Authority (CA) root.",
-            sop: "1. Review SMTP protocol command flow and response status codes (e.g., 250, 451, 550).\n2. Evaluate TLS handshake and X.509 certificate trust verification steps.\n3. Analyze Exchange Hybrid Connector relay authentication restrictions.\n4. Design secure internal application email relay architecture."
-          },
-          {
-            id: 13,
-            title: "P2 Theory: Windows Kernel Memory Architecture (Paged vs Non-Paged Pools)",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Explain the architectural difference between Paged and Non-Paged Memory Pools in Windows Server kernel and what causes exhaustion.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Paged Pool: Virtual memory allocated to kernel components that can be paged out to disk (`pagefile.sys`) when physical RAM is low.\n- Non-Paged Pool: Guaranteed kernel memory that must reside in physical RAM at all times; cannot be paged out (used for network buffers, thread contexts, driver objects).\n- Exhaustion Impact: Kernel memory leaks in third-party drivers (e.g., VPN, AV) exhaust Non-Paged pool, causing OS lockups and network dropouts.",
-            sop: "1. Examine Windows memory manager allocation mechanics.\n2. Differentiate between kernel pool types and physical RAM address space.\n3. Review process context switching overhead and driver object tracking.\n4. Establish diagnostic baselines using Poolmon telemetry data."
-          },
-          {
-            id: 14,
-            title: "P3 Theory: TLS Protocol Suite Architecture and SCHANNEL Security",
-            priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
-            issue: "Describe the cryptographic mechanics of TLS 1.2 vs TLS 1.3 and Windows Secure Channel (SCHANNEL) provider architecture.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- TLS 1.2 vs 1.3: TLS 1.2 requires 2 round-trips for handshake; TLS 1.3 optimizes to 1 round-trip (or 0-RTT) and eliminates insecure cipher suites (RC4, 3DES, CBC mode).\n- Cipher Suites: Combination of Key Exchange (e.g., ECDHE), Authentication (RSA/ECDSA), Bulk Encryption (AES-GCM), and MAC (SHA256).\n- SCHANNEL SSP: The Security Support Provider in Windows that implements SSL/TLS protocols via registry configurations under `HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL`.",
-            sop: "1. Analyze TLS cryptographic handshake sequences and cipher suite negotiation.\n2. Review legacy protocol vulnerability vectors (e.g., POODLE, BEAST, SWEET32).\n3. Inspect Windows SCHANNEL SSP architecture and registry structure.\n4. Design enterprise web server cryptographic hardening standard."
-          },
-          {
-            id: 15,
-            title: "P2 Theory: IIS Process Model & Worker Process Recycled States",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Explain the IIS architecture involving WAS (Web Admin Service), HTTP.sys, Application Pools, and `w3wp.exe` worker processes.",
-            cli: "THEORY & CONCEPTUAL ANALYSIS:\n- HTTP.sys: Kernel-mode HTTP listener that intercepts incoming requests and forwards them to the appropriate Application Pool queue.\n- WAS & W3SVC: WAS manages Application Pool configuration and worker process lifecycle; W3SVC handles HTTP service administration.\n- Overlapped Recycling: IIS spawns a new `w3wp.exe` process to handle new requests before terminating the old instance, ensuring zero downtime during recycling.",
-            sop: "1. Examine IIS architectural separation between kernel-mode and user-mode components.\n2. Evaluate worker process recycling triggers (memory limits, time intervals, request counts).\n3. Analyze HTTP queue depth and worker process crash dump diagnostics.\n4. Design resilient web application pool hosting configurations."
-          },
-          {
-            id: 16,
-            title: "P1 Windows Command Execution: Active Directory Replication Latency",
-            priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
-            issue: "Diagnose and resolve Active Directory Domain Controller replication failures caused by DNS misconfigurations or KCC topology blockages.",
-            cli: "POWERSHELL & COMMAND EXECUTION:\n# Check Active Directory replication status\nrepadmin /showrepl *\nrepadmin /replsummary\n\n# Force KCC topology recalculation and replication\nrepadmin /kcc *\nrepadmin /syncall /A /e /P",
-            sop: "1. Run `repadmin /replsummary` to locate failing Domain Controllers.\n2. Verify DNS resolution and LDAP connectivity across domain boundaries using `Test-NetConnection -Port 389`.\n3. Force topology recalculation and immediate replication sync using `repadmin /syncall`.\n4. Confirm Event Logs show Event ID 1982 or 1058 resolution."
-          },
-          {
-            id: 17,
-            title: "P2 Windows Command Execution: WMI / CIM Repository Corruption",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Resolve WMI corruption causing Monitoring agents, SCCM clients, and PowerShell queries to fail with error 0x80041002.",
-            cli: "POWERSHELL & COMMAND EXECUTION:\n# Verify WMI repository consistency\nwinmgmt /verifyrepository\n\n# Repair or reset repository if inconsistent\nwinmgmt /salvagerepository\nGet-Service winmgmt | Restart-Service -Force",
-            sop: "1. Run `winmgmt /verifyrepository` to check repository state.\n2. Stop dependent management services (SCCM, Monitoring agent).\n3. Execute `winmgmt /salvagerepository` to repair inconsistent database structures.\n4. Restart the WMI service and re-verify using `Get-CimInstance -ClassName Win32_OperatingSystem`."
-          },
-          {
-            id: 18,
-            title: "P3 Windows Command Execution: Group Policy Processing Failure",
-            priority: "P3 - Moderate (SLA: 1-hr Response / 8-hr Resolution)",
-            issue: "Troubleshoot Group Policy update errors where machine policies fail to apply due to SYSVOL accessibility issues.",
-            cli: "POWERSHELL & COMMAND EXECUTION:\n# Force Group Policy Update and generate diagnostic report\ngpupdate /force\nGet-GPResultantSetOfPolicy -User $env:USERNAME -ReportType HTML -Path C:\\GPO_Report.html",
-            sop: "1. Test access to `\\\\<Domain>\\SYSVOL` path from the client machine.\n2. Execute `gpupdate /force` and inspect output for error messages.\n3. Generate full Resultant Set of Policy (RSoP) report using PowerShell.\n4. Verify kerberos ticket health using `klist purge` if authentication issues persist."
-          },
-          {
-            id: 19,
-            title: "P1 Windows Command Execution: High CPU / Memory Leak in Windows Service",
-            priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
-            issue: "Identify and isolate runaway Windows background processes or SVCHOST shared process groups consuming 100% CPU.",
-            cli: "POWERSHELL & COMMAND EXECUTION:\n# Map SVCHOST process ID to underlying Windows Services\nGet-WmiObject Win32_Process -Filter \"Name='svchost.exe'\" | Select-Object ProcessId, CommandLine\n\n# Isolate high CPU process and get thread details\nGet-Process -Id <PID> | Select-Object -Property CPU, WorkingSet, Threads",
-            sop: "1. Locate process ID using Task Manager or `Get-Process`.\n2. Correlate `svchost.exe` PID to the exact hosted service using WMI/CIM queries.\n3. Inspect process memory counters for continuous leaks (`WorkingSet` growth).\n4. Restart isolated individual service without rebooting the host operating system."
-          },
-          {
-            id: 20,
-            title: "P2 Windows Command Execution: WSUS Client Patching Reset",
-            priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
-            issue: "Resolve Windows Update client agent stuck in pending state or failing to communicate with WSUS server (Error 0x80244017).",
-            cli: "POWERSHELL & COMMAND EXECUTION:\n# Reset Windows Update Agent & Clear Cache\nStop-Service wuauserv, bits -Force\nRemove-Item C:\\Windows\\SoftwareDistribution\\* -Recurse -Force\nStart-Service wuauserv, bits\nusoclient StartScan",
-            sop: "1. Stop `wuauserv` and `bits` services via PowerShell.\n2. Delete cached update binaries in `C:\\Windows\\SoftwareDistribution\\DataStore` and `Download`.\n3. Restart Windows Update services.\n4. Trigger manual update scan using `usoclient StartScan` or `wuauclt /detectnow`."
-          }
+            // ==========================================
+            // PART 1: THEORY & CONCEPT-BASED (IDs 1 - 15)
+            // ==========================================
+            {
+                id: 1,
+                title: "P1 Theory: SD-WAN Path MTU & Fragmentation Mechanics",
+                priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+                issue: "Explain the theoretical root cause of voice chopping over IPsec/MPLS tunnels when MTU/MSS mismatches occur across SD-WAN gateways.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- IP Header Overhead: 20 bytes IPv4 header + 8 bytes UDP/ICMP + 50+ bytes ESP/IPsec encapsulation.\n- Fragmentation Breakdown: When payload + headers exceed PMTU (e.g., 1500 bytes), intermediate routers must fragment packets. If DF (Don't Fragment) bit is set, ICMP Type 3 Code 4 (Fragmentation Needed) packets are generated.\n- Black Hole Routing: Firewalls dropping ICMP Type 3 Code 4 prevent PMTU Discovery (PMTUD) from functioning, causing silent packet drops.",
+                sop: "1. Analyze packet header structure and protocol encapsulation overhead.\n2. Verify ICMP Path MTU Discovery (PMTUD) behavior across firewall boundaries.\n3. Evaluate TCP Maximum Segment Size (MSS) clamping strategy at network edges.\n4. Document recommended MTU baseline (e.g., 1400-1472) across SD-WAN transport tiers."
+            },
+            {
+                id: 2,
+                title: "P2 Theory: Azure AD Hybrid Identity & Token Lifecycle Security",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "Analyze the architectural propagation delay and security implications of Azure AD Connect delta vs. full synchronization cycles on OAuth/SAML token revocation.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Synchronization Latency: Azure AD Connect runs delta syncs every 30 minutes by default. Account disablement in local Active Directory does not instantly revoke cloud active tokens.\n- Token Lifetime vs. Revocation: OAuth 2.0 access tokens remain valid until expiration (default 60-90 minutes) unless Continuous Access Evaluation (CAE) is enabled.\n- CAE Impact: CAE allows Azure AD services (Exchange Online, Teams) to react to critical events (account disabled, IP change) in near-real-time without waiting for token expiration.",
+                sop: "1. Evaluate Azure AD Connect sync architecture and schedule thresholds.\n2. Review OAuth 2.0 Access Token Lifetime and Refresh Token revocation policies.\n3. Verify Continuous Access Evaluation (CAE) configuration across Microsoft 365 tenant.\n4. Design emergency deprovisioning workflows for high-risk account termination."
+            },
+            {
+                id: 3,
+                title: "P1 Theory: SQL Server Write-Ahead Logging & DB Error 9002 Mechanics",
+                priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+                issue: "Explain the internal architecture of SQL Server Write-Ahead Logging (WAL) and why transaction logs fill up under Full Recovery Model.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Write-Ahead Logging (WAL): SQL Server writes transaction changes to the log file (LDF) before committing them to data files (MDF).\n- VLF Architecture: Transaction logs are subdivided into Virtual Log Files (VLFs). Active VLFs cannot be truncated until backed up.\n- Error 9002 Triggers: High transaction volume combined with missing log backups, open long-running transactions, or unindexed CDC/replication jobs prevents log truncation, leading to log exhaustion.",
+                sop: "1. Analyze log_reuse_wait_desc states (e.g., LOG_BACKUP, ACTIVE_TRANSACTION).\n2. Differentiate between log truncation (marking VLFs reusable) and log shrinking (reclaiming OS space).\n3. Evaluate risks of switching to SIMPLE recovery model in enterprise production environments.\n4. Design automated transaction log backup schedules aligned with RPO targets."
+            },
+            {
+                id: 4,
+                title: "P3 Theory: Windows Profile Architecture & Registry Hive Locks",
+                priority: "P3 - Moderate (SLA: 1-hr Response / 8-hr Resolution)",
+                issue: "Describe the underlying operating system mechanics that trigger temporary user profiles (`TEMP`) in Windows VDI environments.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Profile Loading Process: During logon, Winlogon/User Profile Service mounts `NTUSER.DAT` from `%SystemDrive%\\Users\\<Username>` into `HKCU`.\n- Exclusive Lock Failure: If an unclosed process or antivirus hook holds a handle on `NTUSER.DAT`, Windows cannot load the registry hive exclusively.\n- Fallback Mechanics: Windows creates a fallback profile `C:\\Users\\TEMP` and appends a `.bak` extension to the user's SID in `HKLM\\SOFTWARE\\Microsoft\\Windows NT\\CurrentVersion\\ProfileList`.",
+                sop: "1. Review Windows User Profile Service (ProfSvc) initialization workflow.\n2. Inspect profile lock dependencies caused by third-party filter drivers and antivirus agents.\n3. Analyze SID structure and `ProfileList` registry key schema.\n4. Formulate profile persistence strategies (e.g., FSLogix, Citrix Profile Management)."
+            },
+            {
+                id: 5,
+                title: "P2 Theory: SIP Trunking Architecture & 486 Busy Here Diagnostics",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "Explain the SIP call setup process and theoretical reasons for `486 Busy Here` response codes under high voice traffic loads.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- SIP Signaling Flow: Handshake consists of `INVITE` -> `100 Trying` -> `180 Ringing` -> `200 OK` -> `ACK`.\n- Error 486 Dynamics: SIP 486 indicates destination endpoint or Session Border Controller (SBC) cannot accept the call.\n- Root Causes: Trunk channel capacity limits reached, destination agent endpoint queue saturation, or misconfigured B-channel allocation on PRI/SIP gateways.",
+                sop: "1. Examine SIP session negotiation and Session Description Protocol (SDP) parameters.\n2. Audit carrier SBC trunk capacity and concurrent call session thresholds.\n3. Evaluate call routing tables, PBX hunt groups, and agent ACD queue mechanics.\n4. Develop burst-capacity sizing frameworks for contact center voice infrastructure."
+            },
+            {
+                id: 6,
+                title: "P3 Theory: Role-Based Access Control (RBAC) & Principle of Least Privilege",
+                priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
+                issue: "Explain the theoretical difference between AGDLP architecture and modern Azure RBAC role assignments.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- AGDLP Principle: Account -> Global Group -> Domain Local Group -> Permission. Enforces clean separation between user identity and resource authorization in Active Directory.\n- Azure RBAC Model: Identity (User/Group/SPN) -> Role Definition (Permissions) -> Scope (Management Group/Subscription/Resource Group/Resource).\n- Theoretical Advantage: AGDLP reduces access token bloating, while Azure RBAC provides fine-grained control and dynamic scope inheritance.",
+                sop: "1. Review access governance framework and zero-trust alignment.\n2. Compare Kerberos token size constraints against modern OAuth scopes.\n3. Define group nesting strategies and auditing lifecycles.\n4. Design RBAC hierarchies following the Principle of Least Privilege (PoLP)."
+            },
+            {
+                id: 7,
+                title: "P2 Theory: DNS Spoofing, Cache Poisoning, and Forward Lookup Resolution",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "Describe the mechanics of DNS cache poisoning and how local resolver caches process TTLs and forwarding loops.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Poisoning Mechanics: An attacker injects forged Resource Records (RRs) into a recursive resolver's cache by matching the 16-bit DNS Transaction ID and UDP port.\n- Routing Loops: Caused by misconfigured Conditional Forwarders forwarding requests back to upstream servers that forward back to the original host.\n- Mitigations: DNSSEC validates digital signatures; Source Port Randomization makes Transaction ID prediction computationally unfeasible.",
+                sop: "1. Trace recursive vs. iterative DNS resolution workflows.\n2. Analyze TTL (Time to Live) decay in local DNS resolver caches.\n3. Evaluate DNSSEC chain-of-trust authentication mechanisms.\n4. Inspect Conditional Forwarders and Root Hints hierarchy configuration."
+            },
+            {
+                id: 8,
+                title: "P3 Theory: RESTful API Integration & HTTP Status Architecture",
+                priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
+                issue: "Explain the theoretical structure of RESTful web services, JSON payload structures, and HTTP authentication mechanisms.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- REST Principles: Statelessness, Client-Server separation, Cacheability, Uniform Interface.\n- Authentication Types: Basic Auth (Base64 encoded string), OAuth 2.0 Bearer Tokens (JWTs containing header, payload, signature), API Keys.\n- Response Semantics: 2xx (Success), 4xx (Client Errors - 401 Unauthorized vs 403 Forbidden), 5xx (Server Errors).",
+                sop: "1. Evaluate API security models (OAuth 2.0 PKCE vs. Service Principals).\n2. Analyze JSON/XML payload schemas and data serialization performance.\n3. Establish rate-limiting and exponential backoff retry logic standards.\n4. Design enterprise application integration mapping schemas."
+            },
+            {
+                id: 9,
+                title: "P1 Theory: Switch Stacking, LACP Mechanics, and Split-Brain Prevention",
+                priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+                issue: "Explain how switch stack backplane failure leads to split-brain scenarios and how LACP protocol prevents network loops.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Stack Backplane: Multi-switch stack acts as a single logical switch with a unified Control and Management plane.\n- Split-Brain Condition: If stack cable fails, stack master lost communication, causing both stack nodes to assume primary role with identical IP/MAC addresses.\n- LACP Mechanics: Link Aggregation Control Protocol (IEEE 802.1AX) sends LACPDU frames to dynamically bundle physical links into a single logical channel with fallback protection.",
+                sop: "1. Analyze StackWise / VSS split-brain detection algorithms.\n2. Evaluate Dual-Active Detection (DAD) mechanisms across switch stacks.\n3. Review Link Aggregation Control Protocol (LACP) negotiation parameters.\n4. Design resilient physical network topology for virtual cluster hosts."
+            },
+            {
+                id: 10,
+                title: "P2 Theory: BITS Protocol Architecture and Network Throttling",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "Explain how Background Intelligent Transfer Service (BITS) utilizes idle network bandwidth without degrading interactive application traffic.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Bandwidth Optimization: BITS monitors network traffic at the transport layer and transfers files using only unused background bandwidth.\n- TCP Window Adjustment: Measures TCP round-trip time (RTT) and adjusts window size dynamically. When foreground traffic increases, BITS instantly throttles back.\n- Resiliency: Supports asynchronous transfers, resuming downloads after system reboots or network interruptions without re-downloading existing chunks.",
+                sop: "1. Evaluate transport protocol dynamics between foreground interactive and background tasks.\n2. Review BITS Group Policy bandwidth throttling window rules.\n3. Analyze SCCM Distribution Point boundary group configurations.\n4. Design WAN bandwidth protection strategies for enterprise patch cycles."
+            },
+            {
+                id: 11,
+                title: "P1 Theory: EDR Architecture, Heuristic Detections, and Isolation Vectors",
+                priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+                issue: "Explain the theoretical operating model of Endpoint Detection and Response (EDR) kernel drivers and network containment engines.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Kernel Drivers: EDR agents use ELAM (Early Launch Anti-Malware) and Kernel-mode drivers (e.g., Microsoft-Windows-Threat-Intelligence) to monitor system calls (`NtCreateThread`, `NtWriteVirtualMemory`).\n- Behavioral Heuristics: Identifies process injection, LOLBins (Living off the Land Binaries) execution, and anomalous parent-child process chains.\n- Network Containment: Drops all IP traffic via Windows Filtering Platform (WFP) drivers except the agent's secure TLS tunnel back to the EDR cloud.",
+                sop: "1. Analyze OS kernel hooking mechanisms and telemetry generation.\n2. Inspect EDR false-positive mitigation lifecycle and rule exclusions.\n3. Review EDR network isolation routing rules via Windows Filtering Platform.\n4. Define SOC incident response escalation protocols for endpoint isolation."
+            },
+            {
+                id: 12,
+                title: "P3 Theory: SMTP Relay Mechanics and TLS Mutual Authentication",
+                priority: "P3 - Moderate (SLA: 2-hr Response / 12-hr Resolution)",
+                issue: "Analyze the SMTP protocol exchange, transport layer encryption (STARTTLS), and certificate validation chains.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- SMTP Session: Handshake sequence (`EHLO` -> `STARTTLS` -> `TLS Negotiation` -> `MAIL FROM` -> `RCPT TO` -> `DATA` -> `QUIT`).\n- STARTTLS Upgrading: Converts plain-text connection into encrypted TLS session over standard port (25 or 587).\n- Mutual TLS (mTLS): Both client and server present X.509 digital certificates to establish trusted identity based on a shared Certificate Authority (CA) root.",
+                sop: "1. Review SMTP protocol command flow and response status codes (e.g., 250, 451, 550).\n2. Evaluate TLS handshake and X.509 certificate trust verification steps.\n3. Analyze Exchange Hybrid Connector relay authentication restrictions.\n4. Design secure internal application email relay architecture."
+            },
+            {
+                id: 13,
+                title: "P2 Theory: Windows Kernel Memory Architecture (Paged vs Non-Paged Pools)",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "Explain the architectural difference between Paged and Non-Paged Memory Pools in Windows Server kernel and what causes exhaustion.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- Paged Pool: Virtual memory allocated to kernel components that can be paged out to disk (`pagefile.sys`) when physical RAM is low.\n- Non-Paged Pool: Guaranteed kernel memory that must reside in physical RAM at all times; cannot be paged out (used for network buffers, thread contexts, driver objects).\n- Exhaustion Impact: Kernel memory leaks in third-party drivers (e.g., VPN, AV) exhaust Non-Paged pool, causing OS lockups and network dropouts.",
+                sop: "1. Examine Windows memory manager allocation mechanics.\n2. Differentiate between kernel pool types and physical RAM address space.\n3. Review process context switching overhead and driver object tracking.\n4. Establish diagnostic baselines using Poolmon telemetry data."
+            },
+            {
+                id: 14,
+                title: "P3 Theory: TLS Protocol Suite Architecture and SCHANNEL Security",
+                priority: "P3 - Moderate (SLA: 4-hr Response / 24-hr Resolution)",
+                issue: "Describe the cryptographic mechanics of TLS 1.2 vs TLS 1.3 and Windows Secure Channel (SCHANNEL) provider architecture.",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- TLS 1.2 vs 1.3: TLS 1.2 requires 2 round-trips for handshake; TLS 1.3 optimizes to 1 round-trip (or 0-RTT) and eliminates insecure cipher suites (RC4, 3DES, CBC mode).\n- Cipher Suites: Combination of Key Exchange (e.g., ECDHE), Authentication (RSA/ECDSA), Bulk Encryption (AES-GCM), and MAC (SHA256).\n- SCHANNEL SSP: The Security Support Provider in Windows that implements SSL/TLS protocols via registry configurations under `HKLM\\SYSTEM\\CurrentControlSet\\Control\\SecurityProviders\\SCHANNEL`.",
+                sop: "1. Analyze TLS cryptographic handshake sequences and cipher suite negotiation.\n2. Review legacy protocol vulnerability vectors (e.g., POODLE, BEAST, SWEET32).\n3. Inspect Windows SCHANNEL SSP architecture and registry structure.\n4. Design enterprise web server cryptographic hardening standard."
+            },
+            {
+                id: 15,
+                title: "P2 Theory: IIS Process Model & Worker Process Recycled States",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "Explain the architecture of IIS Application Pools, Worker Processes (`w3wp.exe`), and HTTP Listener (`HTTP.sys`).",
+                cli: "THEORY & CONCEPTUAL ANALYSIS:\n- HTTP.sys: Kernel-mode HTTP listener that routes incoming web requests directly to the appropriate Application Pool queue.\n- Application Pool & w3wp.exe: User-mode worker process executing application code (.NET/ASP). Isolated from other app pools.\n- Recycling Dynamics: Overlapping recycle spins up a new `w3wp.exe` process to handle new requests while letting the old process complete existing requests before terminating.",
+                sop: "1. Review IIS kernel-mode HTTP.sys queue management.\n2. Analyze worker process isolation and memory recycling limits.\n3. Inspect IIS Rapid Fail Protection thresholds.\n4. Design zero-downtime application pool recycling policies."
+            },
+
+            // ==========================================
+            // PART 2: COMMAND-LINE / PRACTICAL (IDs 16 - 20)
+            // ==========================================
+            {
+                id: 16,
+                title: "P1 Cmd: Active Directory Kerberos Authentication & NTDS Recovery",
+                priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+                issue: "Domain Controller dropping authentication requests due to Kerberos ticket clock skew and Active Directory database corruption.",
+                cli: "w32tm /query /status\nw32tm /config /manualpeerlist:\"0.pool.ntp.org 1.pool.ntp.org\" /syncfromflags:manual /reliable:YES /update\nStop-Service NTDS -Force\nntdsutil \"activate instance ntds\" \"semantic database analysis\" \"go\" q q\nStart-Service NTDS",
+                sop: "1. Validate Kerberos time synchronization across Domain Controllers using `w32tm`.\n2. Verify Kerberos Key Distribution Center (KDC) service responsiveness.\n3. Analyze NTDS database integrity using `ntdsutil` offline diagnostics.\n4. Restore AD replication topology using `repadmin /syncall /A /e /P`."
+            },
+            {
+                id: 17,
+                title: "P1 Cmd: Windows Security Event Audit & Ransomware Containment",
+                priority: "P1 - Critical (SLA: 15-min Response / 2-hr Resolution)",
+                issue: "Detecting anomalous SMB lateral movement and rapid unauthorized file encryption on production file servers.",
+                cli: "Get-WinEvent -FilterHashtable @{LogName='Security'; ID=4624,4672,4688} -MaxEvents 500 | Where-Object {$_.Message -like \"*cmd.exe*\" -or $_.Message -like \"*powershell*\"}\nStop-Service LanmanServer -Force\nSet-NetFirewallProfile -Profile Domain,Public,Private -Enabled True\nNew-NetFirewallRule -DisplayName \"Block SMB Inbound\" -Direction Inbound -LocalPort 445 -Protocol TCP -Action Block",
+                sop: "1. Query Windows Security Log for Event ID 4624 (Logon Type 3) and 4688 (Process Creation).\n2. Terminate SMB Server service (`LanmanServer`) to halt network share propagation.\n3. Enforce immediate host firewall containment blocking TCP 445 and 139.\n4. Export suspicious execution telemetry to Security Information and Event Management (SIEM)."
+            },
+            {
+                id: 18,
+                title: "P2 Cmd: IIS Application Pool Crashes & Thread Pool Exhaustion",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "IIS Web Applications throwing HTTP 503 Service Unavailable due to W3WP worker process crashes.",
+                cli: "Import-Module WebAdministration\nGet-ChildItem IIS:\\AppPools | Select-Name, State, Applications\nGet-WinEvent -FilterHashtable @{LogName='System'; ProviderName='Microsoft-Windows-WAS'} -MaxEvents 50\nRestart-WebAppPool -Name \"EnterpriseAppPool\"\n& \"$env:windir\\system32\\inetsrv\\appcmd.exe\" list requests",
+                sop: "1. Inspect IIS AppPool status and identify hung `w3wp.exe` worker processes.\n2. Query WAS (Windows Process Activation Service) events in the System event log.\n3. Execute targeted AppPool recycles using PowerShell `WebAdministration` module.\n4. Capture memory dumps using `procdump.exe -ma -e w3wp.exe` for root cause analysis."
+            },
+            {
+                id: 19,
+                title: "P2 Cmd: WMI Repository Corruption & SCCM Agent Failure",
+                priority: "P2 - High (SLA: 30-min Response / 4-hr Resolution)",
+                issue: "SCCM client failing management point communication with WMI Error `0x80041002 (WBEM_E_NOT_FOUND)`.",
+                cli: "winmgmt /verifyrepository\nnet stop winmgmt /y\ncd %windir%\\system32\\wbem\nrename repository repository.old\nnet start winmgmt\nwinmgmt /salvagerepository\ncd C:\\Windows\\CCM\\ && ccmsetup.exe /runservice",
+                sop: "1. Diagnose WMI integrity status using `winmgmt /verifyrepository`.\n2. Stop WMI service stack and dependent monitoring agents.\n3. Salvage or rebuild WMI repository schema while preserving namespace definitions.\n4. Re-register WMI DLLs and trigger SCCM policy retrieval cycle."
+            },
+            {
+                id: 20,
+                title: "P3 Cmd: Storage Pool Degradation & NTFS File System Repair",
+                priority: "P3 - Moderate (SLA: 1-hr Response / 8-hr Resolution)",
+                issue: "Enterprise Windows Storage Spaces array showing degraded operational status with NTFS Volume bitmap corruption.",
+                cli: "Get-VirtualDisk | Select-Object FriendlyName, OperationalStatus, HealthStatus\nGet-PhysicalDisk | Where-Object OperationalStatus -ne 'OK'\nRepair-VirtualDisk -FriendlyName \"DataPool_VD\"\nchkdsk E: /F /R /X /perf",
+                sop: "1. Query Storage Spaces VirtualDisk and PhysicalDisk operational health via PowerShell.\n2. Identify retired or failing physical disks in the storage pool.\n3. Initiate virtual disk background repair and drive rebuild process.\n4. Execute non-destructive `chkdsk` analysis to verify NTFS file system metadata consistency."
+            }
         ];
 
-        // --- 20 INTERACTIVE PRACTICAL SCENARIO EXERCISES ---
-        const scenarioQuestions = [
-          { id: 1, title: "Scenario 1: SD-WAN Voice Jitter Diagnostic", text: "A user reports severe voice degradation over an IPsec tunnel. Explain how you would check Path MTU and configure MSS Clamping." },
-          { id: 2, title: "Scenario 2: Azure AD Delta Sync Stale Token Issue", text: "A user's account was disabled in Active Directory, but they can still access M365 web apps. Detail your investigation and remediation steps." },
-          { id: 3, title: "Scenario 3: SQL Transaction Log Full (Error 9002)", text: "SQL Server database log file is 100% full. Detail the steps to identify the cause and safely truncate/back up the log." },
-          { id: 4, title: "Scenario 4: Windows VDI Temporary Profile (`TEMP`)", text: "A Citrix user keeps logging into a temporary profile. Outline your procedure to fix registry hive locking and profile corruption." },
-          { id: 5, title: "Scenario 5: SIP Trunk 486 Busy Here Resolution", text: "An inbound call campaign is failing with SIP 486 error codes. How do you analyze SBC capacity and route queues?" },
-          { id: 6, title: "Scenario 6: Active Directory AGDLP Access Audit", text: "Auditors flag excessive permissions on a shared network drive. Explain how you enforce AGDLP structure to restore least privilege." },
-          { id: 7, title: "Scenario 7: Internal DNS Cache Poisoning Suspect", text: "Internal endpoints are being routed to a malicious IP for an internal domain. Detail your DNS cache flushing and DNSSEC verification steps." },
-          { id: 8, title: "Scenario 8: Enterprise REST API 401 Unauthorized Troubleshooting", text: "An automated PowerShell script gets 401 Unauthorized when connecting to an internal API. Detail how you validate OAuth token headers." },
-          { id: 9, title: "Scenario 9: Switch Stack Split-Brain Recovery", text: "A core switch stack experiences stack cable failure causing duplicate IP conflicts. Detail the mitigation and split-brain recovery sequence." },
-          { id: 10, title: "Scenario 10: BITS Patch Distribution Throttling", text: "SCCM client patch deployment saturates WAN bandwidth during peak business hours. Outline how you configure BITS Group Policy throttling." },
-          { id: 11, title: "Scenario 11: EDR False Positive Endpoint Isolation", text: "An EDR agent automatically isolated an executive workstation after a false positive script execution. Outline steps to restore connectivity safely." },
-          { id: 12, title: "Scenario 12: SMTP Relay TLS Handshake Failure", text: "An application server fails to send emails through the Exchange relay, returning TLS negotiation errors. Detail your certificate and port check steps." },
-          { id: 13, title: "Scenario 13: Non-Paged Pool Memory Leak", text: "A Windows server crashes with BSOD `DRIVER_VERIFIER_DETECTED_VIOLATION` due to Non-Paged Pool exhaustion. Outline how to locate the leak using Poolmon." },
-          { id: 14, title: "Scenario 14: Disabling Legacy TLS 1.0/1.1 via SCHANNEL", text: "Compliance demands immediate disabling of TLS 1.0 and 1.1 on Windows Web Servers. Detail the registry modifications required." },
-          { id: 15, title: "Scenario 15: IIS Worker Process High CPU Diagnostics", text: "An IIS `w3wp.exe` worker process hits 100% CPU utilization. Describe how you create a crash dump and identify the failing thread." },
-          { id: 16, title: "Scenario 16: Active Directory Replication Diagnostic Execution", text: "Replication between DC-01 and DC-02 has been offline for 48 hours. List the exact `repadmin` commands to diagnose and force sync." },
-          { id: 17, title: "Scenario 17: WMI Repository Repair Procedure", text: "SCCM client installation fails with error 0x80041002 (WMI Repository Corrupted). Detail the PowerShell recovery commands." },
-          { id: 18, title: "Scenario 18: GPO SYSVOL Sync Troubleshooting", text: "Client workstations report Group Policy execution failures due to missing SYSVOL templates. Outline steps to verify DFS-R replication." },
-          { id: 19, title: "Scenario 19: SVCHOST Service Group Isolation", text: "A shared `svchost.exe` process is consuming 90% CPU. Write the PowerShell commands to identify which specific service is responsible." },
-          { id: 20, title: "Scenario 20: WSUS SoftwareDistribution Reset Procedure", text: "Windows Update client is stuck at 0% downloading patches. Provide the exact command line sequence to reset the update agent cache." }
+        // --- 20 DETAILED PRACTICAL SCENARIO EXERCISES ---
+        const scenarioExercises = [
+            {
+                id: 1,
+                title: "Scenario 1: Active Directory Domain Controller Replication Failure & DNS SRV Lookup Errors",
+                badge: "P1 - Critical",
+                badgeClass: "badge-p1",
+                description: "Enterprise DC 'DC-02' stopped replicating Active Directory updates from 'DC-01'. Branch office workstations report Event ID 1058 (Group Policy processing failure) and RPC server unavailable errors. DNS SRV records for `_ldap._tcp.dc._msdcs.domain.com` fail to resolve on clients.",
+                question: "Formulate a step-by-step Windows diagnostic and remediation plan using PowerShell and Command Prompt tools to restore AD replication and DNS SRV resolution."
+            },
+            {
+                id: 2,
+                title: "Scenario 2: IIS Web Application Pool Continuous Crashing (HTTP 503) & Native Memory Leak",
+                badge: "P1 - Critical",
+                badgeClass: "badge-p1",
+                description: "The core ERP web portal hosted on IIS 10 returns 'HTTP 503 Service Unavailable'. Event Viewer shows Event ID 5002 from WAS: 'Application pool EnterpriseAppPool is being automatically disabled due to a series of failures in the process(es) serving that application pool.' Memory usage spikes to 99% prior to crashing.",
+                question: "Detail your multi-step operational workflow to identify the root cause of the w3wp.exe crash, collect diagnostic memory dumps, and temporarily stabilize the web app pool."
+            },
+            {
+                id: 3,
+                title: "Scenario 3: Corrupted Group Policy Objects (GPO) & SYSVOL Replication Discrepancy (DFSR)",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "Corporate security policies applied to Finance OU workstations are inconsistent. `gpresult /h` reveals GPO Version Mismatch between Active Directory and SYSVOL. DFSR Event Log on DC-02 displays Event ID 4012 (DFSR stopped replicating because database is stale).",
+                question: "Outline the technical procedures to resolve DFSR stale database state, perform authoritative/non-authoritative SYSVOL synchronization, and verify GPO consistency across domain controllers."
+            },
+            {
+                id: 4,
+                title: "Scenario 4: SCCM / MECM Software Center Deployment Failures & WMI Database Corruption",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "50+ workstations fail to install critical security updates via SCCM. `WMI.log` and `CCMExec.log` report error code `0x80041010 (Invalid Class)` when querying `root\\ccm\\ClientSDK`. Manual execution of `Get-WmiObject` hangs indefinitely.",
+                question: "Provide the exact PowerShell commands and operational sequence required to verify WMI repository integrity, repair corrupt namespaces, and re-establish SCCM client policy synchronization."
+            },
+            {
+                id: 5,
+                title: "Scenario 5: Windows Server Hyper-V Virtual Machine Network Partitioning & vSwitch Failure",
+                badge: "P1 - Critical",
+                badgeClass: "badge-p1",
+                description: "Following a NIC Teaming driver update on a Hyper-V Failover Cluster node (HOST-05), 12 production VMs lost network connectivity. The Hyper-V Virtual Switch reports 'External network binding lost', and cluster logs show Event ID 1069.",
+                question: "Specify the PowerShell Hyper-V module commands and diagnostic steps to rebuild the synthetic vSwitch, verify VMGPU/SR-IOV bindings, and restore VM network interface mapping."
+            },
+            {
+                id: 6,
+                title: "Scenario 6: Windows Storage Spaces Direct (S2D) Degraded Pool & Failed Physical NVMe Drive",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "A 4-node S2D cluster raises an alert: 'Storage Pool Operational Status: Degraded; Health Status: Warning'. Physical disk 'NVMe-Slot-03' on Node-02 has entered an 'Unhealthy / Lost Communication' state, triggering volume reduced-resiliency warnings.",
+                question: "Describe the operational steps to safely retire the failed NVMe drive using PowerShell, replace the physical hardware in the cluster, and rebalance the S2D storage pool."
+            },
+            {
+                id: 7,
+                title: "Scenario 7: Print Spooler Service Crashing & Remote Code Execution Mitigation (PrintNightmare)",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "Enterprise print server 'PRINT-01' Spooler service (`spoolsv.exe`) terminates unexpectedly every 10 minutes due to a corrupt third-party printer driver (`mscms.dll`). Security logs show suspicious DLL staging in `C:\\Windows\\System32\\spool\\drivers\\x64\\3\\`.",
+                question: "Detail the administrative steps to isolate the corrupt printer driver, isolate the spooler service safely, enforce Point and Print GPO restrictions, and clear orphaned print queues."
+            },
+            {
+                id: 8,
+                title: "Scenario 8: Windows Server Remote Desktop Services (RDS) Licensing Exhaustion & CAL Lockout",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "Remote desktop users receive the error: 'The remote session was disconnected because there are no Remote Desktop License Servers available to provide a license.' The RDS License Server is online, but Per-User CAL grace period expired.",
+                question: "Outline the step-by-step PowerShell troubleshooting workflow to verify RDS License Server discovery, re-bind RDS deployment licensing settings, and clear temporary licensing registry grace keys if appropriate."
+            },
+            {
+                id: 9,
+                title: "Scenario 9: WSUS Synchronization Failure & IIS Dynamic Compression Overhead",
+                badge: "P3 - Moderate",
+                badgeClass: "badge-p3",
+                description: "WSUS Server 'PATCH-01' fails synchronization with Microsoft Update servers. `WsusHttpAsyncHandler` errors populate the logs with `HTTP 500.19`. CPU usage on PATCH-01 remains locked at 100% caused by `w3wp.exe` servicing the WSUS Administration site.",
+                question: "Explain how to reconfigure the WSUS IIS Application Pool (memory limits, queue length), optimize the WSUS database (`SUSDB`) via reindexing, and resolve HTTP 500.19 compression errors."
+            },
+            {
+                id: 10,
+                title: "Scenario 10: Kerberos Ticket Granting Service (TGS) Request Failures & SPN Duplication",
+                badge: "P1 - Critical",
+                badgeClass: "badge-p1",
+                description: "Users cannot authenticate to MSSQL cluster 'SQL-PROD'. System event logs on application servers record System Event ID 11: 'The KDC encountered duplicate names while processing a Kerberos authentication request for SPN MSSQLSvc/sql-prod.domain.com:1433'.",
+                question: "Provide the set of Active Directory command-line tools (`setspn`) and PowerShell commands needed to identify the conflicting duplicate SPNs, delete invalid entries, and verify Kerberos ticket issuance."
+            },
+            {
+                id: 11,
+                title: "Scenario 11: Azure AD Connect Password Hash Sync (PHS) Stalled & Sync Engine Database Lock",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "Hybrid identities created in local Active Directory fail to synchronize to Entra ID (Azure AD). `miisclient.exe` shows `stopped-database-error` on the Active Directory Connector. Password Hash Sync status displays 'No sync within last 8 hours'.",
+                question: "Describe the administrative sequence to inspect Azure AD Connect sync engine errors, clear local SQL LocalDB locks, force an authoritative delta synchronization, and verify PHS health."
+            },
+            {
+                id: 12,
+                title: "Scenario 12: Windows Defender EDR Real-Time Protection Blocking Legitimate Enterprise App",
+                badge: "P3 - Moderate",
+                badgeClass: "badge-p3",
+                description: "Following a security update, Defender EDR flags a proprietary line-of-business accounting tool (`FinExec.exe`) as `Behavior:Win32/Hive.ZY` false positive, isolating the process and blocking network calls over TCP port 8080.",
+                question: "Detail the administrative steps in Windows Security / PowerShell to verify EDR alert details, create temporary path/hash exclusions, and submit telemetry for SOC review."
+            },
+            {
+                id: 13,
+                title: "Scenario 13: Windows File Server NTFS Security Permissions & Access-Based Enumeration (ABE) Failure",
+                badge: "P3 - Moderate",
+                badgeClass: "badge-p3",
+                description: "Employees in HR can see confidential Executive Compensation folders on share `\\FILE-01\\HR-Data`, although explicit NTFS permissions deny access. Access-Based Enumeration (ABE) is enabled but fails to filter restricted folders.",
+                question: "Detail how inheritance, explicit deny rules, and Share vs. NTFS permissions interact here, and provide PowerShell commands using `Get-Acl` / `Set-Acl` to restore proper permission hierarchy and ABE visibility."
+            },
+            {
+                id: 14,
+                title: "Scenario 14: BitLocker Drive Encryption Recovery Lockout on Windows 11 Enterprise Laptops",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "Multiple remote laptops trigger BitLocker recovery screens during startup after a BIOS/TPM firmware update. Users cannot locate 48-digit recovery keys, and devices cannot establish VPN connections prior to Windows logon.",
+                question: "Provide the procedure for Help Desk engineers to query BitLocker recovery keys from Active Directory Domain Services or Azure AD / Entra ID using PowerShell (`Get-ADDevice`, `Get-MgDevice`)."
+            },
+            {
+                id: 15,
+                title: "Scenario 15: Windows Firewall Rule Conflict Blocking Management RPC & WinRM Execution",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "Remote administrative PowerShell management scripts fail when targeting AppServer-04 with `WinRM cannot complete the operation / RPC Server Unavailable`. Windows Defender Firewall profiles show overlapping GPO rules blocking TCP 5985/5986 and RPC Dynamic Ports.",
+                question: "Outline the command-line and PowerShell commands to audit active netsh/firewall rules, diagnose port listener bindings (`netstat`/`Test-NetConnection`), and enforce correct WinRM firewall exceptions."
+            },
+            {
+                id: 16,
+                title: "Scenario 16: DNS Dynamic Registration Failures & DHCP Option 81 Misconfiguration",
+                badge: "P3 - Moderate",
+                badgeClass: "badge-p3",
+                description: "Non-domain joined IoT devices lease IP addresses from Windows DHCP Server 'DHCP-01', but fail to create forward/reverse DNS records. DHCP Server log records Event ID 1035: 'DNS credential failure during dynamic registration update'.",
+                question: "Explain how to configure a dedicated DHCP DNS Update Service Account (`Set-DhcpServerDnsCredential`), setup DNS Dynamic Update properties, and configure Secure Dynamic Updates on DNS Zones."
+            },
+            {
+                id: 17,
+                title: "Scenario 17: Windows Event Log Forwarding (WEF) Subscription Failure & WinRM Service Errors",
+                badge: "P3 - Moderate",
+                badgeClass: "badge-p3",
+                description: "Centralized SIEM collector 'LOG-01' stopped receiving forwarded Windows Event Logs from 200 client endpoints. `wecutil es` reports subscription status as 'Unhealthy'. Event Viewer shows HTTP 403 authorization failures under `Microsoft-Windows-EventForwarding`.",
+                question: "Provide the step-by-step resolution path to fix WinRM permissions, adjust Network Service account rights on client endpoints, and restart WEF subscriptions using `wecutil`."
+            },
+            {
+                id: 18,
+                title: "Scenario 18: Critical Windows System File Corruption & SFC / DISM Offline Repair",
+                badge: "P1 - Critical",
+                badgeClass: "badge-p1",
+                description: "Core application server 'SRV-DB-02' experiences Blue Screen error `CRITICAL_PROCESS_DIED`. Booting into Safe Mode reveals `sfc /scannow` error: 'Windows Resource Protection found corrupt files but was unable to fix some of them.' Components store (`WinSxS`) is corrupted.",
+                question: "Detail the exact DISM and SFC command sequence using an online or mounted Windows installation ISO image (`install.wim`) to repair the corrupted component store and restore system stability."
+            },
+            {
+                id: 19,
+                title: "Scenario 19: Windows Time Service (W32Time) Hierarchy Desynchronization & Kerberos Failures",
+                badge: "P2 - High",
+                badgeClass: "badge-p2",
+                description: "All enterprise servers experienced a 7-minute clock drift relative to external UTC sources, causing widespread Kerberos authentication failures (`KRB_AP_ERR_SKEW`). The PDC Emulator Domain Controller lost synchronization with its external NTP peer.",
+                question: "Provide the exact `w32tm` commands to configure the PDC Emulator with reliable external NTP sources, reset clock discipline flags, force domain-wide time resynchronization, and verify time stratum hierarchy."
+            },
+            {
+                id: 20,
+                title: "Scenario 20: Windows Server Failover Cluster (WSFC) Quorum Loss & Disk Witness Failure",
+                badge: "P1 - Critical",
+                badgeClass: "badge-p1",
+                description: "A 2-node SQL Server AlwaysOn cluster suffered a quorum outage when the SAN disk witness went offline during network maintenance. Node-02 dropped out of the cluster, causing SQL availability groups to failover and lock down in an offline state.",
+                question: "Explain the cluster recovery procedures to force quorum start without a witness (`net start clussvc /forcequorum`), reconfigure witness settings to a Cloud Witness or File Share Witness using PowerShell `Set-ClusterQuorum`, and re-establish node membership."
+            }
         ];
 
-        // --- 20 MULTI-SELECT FINAL EXAM QUESTIONS ---
+        // --- 10 COMPLEX MULTI-SELECT EXAM QUESTIONS ---
         const quizQuestions = [
-          {
-            id: 1,
-            question: "1. Which factors contribute to PMTU Discovery (PMTUD) failure across IPsec tunnels? (Select ALL that apply)",
-            options: [
-              { text: "Firewalls blocking ICMP Type 3 Code 4 (Fragmentation Needed) packets", correct: true },
-              { text: "DF (Don't Fragment) bit set on original IPv4 packet headers", correct: true },
-              { text: "Incorrect TCP Maximum Segment Size (MSS) clamping at network edge", correct: true },
-              { text: "Enabling DNSSEC on internal recursive DNS servers", correct: false }
-            ]
-          },
-          {
-            id: 2,
-            question: "2. Which mechanisms immediately revoke access for a compromised Azure AD hybrid user? (Select ALL that apply)",
-            options: [
-              { text: "Revoking active OAuth refresh tokens via PowerShell (`Revoke-AzureADUserAllRefreshToken`)", correct: true },
-              { text: "Enabling Continuous Access Evaluation (CAE) on Microsoft 365 tenant", correct: true },
-              { text: "Triggering an immediate Azure AD Connect delta sync after disabling local AD account", correct: true },
-              { text: "Restarting the local Active Directory Domain Controller", correct: false }
-            ]
-          },
-          {
-            id: 3,
-            question: "3. What causes SQL Server Error 9002 (Transaction Log Full)? (Select ALL that apply)",
-            options: [
-              { text: "Database operating in FULL recovery model without regular transaction log backups", correct: true },
-              { text: "Long-running uncommitted transactions locking active Virtual Log Files (VLFs)", correct: true },
-              { text: "Disk volume hosting the LDF file running out of physical storage space", correct: true },
-              { text: "Executing `DBCC CHECKDB` on the master system database", correct: false }
-            ]
-          },
-          {
-            id: 4,
-            question: "4. Which registry/system conditions cause Windows to load a Temporary Profile (`TEMP`)? (Select ALL that apply)",
-            options: [
-              { text: "Antivirus filter driver holding an exclusive lock on `NTUSER.DAT` during logon", correct: true },
-              { text: "Corrupted `ProfileList` registry key appending `.bak` to the user SID", correct: true },
-              { text: "Insufficient NTFS permissions on the user's profile folder", correct: true },
-              { text: "Setting local computer clock 5 minutes ahead of Domain Controller", correct: false }
-            ]
-          },
-          {
-            id: 5,
-            question: "5. What are valid technical root causes for a `486 Busy Here` response in SIP signaling? (Select ALL that apply)",
-            options: [
-              { text: "SBC trunk channel capacity limit exceeded for concurrent calls", correct: true },
-              { text: "Destination agent endpoint queue / hunt group saturation", correct: true },
-              { text: "Misconfigured B-channel allocation on carrier voice gateway", correct: true },
-              { text: "TLS Certificate expiration on HTTPS web application server", correct: false }
-            ]
-          },
-          {
-            id: 6,
-            question: "6. Which guidelines define the AGDLP principle in Active Directory security architecture? (Select ALL that apply)",
-            options: [
-              { text: "Accounts are added into Global Groups", correct: true },
-              { text: "Global Groups are nested into Domain Local Groups", correct: true },
-              { text: "Permissions are assigned directly to Domain Local Groups", correct: true },
-              { text: "Accounts are granted direct NTFS permissions on share folders", correct: false }
-            ]
-          },
-          {
-            id: 7,
-            question: "7. Which mechanisms effectively prevent DNS Cache Poisoning attacks? (Select ALL that apply)",
-            options: [
-              { text: "Enabling DNSSEC validation on recursive resolvers", correct: true },
-              { text: "Implementing UDP Source Port Randomization", correct: true },
-              { text: "Flushing local DNS resolver cache (`ipconfig /flushdns`) when anomalies are detected", correct: true },
-              { text: "Disabling ICMP echo requests on corporate firewalls", correct: false }
-            ]
-          },
-          {
-            id: 8,
-            question: "8. What are valid components of an OAuth 2.0 JSON Web Token (JWT)? (Select ALL that apply)",
-            options: [
-              { text: "Header (specifying algorithm and token type)", correct: true },
-              { text: "Payload (containing claims and expiration timestamps)", correct: true },
-              { text: "Signature (verifying sender identity and payload integrity)", correct: true },
-              { text: "Base64 encoded cleartext active directory user password", correct: false }
-            ]
-          },
-          {
-            id: 9,
-            question: "9. How does LACP (IEEE 802.1AX) protect enterprise switch stacks? (Select ALL that apply)",
-            options: [
-              { text: "Dynamically bundles physical links into a single logical channel", correct: true },
-              { text: "Detects link failure and redistributes traffic within milliseconds", correct: true },
-              { text: "Exchanges LACPDU frames to verify bidirectional connectivity", correct: true },
-              { text: "Encrypts layer 2 payload data using AES-256", correct: false }
-            ]
-          },
-          {
-            id: 10,
-            question: "10. Which properties accurately describe Background Intelligent Transfer Service (BITS)? (Select ALL that apply)",
-            options: [
-              { text: "Transfers files in the background using only idle network bandwidth", correct: true },
-              { text: "Dynamically adjusts TCP window size based on foreground network activity", correct: true },
-              { text: "Automatically resumes downloads after system reboots or network drops", correct: true },
-              { text: "Requires dedicated UDP port 8080 to function across routers", correct: false }
-            ]
-          },
-          {
-            id: 11,
-            question: "11. How do modern EDR agents isolate compromised endpoints from the network? (Select ALL that apply)",
-            options: [
-              { text: "Uses Windows Filtering Platform (WFP) drivers to block unauthorized network traffic", correct: true },
-              { text: "Maintains an encrypted management tunnel back to the EDR cloud server", correct: true },
-              { text: "Blocks inbound and outbound user traffic while leaving SOC management active", correct: true },
-              { text: "Instantly formats the system drive to prevent malware spread", correct: false }
-            ]
-          },
-          {
-            id: 12,
-            question: "12. What steps are required to establish Mutual TLS (mTLS) for an SMTP relay connector? (Select ALL that apply)",
-            options: [
-              { text: "Both client and server must present valid X.509 digital certificates", correct: true },
-              { text: "Certificates must chain up to a mutually trusted Certificate Authority (CA)", correct: true },
-              { text: "Subject Alternative Name (SAN) must match the connecting domain / FQDN", correct: true },
-              { text: "Client must authenticate using cleartext HTTP basic headers", correct: false }
-            ]
-          },
-          {
-            id: 13,
-            question: "13. What characterises Windows Kernel Non-Paged Pool memory? (Select ALL that apply)",
-            options: [
-              { text: "Guaranteed to reside in physical RAM at all times", correct: true },
-              { text: "Cannot be paged out to disk (`pagefile.sys`)", correct: true },
-              { text: "Used for critical kernel structures, network buffers, and driver allocations", correct: true },
-              { text: "Automatically resizes by allocating disk space from `C:\\Temp`", correct: false }
-            ]
-          },
-          {
-            id: 14,
-            question: "14. Which cryptographic protocols are considered insecure and should be disabled in SCHANNEL? (Select ALL that apply)",
-            options: [
-              { text: "SSL 3.0", correct: true },
-              { text: "TLS 1.0", correct: true },
-              { text: "TLS 1.1", correct: true },
-              { text: "TLS 1.3", correct: false }
-            ]
-          },
-          {
-            id: 15,
-            question: "15. What occurs during IIS Application Pool Overlapped Recycling? (Select ALL that apply)",
-            options: [
-              { text: "IIS spawns a new `w3wp.exe` worker process before shutting down the old one", correct: true },
-              { text: "New incoming requests are directed to the new worker process instantly", correct: true },
-              { text: "Old worker process terminates after draining existing active connections", correct: true },
-              { text: "IIS web server restarts the entire physical host machine", correct: false }
-            ]
-          },
-          {
-            id: 16,
-            question: "16. Which commands are valid for diagnosing Active Directory replication health? (Select ALL that apply)",
-            options: [
-              { text: "`repadmin /showrepl *`", correct: true },
-              { text: "`repadmin /replsummary`", correct: true },
-              { text: "`repadmin /syncall /A /e /P`", correct: true },
-              { text: "`netsh wlan show profiles`", correct: false }
-            ]
-          },
-          {
-            id: 17,
-            question: "17. Which commands can be used to repair or verify a corrupted WMI repository? (Select ALL that apply)",
-            options: [
-              { text: "`winmgmt /verifyrepository`", correct: true },
-              { text: "`winmgmt /salvagerepository`", correct: true },
-              { text: "`winmgmt /resetrepository`", correct: true },
-              { text: "`sfc /scannow`", correct: false }
-            ]
-          },
-          {
-            id: 18,
-            question: "18. How do you troubleshoot Group Policy processing errors on a target Windows machine? (Select ALL that apply)",
-            options: [
-              { text: "Execute `gpupdate /force` in command prompt or PowerShell", correct: true },
-              { text: "Generate HTML diagnostic report using `Get-GPResultantSetOfPolicy`", correct: true },
-              { text: "Inspect Event Viewer under `Applications and Services Logs -> Microsoft -> Windows -> GroupPolicy`", correct: true },
-              { text: "Clear browser cookies and internet cache files", correct: false }
-            ]
-          },
-          {
-            id: 19,
-            question: "19. Which PowerShell methods help isolate which specific service inside `svchost.exe` is consuming resources? (Select ALL that apply)",
-            options: [
-              { text: "`Get-WmiObject Win32_Process -Filter \"Name='svchost.exe'\"`", correct: true },
-              { text: "`tasklist /svc /fi \"IMAGENAME eq svchost.exe\"`", correct: true },
-              { text: "`Get-CimInstance Win32_Service | Where-Object ProcessId -eq <PID>`", correct: true },
-              { text: "`Get-Printer -Name \"*\"`", correct: false }
-            ]
-          },
-          {
-            id: 20,
-            question: "20. Which steps are required to completely reset the local Windows Update Client Agent? (Select ALL that apply)",
-            options: [
-              { text: "Stop the `wuauserv` and `bits` background services", correct: true },
-              { text: "Purge all files inside `C:\\Windows\\SoftwareDistribution\\` folder", correct: true },
-              { text: "Restart update services and trigger scan using `usoclient StartScan`", correct: true },
-              { text: "Delete system registry hive `HKLM\\SYSTEM`", correct: false }
-            ]
-          }
+            {
+                id: 1,
+                title: "Question 1: Active Directory Domain Controller Replication & Time Sync Diagnostics",
+                text: "A Tier-3 engineer is troubleshooting an Active Directory domain where domain controllers fail to replicate schema updates and Kerberos tokens fail due to clock drift. Which of the following tools and command sequences are valid administrative actions? (Select ALL that apply)",
+                options: [
+                    "A) Run 'w32tm /config /manualpeerlist:\"0.pool.ntp.org\" /syncfromflags:manual /reliable:YES /update' on the PDC Emulator DC.",
+                    "B) Execute 'repadmin /syncall /A /e /P' to force replication across all domain controllers.",
+                    "C) Delete the 'NTDS Settings' object in Active Directory Sites and Services to force Windows to rebuild the Kerberos KDC database.",
+                    "D) Use 'dcdiag /test:dns /v' to verify DNS health and SRV record registrations across DCs.",
+                    "E) Format the SYSVOL volume using NTFS fast-format to force DFSR non-authoritative restore."
+                ],
+                correct: ["A", "B", "D"]
+            },
+            {
+                id: 2,
+                title: "Question 2: IIS Web Server Performance & Application Pool Stabilization",
+                text: "An IIS 10 web application servicing 10,000 concurrent HTTP clients experiences worker process (w3wp.exe) hangs and 503 Service Unavailable errors. Which of the following steps represent correct Tier-2/3 technical remediation actions? (Select ALL that apply)",
+                options: [
+                    "A) Increase the Application Pool 'Queue Length' from default 1000 to a higher threshold (e.g., 5000).",
+                    "B) Set 'Rapid Fail Protection' Enabled to False to allow unlimited worker process crashes without disabling the AppPool.",
+                    "C) Configure Application Pool 'Recycling' conditions based on Private Memory Limit (KB) and regular time intervals.",
+                    "D) Capture process memory dumps using 'procdump.exe -ma -e w3wp.exe' for post-mortem thread analysis.",
+                    "E) Disable HTTP.sys in the Windows registry to force IIS to process requests directly in user-mode kernel."
+                ],
+                correct: ["A", "C", "D"]
+            },
+            {
+                id: 3,
+                title: "Question 3: Windows Security Incident Response & Ransomware Containment",
+                text: "During a suspected ransomware attack on a Windows file server, automated malicious scripts are encrypting network shares via SMB. Which immediate containment measures should an operational engineer execute? (Select ALL that apply)",
+                options: [
+                    "A) Stop the Server service ('Stop-Service LanmanServer -Force') to instantly terminate incoming SMB connections.",
+                    "B) Run 'chkdsk /f /r' immediately on active encrypting volumes without unmounting.",
+                    "C) Enforce a Windows Firewall rule blocking inbound TCP ports 445 and 139.",
+                    "D) Query Windows Security Event Log for Event ID 4688 to identify anomalous process execution paths.",
+                    "E) Reboot the file server into Directory Services Restore Mode (DSRM) to automatically decrypt files."
+                ],
+                correct: ["A", "C", "D"]
+            },
+            {
+                id: 4,
+                title: "Question 4: Windows Storage Spaces Direct (S2D) & Failover Clustering",
+                text: "An S2D Storage Pool enters a 'Degraded' state after a physical disk hardware failure. What are the correct PowerShell procedures to safely remediate the storage cluster? (Select ALL that apply)",
+                options: [
+                    "A) Run 'Get-PhysicalDisk | Where-Object OperationalStatus -ne \"OK\"' to locate the degraded physical drive.",
+                    "B) Execute 'Set-PhysicalDisk -FriendlyName <DiskName> -Usage Retired' before physically removing the drive.",
+                    "C) Run 'Repair-VirtualDisk' to initiate background data rebuilding on remaining healthy drives.",
+                    "D) Run 'Clear-ClusterNode -Force' on the active storage node to reset physical NVMe drive firmware.",
+                    "E) Execute 'Update-StoragePool -FriendlyName <PoolName>' after inserting replacement physical media."
+                ],
+                correct: ["A", "B", "C", "E"]
+            },
+            {
+                id: 5,
+                title: "Question 5: Windows Management Instrumentation (WMI) Diagnostic Protocols",
+                text: "An enterprise SCCM agent fails to report inventory due to WMI repository corruption ('WBEM_E_NOT_FOUND'). Which steps are approved for repairing WMI on Windows Server 2022? (Select ALL that apply)",
+                options: [
+                    "A) Execute 'winmgmt /verifyrepository' to check repository database status.",
+                    "B) Execute 'winmgmt /salvagerepository' to perform a non-destructive repository consistency rebuild.",
+                    "C) Stop the 'winmgmt' service, rename 'C:\\Windows\\System32\\wbem\\repository', and restart 'winmgmt' if salvaging fails.",
+                    "D) Delete the 'C:\\Windows\\System32' directory and restore it from Windows Update online.",
+                    "E) Re-register WMI DLL files using 'regsvr32' on '.dll' files within the wbem directory."
+                ],
+                correct: ["A", "B", "C", "E"]
+            },
+            {
+                id: 6,
+                title: "Question 6: Group Policy Object (GPO) Troubleshooting & DFSR SYSVOL Sync",
+                text: "Clients report that updated GPO settings are not taking effect. 'gpresult /h' indicates a version mismatch between Active Directory and SYSVOL. Which commands and actions help diagnose and resolve this condition? (Select ALL that apply)",
+                options: [
+                    "A) Execute 'gpupdate /force' on client endpoints to trigger immediate policy processing.",
+                    "B) Run 'dfsrmig /getglobalstate' and check DFSR event log for Event ID 4012 (stale database).",
+                    "C) Perform an authoritative or non-authoritative DFSR database restore by modifying the 'msDFSR-Enabled' attribute in ADSIEdit.",
+                    "D) Delete the 'C:\\Windows\\System32\\GroupPolicy' folder on Domain Controllers to reset domain GPOs.",
+                    "E) Inspect 'DCDiag /test:SysVolCheck' to verify SYSVOL availability across domain controllers."
+                ],
+                correct: ["A", "B", "C", "E"]
+            },
+            {
+                id: 7,
+                title: "Question 7: Remote Desktop Services (RDS) & Licensing Diagnostics",
+                text: "Users connecting to an RDS Session Host array are blocked with 'No Remote Desktop License Server Available'. Which steps should be taken to resolve RDS licensing issues? (Select ALL that apply)",
+                options: [
+                    "A) Check the RDS Licensing Diagnoser tool ('lsdiag.msc') or PowerShell module 'RemoteDesktop'.",
+                    "B) Verify that the licensing mode (Per User or Per Device) configured on the Session Host matches the installed CAL type.",
+                    "C) Set the License Server pool using PowerShell: 'Set-RDLicenseConfiguration -LicenseServer <FQDN>'.",
+                    "D) Disable Kerberos authentication on the RDS Gateway to bypass license validation.",
+                    "E) Ensure TCP Port 135 and RPC Dynamic Ports are open between RDS Session Host and RDS License Server."
+                ],
+                correct: ["A", "B", "C", "E"]
+            },
+            {
+                id: 8,
+                title: "Question 8: Windows System Component Store (WinSxS) & Offline OS Repair",
+                text: "A Windows Server 2019 instance cannot install cumulative patches due to component store corruption. SFC fails to fix the files. Which DISM commands represent valid repair paths? (Select ALL that apply)",
+                options: [
+                    "A) 'dism /online /cleanup-image /checkhealth' to verify if corruption has been flagged.",
+                    "B) 'dism /online /cleanup-image /restorehealth' to repair files downloading from Windows Update.",
+                    "C) 'dism /online /cleanup-image /restorehealth /source:wim:D:\\sources\\install.wim:1 /limitaccess' to repair offline using ISO installation media.",
+                    "D) 'dism /online /format-volume /force' to clear corrupted system files.",
+                    "E) 'sfc /scannow' executed following a successful DISM restorehealth operation."
+                ],
+                correct: ["A", "B", "C", "E"]
+            },
+            {
+                id: 9,
+                title: "Question 9: DNS Dynamic Registration & DHCP Server Integration",
+                text: "Non-domain devices in a enterprise network lease IP addresses from a Windows Server DHCP instance but fail to register forward (A) and reverse (PTR) DNS records. Which configurations rectify this issue? (Select ALL that apply)",
+                options: [
+                    "A) Configure a dedicated domain user account in DHCP Server properties using 'Set-DhcpServerDnsCredential'.",
+                    "B) Enable 'Always dynamically update DNS records' in DHCP Scope properties.",
+                    "C) Add the DHCP server machine account to the 'DNSAdmin' group if updating AD-integrated DNS zones securely.",
+                    "D) Enable 'Discard A and PTR records when lease is deleted' in DHCP properties to prevent stale records.",
+                    "E) Disable Secure Dynamic Updates on the DNS zone to allow unauthenticated updates from any client globally."
+                ],
+                correct: ["A", "B", "D"]
+            },
+            {
+                id: 10,
+                title: "Question 10: Windows Server Failover Cluster Quorum & Disaster Recovery",
+                text: "A 2-Node Failover Cluster hosting critical SQL Server database availability groups loses its witness disk during maintenance, dropping quorum. How can the cluster administrator recover service availability? (Select ALL that apply)",
+                options: [
+                    "A) Start the cluster service on a remaining node using 'net start clussvc /forcequorum'.",
+                    "B) Reconfigure cluster quorum to use a Cloud Witness or File Share Witness via 'Set-ClusterQuorum'.",
+                    "C) Format all local physical C: drives on cluster nodes to purge stale quorum metadata.",
+                    "D) Modify node weight votes using '(Get-ClusterNode -Name <NodeName>).NodeWeight = 0' to adjust voting topology.",
+                    "E) Re-execute 'Test-Cluster' to validate cluster configuration before placing back into production."
+                ],
+                correct: ["A", "B", "D", "E"]
+            }
         ];
 
         // --- RENDER KNOWLEDGE BASE EXAMPLES ---
