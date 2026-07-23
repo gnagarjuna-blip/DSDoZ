@@ -339,6 +339,12 @@
                 <input type="email" id="email" placeholder="motadisai@outlook.com" value="motadisai@outlook.com">
                 <div class="error-msg" id="login-error">Access Denied. Please use an authorized training email.</div>
             </div>
+
+            <div class="input-group">
+                <label for="password">Employee ID (Password)</label>
+                <input type="password" id="password" placeholder="Enter Employee ID" value="20075628">
+                <div class="error-msg" id="password-error">Invalid Employee ID. Please use your authorized employee ID.</div>
+            </div>
             
             <button class="login-btn" onclick="handleLogin()">Authenticate & Launch</button>
         </div>
@@ -369,7 +375,7 @@
                         <div class="progress-bar" id="main-progress"></div>
                     </div>
                     <div style="font-size: 0.75rem; color: #666; margin-top: 0.5rem; text-align: center;" id="drill-count">
-                        0 of 60 drills completed
+                        0 of 90 drills completed
                     </div>
                 </div>
 
@@ -388,8 +394,9 @@
 
     <script>
         const authorizedEmails = ["motadisai@outlook.com"];
+        const authorizedEmployeeId = "20075628";
         
-        // Comprehensive training data structure containing 30 standalone drills for Day 1 and Day 2
+        // Comprehensive training data structure with 30 drills each for Day 1, Day 2, and Day 3
         const trainingData = {
             1: {
                 title: "Day 1: CX Metrics & Trend Analysis Baseline",
@@ -495,7 +502,58 @@
                     { id: "D2_30", type: "SQL Query", text: "Aggregate average customer effort scores (CES) grouped by the primary transaction type code to determine the most difficult workflow.", placeholder: "SELECT transaction_type, AVG(ces_score) GROUP BY..." }
                 ]
             },
-            3: { title: "Day 3: Data Management & Warehousing", desc: "Locked Section. Under development.", drills: [] },
+            3: {
+                title: "Day 3: Data Management & Warehousing",
+                desc: "Focus on data warehousing concepts, ETL pipelines, and dimensional modeling for analytics infrastructure.",
+                instructions: "Apply data warehousing principles to design schemas, optimize queries, and build robust data pipelines.",
+                problem: "Data latency from multiple source systems is causing delayed reporting and stale dashboards.",
+                challenge: "Merging structured CRM data with unstructured interaction logs creates schema conflicts.",
+                scenario: "A new real-time dashboard is needed that combines sales data, support tickets, and customer sentiment in one view.",
+                examples: [
+                    {
+                        task: "Design a star schema for customer interaction analysis.",
+                        expectedType: "Schema Design",
+                        sample: "Fact table: Interactions. Dimensions: Customer, Agent, Date, Product."
+                    },
+                    {
+                        task: "Write an ETL pattern to merge telephony and survey data.",
+                        expectedType: "ETL Process",
+                        sample: "Extract from both sources, transform to common format, load to staging."
+                    }
+                ],
+                drills: [
+                    { id: "D3_01", type: "Schema Design", text: "Design a dimensional star schema for tracking agent performance across multiple operational metrics.", placeholder: "Define fact and dimension tables with keys..." },
+                    { id: "D3_02", type: "ETL Process", text: "Outline an ETL pipeline to extract customer satisfaction data from multiple survey tools and load into a unified warehouse.", placeholder: "Describe extraction, transformation, loading steps..." },
+                    { id: "D3_03", type: "SQL Query", text: "Write a query to join fact_interactions with dim_customer and dim_agent to produce a daily performance summary.", placeholder: "SELECT ... FROM fact_interactions JOIN dim_customer..." },
+                    { id: "D3_04", type: "Data Warehousing", text: "Explain the difference between a star schema and a snowflake schema, and when you would use each.", placeholder: "Contrast the normalization levels and use cases..." },
+                    { id: "D3_05", type: "SQL Query", text: "Create a materialized view that pre-aggregates daily call volumes by queue and time of day.", placeholder: "CREATE MATERIALIZED VIEW daily_queue_volume AS..." },
+                    { id: "D3_06", type: "ETL Process", text: "Design a change data capture (CDC) strategy to keep your warehouse updated with minimal latency from the operational database.", placeholder: "Describe CDC methods: timestamp, triggers, log-based..." },
+                    { id: "D3_07", type: "Data Warehousing", text: "Identify slow-changing dimension attributes for a customer dimension and propose a handling strategy.", placeholder: "Define SCD Type 1 vs Type 2 handling..." },
+                    { id: "D3_08", type: "SQL Query", text: "Write a query using window functions to calculate rolling 7-day average handle time per agent.", placeholder: "AVG(aht) OVER(PARTITION BY agent_id ORDER BY date ROWS 6 PRECEDING)..." },
+                    { id: "D3_09", type: "ETL Process", text: "Propose a data quality validation step in the ETL process to ensure phone numbers are consistently formatted.", placeholder: "Add validation rule with regex pattern check..." },
+                    { id: "D3_10", type: "Schema Design", text: "Build a factless fact table design for capturing customer event milestones like 'account_created', 'first_purchase', 'cancellation_requested'.", placeholder: "Define factless fact with foreign keys and date..." },
+                    { id: "D3_11", type: "SQL Query", text: "Write a query to identify date gaps in the fact table to detect missing data loading.", placeholder: "Use LAG/LEAD to detect gaps..." },
+                    { id: "D3_12", type: "Data Warehousing", text: "Discuss the benefits and tradeoffs of a hybrid data warehouse architecture with both structured and semi-structured data stores.", placeholder: "Mention cost, performance, agility factors..." },
+                    { id: "D3_13", type: "ETL Process", text: "Create a data lineage diagram concept for a pipeline that moves data from CRM → staging → warehouse → data mart.", placeholder: "Describe source, staging, warehouse, mart layers..." },
+                    { id: "D3_14", type: "SQL Query", text: "Write a query to generate a dimension table of dates covering 5 years with day-of-week, holiday flags, and fiscal quarter.", placeholder: "Using DATEADD, DATEPART, and business logic..." },
+                    { id: "D3_15", type: "Schema Design", text: "Design a bridge table to handle many-to-many relationships between agents and skill sets for routing analysis.", placeholder: "Define bridge table structure with composite keys..." },
+                    { id: "D3_16", type: "Data Warehousing", text: "Explain how to handle late-arriving dimensions and facts in a warehouse environment.", placeholder: "Describe strategies: reload, update, staging checks..." },
+                    { id: "D3_17", type: "SQL Query", text: "Write a query to calculate year-over-year volume comparison using a self-join on date dimensions.", placeholder: "JOIN fact_current ON date_dim_current JOIN fact_prior_year..." },
+                    { id: "D3_18", type: "ETL Process", text: "Design an incremental load strategy for a fact table that receives millions of new rows daily.", placeholder: "Use high-watermark, batch windows, partitioning..." },
+                    { id: "D3_19", type: "Schema Design", text: "Propose a dimensional model for analyzing chatbot conversation logs with user intent and sentiment tags.", placeholder: "Define fact_conversation with dim_intent, dim_user, dim_date..." },
+                    { id: "D3_20", type: "SQL Query", text: "Write a query using CUBE or ROLLUP to generate multi-level aggregate reports for management dashboards.", placeholder: "GROUP BY ROLLUP(region, queue, agent_id)..." },
+                    { id: "D3_21", type: "Data Warehousing", text: "Compare columnar vs row-based storage for a time-series fact table with 100+ columns and high cardinality dimensions.", placeholder: "Discuss compression, query performance, I/O patterns..." },
+                    { id: "D3_22", type: "ETL Process", text: "Define a data retention policy strategy for archival and purging of aged operational data.", placeholder: "Set retention windows and archival mechanisms..." },
+                    { id: "D3_23", type: "SQL Query", text: "Write a query to flatten a JSON field containing nested agent skills into a normalized table structure.", placeholder: "Use JSON_TABLE or UNNEST operations..." },
+                    { id: "D3_24", type: "Schema Design", text: "Design a mini-mart for executive reporting that consolidates CSAT, AHT, and Sales data into a single aggregated view.", placeholder: "Define fact table with pre-joined dimensions and aggregates..." },
+                    { id: "D3_25", type: "Data Warehousing", text: "Explain how to implement row-level security (RLS) in the warehouse to restrict agent data access by team.", placeholder: "Use filtering policies or role-based views..." },
+                    { id: "D3_26", type: "SQL Query", text: "Write a query to identify orphaned fact records that have no matching dimension keys.", placeholder: "LEFT JOIN with NULL checks on dimension foreign keys..." },
+                    { id: "D3_27", type: "ETL Process", text: "Describe a testing strategy for ETL pipelines including unit tests, integration tests, and end-to-end validation.", placeholder: "Mention test data, assertions, and reconciliation..." },
+                    { id: "D3_28", type: "Schema Design", text: "Create a slowly changing dimension (SCD) Type 2 design for tracking customer contact information changes over time.", placeholder: "Include start_date, end_date, current_flag columns..." },
+                    { id: "D3_29", type: "SQL Query", text: "Write a query to calculate the total calls per customer lifetime value (CLTV) using aggregated interaction fact data.", placeholder: "SUM(calls) OVER(PARTITION BY customer_id)..." },
+                    { id: "D3_30", type: "Data Warehousing", text: "Outline a disaster recovery and backup strategy for a mission-critical data warehouse.", placeholder: "Mention full backups, differential, point-in-time recovery..." }
+                ]
+            },
             4: { title: "Day 4: Data Quality & Cleaning Mechanics", desc: "Locked Section. Under development.", drills: [] },
             5: { title: "Day 5: Real-Time Visualization Frameworks", desc: "Locked Section. Under development.", drills: [] },
             6: { title: "Day 6: Predictive Modeling & Forecasting", desc: "Locked Section. Under development.", drills: [] },
@@ -503,219 +561,229 @@
         };
 
         // Core State Objects
-        let userSolutions = JSON.parse(localStorage.getItem('alorica_user_solutions')) || {};
-        let currentDay = parseInt(localStorage.getItem('alorica_current_day')) || 1;
+        let userSolutions = JSON.parse(localStorage.getItem('alorica_user_solutions') || '{}');
+        let currentDay = 1;
+        let totalDrills = 0;
+        let completedDrills = 0;
 
-        // Login Handler
-        function handleLogin() {
-            const emailInput = document.getElementById('email').value.trim();
-            if (authorizedEmails.includes(emailInput)) {
-                document.getElementById('login-container').style.display = 'none';
-                document.getElementById('portal-container').style.display = 'block';
-                initPortal();
-            } else {
-                document.getElementById('login-error').style.display = 'block';
+        // Count total drills
+        for (let day in trainingData) {
+            if (trainingData[day].drills && Array.isArray(trainingData[day].drills)) {
+                totalDrills += trainingData[day].drills.length;
             }
         }
 
-        // Logout Handler
+        // Update drill count display
+        document.getElementById('drill-count').textContent = `0 of ${totalDrills} drills completed`;
+
+        function handleLogin() {
+            const email = document.getElementById('email').value.trim().toLowerCase();
+            const password = document.getElementById('password').value.trim();
+            
+            const isAuthorizedEmail = authorizedEmails.some(e => e.toLowerCase() === email);
+            const isAuthorizedPassword = password === authorizedEmployeeId;
+            
+            if (isAuthorizedEmail && isAuthorizedPassword) {
+                document.getElementById('login-container').style.display = 'none';
+                document.getElementById('portal-container').style.display = 'block';
+                document.getElementById('user-display').innerHTML = `<i class="fa-regular fa-user"></i> ${email}`;
+                initializePortal();
+            } else {
+                if (!isAuthorizedEmail) {
+                    document.getElementById('login-error').style.display = 'block';
+                } else {
+                    document.getElementById('login-error').style.display = 'none';
+                }
+                if (!isAuthorizedPassword) {
+                    document.getElementById('password-error').style.display = 'block';
+                } else {
+                    document.getElementById('password-error').style.display = 'none';
+                }
+            }
+        }
+
         function handleLogout() {
             document.getElementById('portal-container').style.display = 'none';
             document.getElementById('login-container').style.display = 'flex';
+            document.getElementById('password').value = '';
         }
 
-        // Portal Initialization Lifecycle
-        function initPortal() {
-            renderTabs();
-            renderContent(currentDay);
-            updateProgressBar();
+        function initializePortal() {
+            renderDayTabs();
+            loadDay(currentDay);
         }
 
-        // Navigation Menu Builder
-        function renderTabs() {
+        function renderDayTabs() {
             const container = document.getElementById('day-tabs-container');
             container.innerHTML = '';
-
-            for (let i = 1; i <= 30; i++) {
-                const tab = document.createElement('button');
-                const isLocked = i > 2; // Only days 1 and 2 are active with the expanded dataset
-                tab.className = `day-tab ${i === currentDay ? 'active' : ''} ${isLocked ? 'locked' : ''}`;
+            
+            for (let day in trainingData) {
+                const tab = document.createElement('div');
+                tab.className = `day-tab${day == currentDay ? ' active' : ''}`;
+                const data = trainingData[day];
+                const drillCount = data.drills ? data.drills.length : 0;
+                const isLocked = drillCount === 0;
                 
-                let statusIcon = '<i class="fa-regular fa-circle" style="color:#ccc;"></i>';
-                if (!isLocked) {
-                    const dayDrills = trainingData[i].drills;
-                    let completedInDay = 0;
-                    dayDrills.forEach(d => {
-                        if (userSolutions[d.id] && userSolutions[d.id].trim() !== "") completedInDay++;
-                    });
-
-                    if (completedInDay === dayDrills.length && dayDrills.length > 0) {
-                        statusIcon = '<i class="fa-solid fa-circle-check" style="color:var(--success);"></i>';
-                    } else if (completedInDay > 0) {
-                        statusIcon = '<i class="fa-solid fa-circle-half-stroke" style="color:var(--primary);"></i>';
+                if (isLocked) {
+                    tab.classList.add('locked');
+                }
+                
+                const progress = getDayProgress(day);
+                const badge = progress > 0 ? `<span class="badge">${progress}%</span>` : '';
+                
+                tab.innerHTML = `${data.title} ${badge}`;
+                tab.onclick = () => {
+                    if (!isLocked) {
+                        currentDay = parseInt(day);
+                        renderDayTabs();
+                        loadDay(currentDay);
                     }
-                } else {
-                    statusIcon = '<i class="fa-solid fa-lock" style="font-size:0.8rem;"></i>';
-                }
-
-                tab.innerHTML = `
-                    <span>Day ${i} 
-                        <small style="display:block;font-size:0.7rem;opacity:0.7;">
-                            ${i <= 7 ? 'Core Phase' : 'Advanced Phase'}
-                        </small>
-                    </span> 
-                    ${statusIcon}
-                `;
-                
-                if (!isLocked) {
-                    tab.onclick = () => {
-                        currentDay = i;
-                        localStorage.setItem('alorica_current_day', currentDay);
-                        document.querySelectorAll('.day-tab').forEach(t => t.classList.remove('active'));
-                        tab.className = `day-tab active`;
-                        renderContent(currentDay);
-                    };
-                }
+                };
                 container.appendChild(tab);
             }
         }
 
-        // Content Work Area Builder
-        function renderContent(day) {
-            const viewport = document.getElementById('content-viewport');
+        function getDayProgress(day) {
+            const data = trainingData[day];
+            if (!data || !data.drills || data.drills.length === 0) return 0;
+            const completed = data.drills.filter(d => {
+                const key = `solution_${d.id}`;
+                const val = userSolutions[key] || '';
+                return val.trim().length > 0;
+            }).length;
+            return Math.round((completed / data.drills.length) * 100);
+        }
+
+        function updateProgress() {
+            let completedCount = 0;
+            for (let day in trainingData) {
+                const data = trainingData[day];
+                if (data.drills) {
+                    data.drills.forEach(d => {
+                        const key = `solution_${d.id}`;
+                        if (userSolutions[key] && userSolutions[key].trim().length > 0) {
+                            completedCount++;
+                        }
+                    });
+                }
+            }
+            completedDrills = completedCount;
+            const percent = totalDrills > 0 ? Math.round((completedDrills / totalDrills) * 100) : 0;
+            document.getElementById('progress-percent').textContent = `${percent}%`;
+            document.getElementById('main-progress').style.width = `${percent}%`;
+            document.getElementById('drill-count').textContent = `${completedDrills} of ${totalDrills} drills completed`;
             
-            if (day > 2) {
-                viewport.innerHTML = `
+            // Update individual day badges
+            renderDayTabs();
+        }
+
+        function loadDay(day) {
+            const data = trainingData[day];
+            if (!data || !data.drills || data.drills.length === 0) {
+                document.getElementById('content-viewport').innerHTML = `
                     <div class="section-card">
-                        <h2>Day ${day} Curriculum</h2>
-                        <p>Locked Section. Complete Phase 1 foundational tracking days first.</p>
+                        <h2>${data ? data.title : 'Section Locked'}</h2>
+                        <p>${data ? data.desc : 'This section is currently locked and under development. Please return later.'}</p>
                     </div>
                 `;
                 return;
             }
 
-            const data = trainingData[day];
-            
-            // Build Dynamic Blueprint Core Examples Block HTML
-            let examplesHTML = '';
-            if (data.examples && data.examples.length > 0) {
-                examplesHTML = `<div class="example-block">
-                    <h4 style="color:#856404; margin-bottom:0.5rem;"><i class="fa-solid fa-lightbulb"></i> Baseline Practice Examples</h4>`;
-                data.examples.forEach(ex => {
-                    examplesHTML += `
-                        <div class="example-item">
-                            <span class="badge" style="background:#FFF9C4; color:#F57F17; font-size:0.75rem;">${ex.expectedType}</span>
-                            <p style="font-size:0.85rem; font-weight:600; margin-top:0.25rem;">Task: ${ex.task}</p>
-                            <code style="display:block; background:rgba(0,0,0,0.04); padding:0.4rem; border-radius:3px; font-size:0.8rem; margin-top:0.25rem; font-family:monospace;">${ex.sample}</code>
+            let html = `
+                <div class="section-card">
+                    <h2>${data.title}</h2>
+                    <p><strong>Overview:</strong> ${data.desc}</p>
+                    <p><strong>Instructions:</strong> ${data.instructions}</p>
+                    
+                    <div style="background: #E3F2FD; padding: 1rem; border-radius: 6px; margin: 1rem 0;">
+                        <p><strong>🧩 Problem Statement:</strong> ${data.problem}</p>
+                        <p><strong>⚠️ Challenge:</strong> ${data.challenge}</p>
+                        <p><strong>🔍 Scenario:</strong> ${data.scenario}</p>
+                    </div>
+                    
+                    ${data.examples ? `
+                        <div class="example-block">
+                            <h4>📘 Reference Examples</h4>
+                            ${data.examples.map(ex => `
+                                <div class="example-item">
+                                    <strong>Task:</strong> ${ex.task}<br>
+                                    <strong>Type:</strong> ${ex.expectedType}<br>
+                                    <strong>Sample:</strong> <code>${ex.sample}</code>
+                                </div>
+                            `).join('')}
                         </div>
-                    `;
-                });
-                examplesHTML += `</div>`;
-            }
+                    ` : ''}
+                    
+                    <h3 style="margin-top: 1.5rem;">📋 Drills & Exercises</h3>
+                    <div class="drill-list">
+            `;
 
-            // Build Drills Textarea Input Interface HTML
-            let drillsHTML = '';
-            data.drills.forEach((drill, index) => {
-                const existingSolution = userSolutions[drill.id] || '';
-                const completedClass = existingSolution.trim() !== '' ? 'completed' : '';
-                drillsHTML += `
-                    <div class="drill-item">
+            data.drills.forEach(drill => {
+                const key = `solution_${drill.id}`;
+                const savedValue = userSolutions[key] || '';
+                const isCompleted = savedValue.trim().length > 0;
+                
+                html += `
+                    <div class="drill-item" data-drill-id="${drill.id}">
                         <div class="drill-header">
-                            <span class="badge"><i class="fa-solid fa-code"></i> ${drill.type}</span>
-                            <span style="font-size:0.8rem; color:#666; font-weight:bold;">Drill ${index + 1} of 30</span>
+                            <span class="badge">${drill.type}</span>
+                            <span style="font-size: 0.8rem; color: ${isCompleted ? 'var(--success)' : '#999'}">
+                                ${isCompleted ? '✅ Completed' : '⏳ Pending'}
+                            </span>
                         </div>
                         <div class="drill-content">
-                            <strong>Operational Focus Scenario Target</strong>
-                            <p>${drill.text}</p>
+                            <strong>${drill.id}:</strong> ${drill.text}
+                            <textarea class="solution-box ${isCompleted ? 'completed' : ''}" 
+                                      placeholder="${drill.placeholder}" 
+                                      onchange="saveSolution('${drill.id}', this.value)"
+                                      oninput="saveSolution('${drill.id}', this.value)">${savedValue}</textarea>
                         </div>
-                        <textarea 
-                            class="solution-box ${completedClass}" 
-                            data-id="${drill.id}" 
-                            rows="3" 
-                            placeholder="Type your solution schema/script here... (e.g. ${drill.placeholder})"
-                            oninput="saveSolution(this)"
-                        >${existingSolution}</textarea>
                     </div>
                 `;
             });
 
-            viewport.innerHTML = `
-                <div style="margin-bottom: 1.5rem;">
-                    <span class="badge" style="background-color: var(--primary); color: white;">ALORICA BPO HUB BLUEPRINT</span>
-                    <h2 style="margin-top: 0.5rem; color: var(--secondary); font-size: 1.8rem;">${data.title}</h2>
-                </div>
-
-                <div class="section-card">
-                    <h2><i class="fa-solid fa-circle-info" style="color: var(--primary);"></i> Strategic Overview & Instructions</h2>
-                    <p style="line-height: 1.6; color: #444; margin-bottom:0.5rem;">${data.desc}</p>
-                    <p style="font-size:0.9rem; color:#666;">${data.instructions}</p>
-                    ${examplesHTML}
-                </div>
-
-                <div class="grid-2">
-                    <div class="section-card" style="border-top: 4px solid var(--accent);">
-                        <h2><i class="fa-solid fa-triangle-exclamation" style="color: var(--accent);"></i> Real-Time Incident Focus</h2>
-                        <p style="line-height: 1.5;">${data.problem}</p>
-                    </div>
-                    <div class="section-card" style="border-top: 4px solid #FFC107;">
-                        <h2><i class="fa-solid fa-bolt" style="color: #FFC107;"></i> Core Structural Challenge</h2>
-                        <p style="line-height: 1.5;">${data.challenge}</p>
-                    </div>
-                </div>
-
-                <div class="section-card" style="background: linear-gradient(to right, #ffffff, #fdfdfd); border-left: 4px solid var(--secondary);">
-                    <h2><i class="fa-solid fa-display" style="color: var(--secondary);"></i> Applied Analytics Scenario</h2>
-                    <p style="line-height: 1.5; font-style: italic; color: #555;">"${data.scenario}"</p>
-                </div>
-
-                <div class="section-card">
-                    <h2><i class="fa-solid fa-list-check" style="color: var(--success);"></i> Hands-on Lab Drills <span style="font-size:1rem; font-weight:normal; float:right; color:#666;">30 Active Lab Items</span></h2>
-                    <p style="font-size: 0.9rem; color: #666; margin-bottom: 1rem;">Complete all entry boxes below. Progress state evaluates field tracking metrics dynamically on type actions.</p>
-                    <div class="drill-list">
-                        ${drillsHTML}
+            html += `
                     </div>
                 </div>
             `;
+
+            document.getElementById('content-viewport').innerHTML = html;
+            updateProgress();
         }
 
-        // Live State Tracking & Saving Engine
-        function saveSolution(textarea) {
-            const drillId = textarea.getAttribute('data-id');
-            const content = textarea.value;
-            
-            userSolutions[drillId] = content;
+        function saveSolution(drillId, value) {
+            const key = `solution_${drillId}`;
+            userSolutions[key] = value;
             localStorage.setItem('alorica_user_solutions', JSON.stringify(userSolutions));
             
-            // Visual feedback toggle
-            if (content.trim() !== '') {
-                textarea.classList.add('completed');
-            } else {
-                textarea.classList.remove('completed');
+            // Update UI
+            const textarea = document.querySelector(`[data-drill-id="${drillId}"] .solution-box`);
+            if (textarea) {
+                const isCompleted = value.trim().length > 0;
+                textarea.classList.toggle('completed', isCompleted);
+                const header = textarea.closest('.drill-item').querySelector('.drill-header span:last-child');
+                if (header) {
+                    header.textContent = isCompleted ? '✅ Completed' : '⏳ Pending';
+                    header.style.color = isCompleted ? 'var(--success)' : '#999';
+                }
             }
             
-            updateProgressBar();
+            // Update progress
+            updateProgress();
         }
 
-        // Progress Calculation Module
-        function updateProgressBar() {
-            // Evaluates overall active curriculum paths (Day 1 and Day 2 total 60 items)
-            const totalActiveDrills = trainingData[1].drills.length + trainingData[2].drills.length;
-            let completedCount = 0;
+        // Enter key on password field triggers login
+        document.getElementById('password').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                handleLogin();
+            }
+        });
 
-            // Interrogate arrays for non-blank text value configurations
-            trainingData[1].drills.forEach(d => {
-                if (userSolutions[d.id] && userSolutions[d.id].trim() !== "") completedCount++;
-            });
-            trainingData[2].drills.forEach(d => {
-                if (userSolutions[d.id] && userSolutions[d.id].trim() !== "") completedCount++;
-            });
-
-            const percent = totalActiveDrills > 0 ? Math.round((completedCount / totalActiveDrills) * 100) : 0;
-            
-            document.getElementById('main-progress').style.width = `${percent}%`;
-            document.getElementById('progress-percent').innerText = `${percent}%`;
-            document.getElementById('drill-count').innerText = `${completedCount} of ${totalActiveDrills} exercises completed`;
-        }
+        document.getElementById('email').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                document.getElementById('password').focus();
+            }
+        });
     </script>
 </body>
 </html>
