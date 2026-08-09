@@ -375,7 +375,7 @@
                         <div class="progress-bar" id="main-progress"></div>
                     </div>
                     <div style="font-size: 0.75rem; color: #666; margin-top: 0.5rem; text-align: center;" id="drill-count">
-                        0 of 90 drills completed
+                        0 of 0 drills completed
                     </div>
                 </div>
 
@@ -554,371 +554,370 @@
                     { id: "D3_30", type: "Data Warehousing", text: "Outline a disaster recovery and backup strategy for a mission-critical data warehouse.", placeholder: "Mention full backups, differential, point-in-time recovery..." }
                 ]
             },
-            {
-    4: {
-        title: "Day 4: Data Quality & Cleaning Mechanics",
-        desc: "Focuses on identifying, quantifying, and resolving data quality issues. This includes handling missing data, standardizing formats, deduplication, and building automated data quality monitoring frameworks.",
-        instructions: "You will be presented with common data quality problems. Your tasks are to diagnose the root cause, write the necessary data cleaning code, and propose preventative measures to ensure high-quality data for downstream analytics.",
-        problem: "Critical reports are showing inconsistent results and business users have lost trust in the data. The root cause is a lack of standardized data quality checks within the ETL pipelines.",
-        challenge: "Multiple source systems have their own definitions for 'customer status' and 'product category', leading to conflicting and erroneous aggregates in the central data warehouse.",
-        scenario: "A data analyst finds that the total revenue for a specific product line is being underreported because 15% of the sales records are missing a valid 'product_id'. This is caused by a recent change in the source CRM system.",
-        examples: [
-            {
-                task: "Write a query to identify records with missing critical fields.",
-                expectedType: "SQL Structure",
-                sample: "SELECT * FROM sales_data WHERE product_id IS NULL OR customer_id IS NULL;"
+            4: {
+                title: "Day 4: Data Quality & Cleaning Mechanics",
+                desc: "Focuses on identifying, quantifying, and resolving data quality issues. This includes handling missing data, standardizing formats, deduplication, and building automated data quality monitoring frameworks.",
+                instructions: "You will be presented with common data quality problems. Your tasks are to diagnose the root cause, write the necessary data cleaning code, and propose preventative measures to ensure high-quality data for downstream analytics.",
+                problem: "Critical reports are showing inconsistent results and business users have lost trust in the data. The root cause is a lack of standardized data quality checks within the ETL pipelines.",
+                challenge: "Multiple source systems have their own definitions for 'customer status' and 'product category', leading to conflicting and erroneous aggregates in the central data warehouse.",
+                scenario: "A data analyst finds that the total revenue for a specific product line is being underreported because 15% of the sales records are missing a valid 'product_id'. This is caused by a recent change in the source CRM system.",
+                examples: [
+                    {
+                        task: "Write a query to identify records with missing critical fields.",
+                        expectedType: "SQL Structure",
+                        sample: "SELECT * FROM sales_data WHERE product_id IS NULL OR customer_id IS NULL;"
+                    },
+                    {
+                        task: "Design a rule to standardize state codes.",
+                        expectedType: "Data Cleansing Logic",
+                        sample: "UPDATE customers SET state = UPPER(TRIM(state)) WHERE state IN ('ny', 'NY', ' New York');"
+                    }
+                ],
+                drills: [
+                    { id: "D4_01", type: "Data Profiling", text: "Write a query to profile a table and return the percentage of null values for each column to prioritize data quality efforts.", placeholder: "SELECT column_name, COUNT(NULL) * 100.0 / COUNT(*)..." },
+                    { id: "D4_02", type: "Data Cleansing", text: "Standardize date formats in a VARCHAR column that currently has mixed formats like '12/31/2023', '31-12-2023', and '2023-12-31'.", placeholder: "Use TRY_CAST, PARSE, or conditional logic..." },
+                    { id: "D4_03", type: "Deduplication", text: "Write a query to identify and remove duplicate customer records based on email and phone number, keeping the record with the latest `last_updated` timestamp.", placeholder: "WITH CTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY email, phone ORDER BY last_updated DESC) rn)..." },
+                    { id: "D4_04", type: "Data Validation", text: "Create a data quality rule to validate that order amounts are positive and do not exceed a defined maximum threshold for an account.", placeholder: "WHERE order_amount <= 0 OR order_amount > (SELECT max_threshold FROM thresholds)..." },
+                    { id: "D4_05", type: "Data Quality Framework", text: "Design a set of data quality dimensions (e.g., accuracy, completeness, consistency) and propose a method to measure each one for a customer database.", placeholder: "Define metrics like 'Missing Rate', 'Validity Rate', 'Conformity Rate'..." },
+                    { id: "D4_06", type: "Data Cleansing", text: "Write a regular expression to parse a messy address field into separate Street, City, State, and Zip Code columns.", placeholder: "Use REGEX functions like REGEXP_EXTRACT_ALL, capturing groups..." },
+                    { id: "D4_07", type: "Data Cleansing", text: "Implement logic to impute missing product category codes based on a mapping table that uses product name patterns.", placeholder: "UPDATE products SET category = (SELECT category FROM product_mapping p WHERE products.name LIKE CONCAT('%', p.keyword, '%'))..." },
+                    { id: "D4_08", type: "Data Quality Framework", text: "Write a query to generate a data quality report showing the count and percentage of records failing key validation rules.", placeholder: "SELECT 'Non-Zero Order Amount' as rule, COUNT(*) as violations..." },
+                    { id: "D4_09", type: "Data Cleansing", text: "Handle outliers in a 'call_duration' column by capping extreme values at the 99.9th percentile.", placeholder: "CASE WHEN call_duration > (SELECT PERCENTILE_CONT(0.999) ...) THEN (SELECT PERCENTILE_CONT(0.999) ...) ELSE call_duration END..." },
+                    { id: "D4_10", type: "Data Validation", text: "Build a regex pattern to validate that email addresses conform to a standard internet format.", placeholder: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" },
+                    { id: "D4_11", type: "Data Profiling", text: "Create a data dictionary for a legacy data table by extracting column names, data types, min/max values, and distinct counts.", placeholder: "Use INFORMATION_SCHEMA or system tables..." },
+                    { id: "D4_12", type: "ETL Process", text: "Design a data quality check that runs before loading data to a dimension table, ensuring that all foreign key values exist in the parent dimension.", placeholder: "Perform LEFT JOIN to parent table and filter where parent key is NULL..." },
+                    { id: "D4_13", type: "Data Cleansing", text: "Write code to parse a 'full_name' column into separate 'first_name' and 'last_name' columns, handling suffix or multiple middle names gracefully.", placeholder: "Use SPLIT, SUBSTRING_INDEX, or regex to handle complex cases..." },
+                    { id: "D4_14", type: "Data Quality Framework", text: "Define an 'accuracy' metric for a dataset and describe a process to measure it against a verified source of truth.", placeholder: "Compare with an authoritative dataset or use manual sampling..." },
+                    { id: "D4_15", type: "Data Cleansing", text: "Remove all non-numeric characters from a 'phone_number' column before storing it for downstream calling systems.", placeholder: "REGEXP_REPLACE(phone_number, '[^0-9]', '')..." },
+                    { id: "D4_16", type: "Data Validation", text: "Check for referential integrity by finding all orders that reference a customer_id that does not exist in the customers table.", placeholder: "SELECT * FROM orders o LEFT JOIN customers c ON o.customer_id = c.id WHERE c.id IS NULL;" },
+                    { id: "D4_17", type: "ETL Process", text: "Design a workflow to handle 'hard' and 'soft' data quality failures, where hard failures stop the pipeline and soft failures are logged.", placeholder: "Define thresholds and alerts for soft failures..." },
+                    { id: "D4_18", type: "Data Cleansing", text: "Standardize U.S. state abbreviations to a two-letter code format, mapping from full names and common variants.", placeholder: "CASE WHEN state IN ('New York', 'NY', 'N.Y.') THEN 'NY' ..." },
+                    { id: "D4_19", type: "Data Quality Framework", text: "Write an automated job to calculate and alert the data team when the historical average null rate for a critical column increases by more than 20%.", placeholder: "Use window functions and anomaly detection logic..." },
+                    { id: "D4_20", type: "Data Cleansing", text: "Write a query to fill in missing values for a numeric 'zip_code' column using a nearest-neighbor approach based on the 'city' and 'state'.", placeholder: "Use a mapping table or approximate join..." },
+                    { id: "D4_21", type: "Data Validation", text: "Create a validation rule that `order_date` is never after `shipped_date`, and identify all records where this rule is violated.", placeholder: "WHERE order_date > shipped_date..." },
+                    { id: "D4_22", type: "Data Profiling", text: "Perform a 'value frequency' analysis on a categorical 'channel' column to check for unexpected new values like 'SMS' or 'Chat'.", placeholder: "SELECT channel, COUNT(*) FROM ... GROUP BY channel ORDER BY 2 DESC;" },
+                    { id: "D4_23", type: "Data Cleansing", text: "Write code to remove HTML tags from a text field containing customer comments captured from a web portal.", placeholder: "Use regex to replace '<[^>]*>' with an empty string..." },
+                    { id: "D4_24", type: "ETL Process", text: "Implement a 'tombstone' or soft-delete pattern in a dimension table to handle deleted records from the source system without losing historical context.", placeholder: "Add a 'deleted_flag' column to dim table..." },
+                    { id: "D4_25", type: "Data Quality Framework", text: "Define data lineage from the source to the dashboard for a key metric, and identify potential points of data quality degradation.", placeholder: "Map source --> staging --> warehouse --> data mart --> report..." },
+                    { id: "D4_26", type: "Data Cleansing", text: "Write code to convert all text in a free-text 'product_description' column to lowercase and remove punctuation for better text analysis.", placeholder: "LOWER(REGEXP_REPLACE(product_description, '[^a-zA-Z0-9]', ' '))..." },
+                    { id: "D4_27", type: "Data Validation", text: "Validate that the sum of sub-total, tax, and shipping equals the total order amount, and flag discrepancies.", placeholder: "WHERE ABS(total - (subtotal + tax + shipping)) > 0.01..." },
+                    { id: "D4_28", type: "ETL Process", text: "Design a data retention process that archives data older than 2 years into cold storage and purges it from the active tables.", placeholder: "Create an archival partition and move data..." },
+                    { id: "D4_29", type: "Data Profiling", text: "Find columns with a single distinct value (e.g., all NULLs or all the same constant) that can be dropped to save space and improve query performance.", placeholder: "SELECT column_name, COUNT(DISTINCT column_name) FROM ... GROUP BY..." },
+                    { id: "D4_30", type: "Data Quality Framework", text: "Draft a business rule validation to ensure that sales for a new product line are not recorded with a negative discount.", placeholder: "WHERE discount_percent < 0 AND product_line = 'NewProductLine'..." }
+                ]
             },
-            {
-                task: "Design a rule to standardize state codes.",
-                expectedType: "Data Cleansing Logic",
-                sample: "UPDATE customers SET state = UPPER(TRIM(state)) WHERE state IN ('ny', 'NY', ' New York');"
-            }
-        ],
-        drills: [
-            { id: "D4_01", type: "Data Profiling", text: "Write a query to profile a table and return the percentage of null values for each column to prioritize data quality efforts.", placeholder: "SELECT column_name, COUNT(NULL) * 100.0 / COUNT(*)..." },
-            { id: "D4_02", type: "Data Cleansing", text: "Standardize date formats in a VARCHAR column that currently has mixed formats like '12/31/2023', '31-12-2023', and '2023-12-31'.", placeholder: "Use TRY_CAST, PARSE, or conditional logic..." },
-            { id: "D4_03", type: "Deduplication", text: "Write a query to identify and remove duplicate customer records based on email and phone number, keeping the record with the latest `last_updated` timestamp.", placeholder: "WITH CTE AS (SELECT *, ROW_NUMBER() OVER(PARTITION BY email, phone ORDER BY last_updated DESC) rn)..." },
-            { id: "D4_04", type: "Data Validation", text: "Create a data quality rule to validate that order amounts are positive and do not exceed a defined maximum threshold for an account.", placeholder: "WHERE order_amount <= 0 OR order_amount > (SELECT max_threshold FROM thresholds)..." },
-            { id: "D4_05", type: "Data Quality Framework", text: "Design a set of data quality dimensions (e.g., accuracy, completeness, consistency) and propose a method to measure each one for a customer database.", placeholder: "Define metrics like 'Missing Rate', 'Validity Rate', 'Conformity Rate'..." },
-            { id: "D4_06", type: "Data Cleansing", text: "Write a regular expression to parse a messy address field into separate Street, City, State, and Zip Code columns.", placeholder: "Use REGEX functions like REGEXP_EXTRACT_ALL, capturing groups..." },
-            { id: "D4_07", type: "Data Cleansing", text: "Implement logic to impute missing product category codes based on a mapping table that uses product name patterns.", placeholder: "UPDATE products SET category = (SELECT category FROM product_mapping p WHERE products.name LIKE CONCAT('%', p.keyword, '%'))..." },
-            { id: "D4_08", type: "Data Quality Framework", text: "Write a query to generate a data quality report showing the count and percentage of records failing key validation rules.", placeholder: "SELECT 'Non-Zero Order Amount' as rule, COUNT(*) as violations..." },
-            { id: "D4_09", type: "Data Cleansing", text: "Handle outliers in a 'call_duration' column by capping extreme values at the 99.9th percentile.", placeholder: "CASE WHEN call_duration > (SELECT PERCENTILE_CONT(0.999) ...) THEN (SELECT PERCENTILE_CONT(0.999) ...) ELSE call_duration END..." },
-            { id: "D4_10", type: "Data Validation", text: "Build a regex pattern to validate that email addresses conform to a standard internet format.", placeholder: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$" },
-            { id: "D4_11", type: "Data Profiling", text: "Create a data dictionary for a legacy data table by extracting column names, data types, min/max values, and distinct counts.", placeholder: "Use INFORMATION_SCHEMA or system tables..." },
-            { id: "D4_12", type: "ETL Process", text: "Design a data quality check that runs before loading data to a dimension table, ensuring that all foreign key values exist in the parent dimension.", placeholder: "Perform LEFT JOIN to parent table and filter where parent key is NULL..." },
-            { id: "D4_13", type: "Data Cleansing", text: "Write code to parse a 'full_name' column into separate 'first_name' and 'last_name' columns, handling suffix or multiple middle names gracefully.", placeholder: "Use SPLIT, SUBSTRING_INDEX, or regex to handle complex cases..." },
-            { id: "D4_14", type: "Data Quality Framework", text: "Define an 'accuracy' metric for a dataset and describe a process to measure it against a verified source of truth.", placeholder: "Compare with an authoritative dataset or use manual sampling..." },
-            { id: "D4_15", type: "Data Cleansing", text: "Remove all non-numeric characters from a 'phone_number' column before storing it for downstream calling systems.", placeholder: "REGEXP_REPLACE(phone_number, '[^0-9]', '')..." },
-            { id: "D4_16", type: "Data Validation", text: "Check for referential integrity by finding all orders that reference a customer_id that does not exist in the customers table.", placeholder: "SELECT * FROM orders o LEFT JOIN customers c ON o.customer_id = c.id WHERE c.id IS NULL;" },
-            { id: "D4_17", type: "ETL Process", text: "Design a workflow to handle 'hard' and 'soft' data quality failures, where hard failures stop the pipeline and soft failures are logged.", placeholder: "Define thresholds and alerts for soft failures..." },
-            { id: "D4_18", type: "Data Cleansing", text: "Standardize U.S. state abbreviations to a two-letter code format, mapping from full names and common variants.", placeholder: "CASE WHEN state IN ('New York', 'NY', 'N.Y.') THEN 'NY' ..." },
-            { id: "D4_19", type: "Data Quality Framework", text: "Write an automated job to calculate and alert the data team when the historical average null rate for a critical column increases by more than 20%.", placeholder: "Use window functions and anomaly detection logic..." },
-            { id: "D4_20", type: "Data Cleansing", text: "Write a query to fill in missing values for a numeric 'zip_code' column using a nearest-neighbor approach based on the 'city' and 'state'.", placeholder: "Use a mapping table or approximate join..." },
-            { id: "D4_21", type: "Data Validation", text: "Create a validation rule that `order_date` is never after `shipped_date`, and identify all records where this rule is violated.", placeholder: "WHERE order_date > shipped_date..." },
-            { id: "D4_22", type: "Data Profiling", text: "Perform a 'value frequency' analysis on a categorical 'channel' column to check for unexpected new values like 'SMS' or 'Chat'.", placeholder: "SELECT channel, COUNT(*) FROM ... GROUP BY channel ORDER BY 2 DESC;" },
-            { id: "D4_23", type: "Data Cleansing", text: "Write code to remove HTML tags from a text field containing customer comments captured from a web portal.", placeholder: "Use regex to replace '<[^>]*>' with an empty string..." },
-            { id: "D4_24", type: "ETL Process", text: "Implement a 'tombstone' or soft-delete pattern in a dimension table to handle deleted records from the source system without losing historical context.", placeholder: "Add a 'deleted_flag' column to dim table..." },
-            { id: "D4_25", type: "Data Quality Framework", text: "Define data lineage from the source to the dashboard for a key metric, and identify potential points of data quality degradation.", placeholder: "Map source --> staging --> warehouse --> data mart --> report..." },
-            { id: "D4_26", type: "Data Cleansing", text: "Write code to convert all text in a free-text 'product_description' column to lowercase and remove punctuation for better text analysis.", placeholder: "LOWER(REGEXP_REPLACE(product_description, '[^a-zA-Z0-9]', ' '))..." },
-            { id: "D4_27", type: "Data Validation", text: "Validate that the sum of sub-total, tax, and shipping equals the total order amount, and flag discrepancies.", placeholder: "WHERE ABS(total - (subtotal + tax + shipping)) > 0.01..." },
-            { id: "D4_28", type: "ETL Process", text: "Design a data retention process that archives data older than 2 years into cold storage and purges it from the active tables.", placeholder: "Create an archival partition and move data..." },
-            { id: "D4_29", type: "Data Profiling", text: "Find columns with a single distinct value (e.g., all NULLs or all the same constant) that can be dropped to save space and improve query performance.", placeholder: "SELECT column_name, COUNT(DISTINCT column_name) FROM ... GROUP BY..." },
-            { id: "D4_30", type: "Data Quality Framework", text: "Draft a business rule validation to ensure that sales for a new product line are not recorded with a negative discount.", placeholder: "WHERE discount_percent < 0 AND product_line = 'NewProductLine'..." }
-        ]
-    },
-    5: {
-        title: "Day 5: Real-Time Visualization Frameworks",
-        desc: "Focuses on design principles for data visualization and building effective dashboards. Covers chart selection, user interaction, and leveraging dashboards for operational decision-making.",
-        instructions: "You will design visualizations and dashboards to answer specific business questions. The focus is on choosing the right chart type, designing clear layouts, and creating interactive elements that allow users to explore data.",
-        problem: "Business stakeholders are overwhelmed with static PDF reports and are asking for self-service, real-time dashboards to monitor key metrics.",
-        challenge: "Data latency and complex joins make it difficult to update dashboards faster than a daily cadence.",
-        scenario: "The customer support manager needs a live dashboard showing queue volumes, agent availability, and current Average Handle Time (AHT) to manage staffing and breaks in real-time.",
-        examples: [
-            {
-                task: "Select the best chart to show the trend of CSAT over time.",
-                expectedType: "Visual Design",
-                sample: "A line chart is appropriate to show change over time."
+            5: {
+                title: "Day 5: Real-Time Visualization Frameworks",
+                desc: "Focuses on design principles for data visualization and building effective dashboards. Covers chart selection, user interaction, and leveraging dashboards for operational decision-making.",
+                instructions: "You will design visualizations and dashboards to answer specific business questions. The focus is on choosing the right chart type, designing clear layouts, and creating interactive elements that allow users to explore data.",
+                problem: "Business stakeholders are overwhelmed with static PDF reports and are asking for self-service, real-time dashboards to monitor key metrics.",
+                challenge: "Data latency and complex joins make it difficult to update dashboards faster than a daily cadence.",
+                scenario: "The customer support manager needs a live dashboard showing queue volumes, agent availability, and current Average Handle Time (AHT) to manage staffing and breaks in real-time.",
+                examples: [
+                    {
+                        task: "Select the best chart to show the trend of CSAT over time.",
+                        expectedType: "Visual Design",
+                        sample: "A line chart is appropriate to show change over time."
+                    },
+                    {
+                        task: "Define the layout for a dashboard summary page.",
+                        expectedType: "Dashboard Design",
+                        sample: "The summary should have Key Performance Indicator (KPI) cards at the top, followed by trend charts."
+                    }
+                ],
+                drills: [
+                    { id: "D5_01", type: "Visual Design", text: "Propose a chart type to compare the total sales for four different product categories for the current year.", placeholder: "Bar chart or Treemap..." },
+                    { id: "D5_02", type: "Dashboard Design", text: "Design a dashboard layout for a call center manager that combines live queue statistics, agent performance, and customer sentiment data.", placeholder: "Sketch a grid with filters at the top and core metrics..." },
+                    { id: "D5_03", type: "SQL Query", text: "Write a query to prepare a dataset for a Pareto analysis, identifying the top 20% of products that contribute to 80% of total revenue.", placeholder: "Use window functions to calculate cumulative revenue percentage..." },
+                    { id: "D5_04", type: "Visual Design", text: "Suggest the best visualization to show the distribution of call durations in a call center.", placeholder: "Histogram or Box plot..." },
+                    { id: "D5_05", type: "Dashboard Design", text: "Design a 'drill-down' interaction where clicking on a region in a map reveals a bar chart of cities in that region.", placeholder: "Describe the dashboard hierarchy of interactions..." },
+                    { id: "D5_06", type: "SQL Query", text: "Create a data model to feed a real-time visualization that needs to aggregate data every 5 minutes.", placeholder: "Use a materialized view, streaming data, or time-series database..." },
+                    { id: "D5_07", type: "Visual Design", text: "Explain why a pie chart is often not the best choice and what alternative you would use to show parts of a whole.", placeholder: "A stacked bar chart or treemap is often a better alternative..." },
+                    { id: "D5_08", type: "Dashboard Design", text: "Design a dashboard to monitor data pipeline health, showing row counts, latency, and error rates for each step.", placeholder: "Use green/red status indicators and sparklines for trends..." },
+                    { id: "D5_09", type: "Visual Design", text: "Determine the best chart to show the correlation between Average Handle Time and Customer Satisfaction Score.", placeholder: "Scatter plot..." },
+                    { id: "D5_10", type: "Dashboard Design", text: "Plan the implementation of a global filter on a dashboard that allows users to select a date range and see all charts update simultaneously.", placeholder: "Use a dashboard parameter/filter that is passed to all data sources..." },
+                    { id: "D5_11", type: "SQL Query", text: "Write a query to create a dataset for a daily 'flash report' that contains high-level KPIs like total sales, new customers, and top-selling product.", placeholder: "SELECT CURRENT_DATE, SUM(sales), COUNT(DISTINCT customer_id)..." },
+                    { id: "D5_12", type: "Visual Design", text: "Describe a scenario where a dual-axis chart is useful and the risks of using one incorrectly.", placeholder: "Can be useful when combining volume and percentage, but risks misleading scales..." },
+                    { id: "D5_13", type: "Dashboard Design", text: "Design a user-friendly dashboard UI for a mobile device, considering size constraints and touch interaction.", placeholder: "Use large fonts, clear icons, and simple scrollable layouts..." },
+                    { id: "D5_14", type: "Visual Design", text: "Select a chart type to visualize a country's performance on two metrics, such as sales and profit, to identify areas of opportunity.", placeholder: "A bubble chart where size is profit and color is sales..." },
+                    { id: "D5_15", type: "SQL Query", text: "Write a query to prepare data for an interactive map, providing a geometry field (e.g., WKT or GEOGRAPHY) and associated metrics.", placeholder: "SELECT region, ST_AsText(geometry), sales FROM..." },
+                    { id: "D5_16", type: "Dashboard Design", text: "Design an automated email alert system that sends a snapshot of a dashboard to a manager if a KPI falls below a defined threshold.", placeholder: "Use scheduler to run dashboard and send notification..." },
+                    { id: "D5_17", type: "Visual Design", text: "Explain the importance of using a consistent color palette and what best practices exist for accessible visualization colors.", placeholder: "Follow WCAG guidelines for contrast ratios..." },
+                    { id: "D5_18", type: "Dashboard Design", text: "Design a 'work in progress' dashboard page for a new project, including a data glossary to help users understand the metrics.", placeholder: "Include clear labels and a link to documentation..." },
+                    { id: "D5_19", type: "SQL Query", text: "Write a query to create a dataset for a 'churn risk' dashboard that shows customers at risk and their account characteristics.", placeholder: "SELECT customer_id, tenure, support_tickets, usage_rate FROM..." },
+                    { id: "D5_20", type: "Visual Design", text: "Propose a visualization to track the health and performance of a system (e.g., server uptime, response time).", placeholder: "Gauges, bullet graphs, and time-series line charts..." },
+                    { id: "D5_21", type: "Dashboard Design", text: "Design an executive summary dashboard that shows only the most critical KPIs with simple arrows indicating 'up' or 'down' movement.", placeholder: "Use large numbers, icons, and minimal charts..." },
+                    { id: "D5_22", type: "Visual Design", text: "Explain the concept of 'pre-attentive attributes' (like color, shape, and size) and how they can be used to guide the viewer's attention.", placeholder: "Use color to highlight outliers or important data points..." },
+                    { id: "D5_23", type: "Dashboard Design", text: "Design a dashboard performance optimization strategy for a dataset with hundreds of millions of rows.", placeholder: "Use data extracts, aggregations, and caching..." },
+                    { id: "D5_24", type: "Visual Design", text: "Choose the best chart to display a Gantt-style schedule of project tasks.", placeholder: "Horizontal bar chart with dates on the x-axis..." },
+                    { id: "D5_25", type: "SQL Query", text: "Write a query to generate the data for a 'waterfall chart' that breaks down the contributions to a net change in a metric.", placeholder: "Calculate starting value, contributions, and ending value..." },
+                    { id: "D5_26", type: "Dashboard Design", text: "Design a data storytelling approach by arranging dashboard charts in a logical narrative flow to lead the user to a conclusion.", placeholder: "Start with problem, show analysis, present findings..." },
+                    { id: "D5_27", type: "Visual Design", text: "Recommend a chart type to display the distribution of survey responses (1-5 scale) for a product feedback question.", placeholder: "Stacked bar chart or diverging stacked bar chart..." },
+                    { id: "D5_28", type: "Dashboard Design", text: "Plan a 'what-if' analysis tool within a dashboard that allows users to change a variable (like discount rate) and see the impact on total revenue.", placeholder: "Use dashboard parameters and calculated fields..." },
+                    { id: "D5_29", type: "Visual Design", text: "Discuss the pros and cons of using a 3D chart in a dashboard.", placeholder: "Cons: Distorts perception. Pros: Can be visually engaging." },
+                    { id: "D5_30", type: "Dashboard Design", text: "Design a set of filters for a dashboard to allow users to slice data by date, region, product, and customer segment.", placeholder: "Use multi-select drop-downs, date pickers, and sliders..." }
+                ]
             },
-            {
-                task: "Define the layout for a dashboard summary page.",
-                expectedType: "Dashboard Design",
-                sample: "The summary should have Key Performance Indicator (KPI) cards at the top, followed by trend charts."
-            }
-        ],
-        drills: [
-            { id: "D5_01", type: "Visual Design", text: "Propose a chart type to compare the total sales for four different product categories for the current year.", placeholder: "Bar chart or Treemap..." },
-            { id: "D5_02", type: "Dashboard Design", text: "Design a dashboard layout for a call center manager that combines live queue statistics, agent performance, and customer sentiment data.", placeholder: "Sketch a grid with filters at the top and core metrics..." },
-            { id: "D5_03", type: "SQL Query", text: "Write a query to prepare a dataset for a Pareto analysis, identifying the top 20% of products that contribute to 80% of total revenue.", placeholder: "Use window functions to calculate cumulative revenue percentage..." },
-            { id: "D5_04", type: "Visual Design", text: "Suggest the best visualization to show the distribution of call durations in a call center.", placeholder: "Histogram or Box plot..." },
-            { id: "D5_05", type: "Dashboard Design", text: "Design a 'drill-down' interaction where clicking on a region in a map reveals a bar chart of cities in that region.", placeholder: "Describe the dashboard hierarchy of interactions..." },
-            { id: "D5_06", type: "SQL Query", text: "Create a data model to feed a real-time visualization that needs to aggregate data every 5 minutes.", placeholder: "Use a materialized view, streaming data, or time-series database..." },
-            { id: "D5_07", type: "Visual Design", text: "Explain why a pie chart is often not the best choice and what alternative you would use to show parts of a whole.", placeholder: "A stacked bar chart or treemap is often a better alternative..." },
-            { id: "D5_08", type: "Dashboard Design", text: "Design a dashboard to monitor data pipeline health, showing row counts, latency, and error rates for each step.", placeholder: "Use green/red status indicators and sparklines for trends..." },
-            { id: "D5_09", type: "Visual Design", text: "Determine the best chart to show the correlation between Average Handle Time and Customer Satisfaction Score.", placeholder: "Scatter plot..." },
-            { id: "D5_10", type: "Dashboard Design", text: "Plan the implementation of a global filter on a dashboard that allows users to select a date range and see all charts update simultaneously.", placeholder: "Use a dashboard parameter/filter that is passed to all data sources..." },
-            { id: "D5_11", type: "SQL Query", text: "Write a query to create a dataset for a daily 'flash report' that contains high-level KPIs like total sales, new customers, and top-selling product.", placeholder: "SELECT CURRENT_DATE, SUM(sales), COUNT(DISTINCT customer_id)..." },
-            { id: "D5_12", type: "Visual Design", text: "Describe a scenario where a dual-axis chart is useful and the risks of using one incorrectly.", placeholder: "Can be useful when combining volume and percentage, but risks misleading scales..." },
-            { id: "D5_13", type: "Dashboard Design", text: "Design a user-friendly dashboard UI for a mobile device, considering size constraints and touch interaction.", placeholder: "Use large fonts, clear icons, and simple scrollable layouts..." },
-            { id: "D5_14", type: "Visual Design", text: "Select a chart type to visualize a country's performance on two metrics, such as sales and profit, to identify areas of opportunity.", placeholder: "A bubble chart where size is sales and profit is color..." },
-            { id: "D5_15", type: "SQL Query", text: "Write a query to prepare data for an interactive map, providing a geometry field (e.g., WKT or GEOGRAPHY) and associated metrics.", placeholder: "SELECT region, ST_AsText(geometry), sales FROM..." },
-            { id: "D5_16", type: "Dashboard Design", text: "Design an automated email alert system that sends a snapshot of a dashboard to a manager if a KPI falls below a defined threshold.", placeholder: "Use scheduler to run dashboard and send notification..." },
-            { id: "D5_17", type: "Visual Design", text: "Explain the importance of using a consistent color palette and what best practices exist for accessible visualization colors.", placeholder: "Follow WCAG guidelines for contrast ratios..." },
-            { id: "D5_18", type: "Dashboard Design", text: "Design a 'work in progress' dashboard page for a new project, including a data glossary to help users understand the metrics.", placeholder: "Include clear labels and a link to documentation..." },
-            { id: "D5_19", type: "SQL Query", text: "Write a query to create a dataset for a 'churn risk' dashboard that shows customers at risk and their account characteristics.", placeholder: "SELECT customer_id, tenure, support_tickets, usage_rate FROM..." },
-            { id: "D5_20", type: "Visual Design", text: "Propose a visualization to track the health and performance of a system (e.g., server uptime, response time).", placeholder: "Gauges, bullet graphs, and time-series line charts..." },
-            { id: "D5_21", type: "Dashboard Design", text: "Design an executive summary dashboard that shows only the most critical KPIs with simple arrows indicating 'up' or 'down' movement.", placeholder: "Use large numbers, icons, and minimal charts..." },
-            { id: "D5_22", type: "Visual Design", text: "Explain the concept of 'pre-attentive attributes' (like color, shape, and size) and how they can be used to guide the viewer's attention.", placeholder: "Use color to highlight outliers or important data points..." },
-            { id: "D5_23", type: "Dashboard Design", text: "Design a dashboard performance optimization strategy for a dataset with hundreds of millions of rows.", placeholder: "Use data extracts, aggregations, and caching..." },
-            { id: "D5_24", type: "Visual Design", text: "Choose the best chart to display a Gantt-style schedule of project tasks.", placeholder: "Horizontal bar chart with dates on the x-axis..." },
-            { id: "D5_25", type: "SQL Query", text: "Write a query to generate the data for a 'waterfall chart' that breaks down the contributions to a net change in a metric.", placeholder: "Calculate starting value, contributions, and ending value..." },
-            { id: "D5_26", type: "Dashboard Design", text: "Design a data storytelling approach by arranging dashboard charts in a logical narrative flow to lead the user to a conclusion.", placeholder: "Start with problem, show analysis, present findings..." },
-            { id: "D5_27", type: "Visual Design", text: "Recommend a chart type to display the distribution of survey responses (1-5 scale) for a product feedback question.", placeholder: "Stacked bar chart or diverging stacked bar chart..." },
-            { id: "D5_28", type: "Dashboard Design", text: "Plan a 'what-if' analysis tool within a dashboard that allows users to change a variable (like discount rate) and see the impact on total revenue.", placeholder: "Use dashboard parameters and calculated fields..." },
-            { id: "D5_29", type: "Visual Design", text: "Discuss the pros and cons of using a 3D chart in a dashboard.", placeholder: "Cons: Distorts perception. Pros: Can be visually engaging." },
-            { id: "D5_30", type: "Dashboard Design", text: "Design a set of filters for a dashboard to allow users to slice data by date, region, product, and customer segment.", placeholder: "Use multi-select drop-downs, date pickers, and sliders..." }
-        ]
-    },
-    6: {
-        title: "Day 6: Predictive Modeling & Forecasting",
-        desc: "Introduces fundamental concepts in predictive analytics and forecasting. Covers time-series analysis, regression techniques, and evaluating model performance for business applications.",
-        instructions: "You will work with time-series data to forecast future trends and build basic regression models. Tasks involve preparing data, training simple models, and interpreting the results to support business decisions.",
-        problem: "The business needs to forecast daily call volume to optimize staffing and predict seasonal peaks and troughs.",
-        challenge: "The call volume data is noisy and affected by many exogenous factors (e.g., marketing campaigns, system outages), making forecasting difficult.",
-        scenario: "A business analyst is tasked with predicting next week's support ticket volume to ensure the right number of agents are scheduled. They have three years of historical ticket data and notice a strong weekly seasonality.",
-        examples: [
-            {
-                task: "Write a time-series query to extract data ready for modeling.",
-                expectedType: "SQL Structure",
-                sample: "SELECT date, COUNT(*) as daily_volume FROM tickets GROUP BY date ORDER BY date;"
+            6: {
+                title: "Day 6: Predictive Modeling & Forecasting",
+                desc: "Introduces fundamental concepts in predictive analytics and forecasting. Covers time-series analysis, regression techniques, and evaluating model performance for business applications.",
+                instructions: "You will work with time-series data to forecast future trends and build basic regression models. Tasks involve preparing data, training simple models, and interpreting the results to support business decisions.",
+                problem: "The business needs to forecast daily call volume to optimize staffing and predict seasonal peaks and troughs.",
+                challenge: "The call volume data is noisy and affected by many exogenous factors (e.g., marketing campaigns, system outages), making forecasting difficult.",
+                scenario: "A business analyst is tasked with predicting next week's support ticket volume to ensure the right number of agents are scheduled. They have three years of historical ticket data and notice a strong weekly seasonality.",
+                examples: [
+                    {
+                        task: "Write a time-series query to extract data ready for modeling.",
+                        expectedType: "SQL Structure",
+                        sample: "SELECT date, COUNT(*) as daily_volume FROM tickets GROUP BY date ORDER BY date;"
+                    },
+                    {
+                        task: "Explain how to evaluate a forecasting model.",
+                        expectedType: "Analytical Logic",
+                        sample: "Using metrics like Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and Mean Absolute Percentage Error (MAPE)."
+                    }
+                ],
+                drills: [
+                    { id: "D6_01", type: "SQL Query", text: "Write a query to aggregate daily sales data, ensuring there are no missing dates, and format it for a time-series model.", placeholder: "Generate a date spine and LEFT JOIN the sales data..." },
+                    { id: "D6_02", type: "Time-Series Analysis", text: "Calculate the 7-day moving average for daily support ticket volume to smooth out weekly seasonality.", placeholder: "AVG(volume) OVER(ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)..." },
+                    { id: "D6_03", type: "Model Evaluation", text: "Explain the difference between in-sample and out-of-sample forecast accuracy and why it's important.", placeholder: "In-sample = training data accuracy, out-of-sample = unseen data accuracy..." },
+                    { id: "D6_04", type: "Feature Engineering", text: "Create SQL features for a predictive model from a date column, such as day_of_week, is_weekend, month, and quarter.", placeholder: "EXTRACT(DOW FROM date) as day_of_week, CASE WHEN..." },
+                    { id: "D6_05", type: "Time-Series Analysis", text: "Write code to decompose a time series into trend, seasonal, and residual components conceptually.", placeholder: "Describe the steps for a classical decomposition..." },
+                    { id: "D6_06", type: "SQL Query", text: "Write a query to create a 'lagged' dataset for a regression model that predicts future sales based on past sales and other features.", placeholder: "LAG(sales, 1) OVER(ORDER BY date) as sales_lag1..." },
+                    { id: "D6_07", type: "Model Evaluation", text: "If a forecasting model has a high RMSE but a low MAE, what does that indicate about the model's errors?", placeholder: "It indicates the presence of a few large errors (outliers)..." },
+                    { id: "D6_08", type: "Time-Series Analysis", text: "Discuss the concept of stationarity and why it is often required for time-series models like ARIMA.", placeholder: "Stationarity means the statistical properties don't change over time..." },
+                    { id: "D6_09", type: "Feature Engineering", text: "Design SQL logic to create a 'holiday_flag' feature that indicates if a date is a national or company holiday.", placeholder: "Join to a holiday_dimension table..." },
+                    { id: "D6_10", type: "SQL Query", text: "Write a query to split a time-series dataset into a training period and a test period (e.g., train on 2022-2024, test on 2025).", placeholder: "WHERE date BETWEEN '2022-01-01' AND '2024-12-31'..." },
+                    { id: "D6_11", type: "Model Evaluation", text: "Explain how cross-validation works for a time-series model, and why simple k-fold cross-validation is not appropriate.", placeholder: "Use expanding window or rolling window cross-validation..." },
+                    { id: "D6_12", type: "Time-Series Analysis", text: "Describe a simple exponential smoothing model and its use case.", placeholder: "Averages past observations with exponentially decreasing weights..." },
+                    { id: "D6_13", type: "Feature Engineering", text: "Create a feature that captures the 'day of the year' sine and cosine components to model annual seasonality cyclically.", placeholder: "sin(2π * day_of_year / 365.25), cos(...)" },
+                    { id: "D6_14", type: "SQL Query", text: "Write a query to calculate the week-over-week percentage change for a key metric.", placeholder: "LAG(value, 7) OVER(ORDER BY date)..." },
+                    { id: "D6_15", type: "Model Evaluation", text: "Describe a situation where a simpler moving average model might be preferred over a more complex ARIMA model.", placeholder: "When data is very noisy, or when interpretability is a priority..." },
+                    { id: "D6_16", type: "Time-Series Analysis", text: "Discuss how to handle missing values in a time-series dataset.", placeholder: "Interpolation, forward-filling, or using model-based imputation..." },
+                    { id: "D6_17", type: "Feature Engineering", text: "Write SQL to create a feature that counts the number of support tickets a customer has opened in the last 30 days.", placeholder: "COUNT(CASE WHEN ticket_date >= CURRENT_DATE - INTERVAL 30 DAYS THEN 1 END)..." },
+                    { id: "D6_18", type: "SQL Query", text: "Write a query to generate a forecast of daily sales for the next 30 days using a simple mean or median baseline.", placeholder: "SELECT date, (SELECT AVG(sales) FROM historical) as forecast..." },
+                    { id: "D6_19", type: "Model Evaluation", text: "Explain the business impact of using a biased forecast, and how to choose a metric that penalizes under-forecasting more than over-forecasting.", placeholder: "Use a metric like Mean Absolute Percentage Error (MAPE)..." },
+                    { id: "D6_20", type: "Time-Series Analysis", text: "Write code to perform a trend test (e.g., Mann-Kendall or simple linear regression) on a time series to determine if there is a significant upward or downward trend.", placeholder: "Analyze slope coefficient for significance..." },
+                    { id: "D6_21", type: "SQL Query", text: "Prepare a dataset for a churn prediction model by aggregating customer behavior over a period (e.g., sum of spend, count of support calls).", placeholder: "SELECT customer_id, SUM(spend), COUNT(call_id) FROM..." },
+                    { id: "D6_22", type: "Feature Engineering", text: "Design a 'recency' feature for a churn model that measures days since the customer's last purchase.", placeholder: "DATEDIFF(CURRENT_DATE, MAX(order_date))..." },
+                    { id: "D6_23", type: "Model Evaluation", text: "Explain the concepts of precision and recall in a classification model (like churn) and when one is more important than the other.", placeholder: "Precision = True Positives / (True Positives + False Positives)..." },
+                    { id: "D6_24", type: "Time-Series Analysis", text: "Write SQL to calculate the year-over-year growth rate for a metric like revenue.", placeholder: "((value_this_year - value_last_year) / value_last_year) * 100..." },
+                    { id: "D6_25", type: "SQL Query", text: "Write a query to create a baseline forecast table for comparison against the predictions from a more sophisticated model.", placeholder: "Implement a simple 'naive' forecast (forecast is equal to the last actual value)..." },
+                    { id: "D6_26", type: "Feature Engineering", text: "Create a feature that captures the seasonality of a business (e.g., Q4 holiday effect) using a categorical variable for 'Quarter'.", placeholder: "CASE WHEN EXTRACT(QUARTER FROM date) = 4 THEN 1 ELSE 0 END..." },
+                    { id: "D6_27", type: "Model Evaluation", text: "Describe how you would explain a predictive model's results to a non-technical business stakeholder.", placeholder: "Focus on the key drivers and business impact, not the technical details..." },
+                    { id: "D6_28", type: "Time-Series Analysis", text: "Write a query to detect an outlier in a time series by checking if a value is more than 2 standard deviations from the rolling average.", placeholder: "WHERE value > AVG(value) OVER(...) + 2 * STDDEV(value) OVER(...)" },
+                    { id: "D6_29", type: "SQL Query", text: "Write a query to join the results of a prediction model (with predicted values) back to a fact table for easy reporting.", placeholder: "SELECT f.*, p.forecast_value FROM fact_table f JOIN predictions p ON f.date = p.date" },
+                    { id: "D6_30", type: "Model Evaluation", text: "Why is it important to track a model's performance over time after it has been deployed, and what is 'model drift'?", placeholder: "To detect when the model becomes stale due to changes in the environment..." }
+                ]
             },
-            {
-                task: "Explain how to evaluate a forecasting model.",
-                expectedType: "Analytical Logic",
-                sample: "Using metrics like Mean Absolute Error (MAE), Root Mean Squared Error (RMSE), and Mean Absolute Percentage Error (MAPE)."
-            }
-        ],
-        drills: [
-            { id: "D6_01", type: "SQL Query", text: "Write a query to aggregate daily sales data, ensuring there are no missing dates, and format it for a time-series model.", placeholder: "Generate a date spine and LEFT JOIN the sales data..." },
-            { id: "D6_02", type: "Time-Series Analysis", text: "Calculate the 7-day moving average for daily support ticket volume to smooth out weekly seasonality.", placeholder: "AVG(volume) OVER(ORDER BY date ROWS BETWEEN 6 PRECEDING AND CURRENT ROW)..." },
-            { id: "D6_03", type: "Model Evaluation", text: "Explain the difference between in-sample and out-of-sample forecast accuracy and why it's important.", placeholder: "In-sample = training data accuracy, out-of-sample = unseen data accuracy..." },
-            { id: "D6_04", type: "Feature Engineering", text: "Create SQL features for a predictive model from a date column, such as day_of_week, is_weekend, month, and quarter.", placeholder: "EXTRACT(DOW FROM date) as day_of_week, CASE WHEN..." },
-            { id: "D6_05", type: "Time-Series Analysis", text: "Write code to decompose a time series into trend, seasonal, and residual components conceptually.", placeholder: "Describe the steps for a classical decomposition..." },
-            { id: "D6_06", type: "SQL Query", text: "Write a query to create a 'lagged' dataset for a regression model that predicts future sales based on past sales and other features.", placeholder: "LAG(sales, 1) OVER(ORDER BY date) as sales_lag1..." },
-            { id: "D6_07", type: "Model Evaluation", text: "If a forecasting model has a high RMSE but a low MAE, what does that indicate about the model's errors?", placeholder: "It indicates the presence of a few large errors (outliers)..." },
-            { id: "D6_08", type: "Time-Series Analysis", text: "Discuss the concept of stationarity and why it is often required for time-series models like ARIMA.", placeholder: "Stationarity means the statistical properties don't change over time..." },
-            { id: "D6_09", type: "Feature Engineering", text: "Design SQL logic to create a 'holiday_flag' feature that indicates if a date is a national or company holiday.", placeholder: "Join to a holiday_dimension table..." },
-            { id: "D6_10", type: "SQL Query", text: "Write a query to split a time-series dataset into a training period and a test period (e.g., train on 2022-2024, test on 2025).", placeholder: "WHERE date BETWEEN '2022-01-01' AND '2024-12-31'..." },
-            { id: "D6_11", type: "Model Evaluation", text: "Explain how cross-validation works for a time-series model, and why simple k-fold cross-validation is not appropriate.", placeholder: "Use expanding window or rolling window cross-validation..." },
-            { id: "D6_12", type: "Time-Series Analysis", text: "Describe a simple exponential smoothing model and its use case.", placeholder: "Averages past observations with exponentially decreasing weights..." },
-            { id: "D6_13", type: "Feature Engineering", text: "Create a feature that captures the 'day of the year' sine and cosine components to model annual seasonality cyclically.", placeholder: "sin(2π * day_of_year / 365.25), cos(...)" },
-            { id: "D6_14", type: "SQL Query", text: "Write a query to calculate the week-over-week percentage change for a key metric.", placeholder: "LAG(value, 7) OVER(ORDER BY date)..." },
-            { id: "D6_15", type: "Model Evaluation", text: "Describe a situation where a simpler moving average model might be preferred over a more complex ARIMA model.", placeholder: "When data is very noisy, or when interpretability is a priority..." },
-            { id: "D6_16", type: "Time-Series Analysis", text: "Discuss how to handle missing values in a time-series dataset.", placeholder: "Interpolation, forward-filling, or using model-based imputation..." },
-            { id: "D6_17", type: "Feature Engineering", text: "Write SQL to create a feature that counts the number of support tickets a customer has opened in the last 30 days.", placeholder: "COUNT(CASE WHEN ticket_date >= CURRENT_DATE - INTERVAL 30 DAYS THEN 1 END)..." },
-            { id: "D6_18", type: "SQL Query", text: "Write a query to generate a forecast of daily sales for the next 30 days using a simple mean or median baseline.", placeholder: "SELECT date, (SELECT AVG(sales) FROM historical) as forecast..." },
-            { id: "D6_19", type: "Model Evaluation", text: "Explain the business impact of using a biased forecast, and how to choose a metric that penalizes under-forecasting more than over-forecasting.", placeholder: "Use a metric like Mean Absolute Percentage Error (MAPE)..." },
-            { id: "D6_20", type: "Time-Series Analysis", text: "Write code to perform a trend test (e.g., Mann-Kendall or simple linear regression) on a time series to determine if there is a significant upward or downward trend.", placeholder: "Analyze slope coefficient for significance..." },
-            { id: "D6_21", type: "SQL Query", text: "Prepare a dataset for a churn prediction model by aggregating customer behavior over a period (e.g., sum of spend, count of support calls).", placeholder: "SELECT customer_id, SUM(spend), COUNT(call_id) FROM..." },
-            { id: "D6_22", type: "Feature Engineering", text: "Design a 'recency' feature for a churn model that measures days since the customer's last purchase.", placeholder: "DATEDIFF(CURRENT_DATE, MAX(order_date))..." },
-            { id: "D6_23", type: "Model Evaluation", text: "Explain the concepts of precision and recall in a classification model (like churn) and when one is more important than the other.", placeholder: "Precision = True Positives / (True Positives + False Positives)..." },
-            { id: "D6_24", type: "Time-Series Analysis", text: "Write SQL to calculate the year-over-year growth rate for a metric like revenue.", placeholder: "((value_this_year - value_last_year) / value_last_year) * 100..." },
-            { id: "D6_25", type: "SQL Query", text: "Write a query to create a baseline forecast table for comparison against the predictions from a more sophisticated model.", placeholder: "Implement a simple 'naive' forecast (forecast is equal to the last actual value)..." },
-            { id: "D6_26", type: "Feature Engineering", text: "Create a feature that captures the seasonality of a business (e.g., Q4 holiday effect) using a categorical variable for 'Quarter'.", placeholder: "CASE WHEN EXTRACT(QUARTER FROM date) = 4 THEN 1 ELSE 0 END..." },
-            { id: "D6_27", type: "Model Evaluation", text: "Describe how you would explain a predictive model's results to a non-technical business stakeholder.", placeholder: "Focus on the key drivers and business impact, not the technical details..." },
-            { id: "D6_28", type: "Time-Series Analysis", text: "Write a query to detect an outlier in a time series by checking if a value is more than 2 standard deviations from the rolling average.", placeholder: "WHERE value > AVG(value) OVER(...) + 2 * STDDEV(value) OVER(...)" },
-            { id: "D6_29", type: "SQL Query", text: "Write a query to join the results of a prediction model (with predicted values) back to a fact table for easy reporting.", placeholder: "SELECT f.*, p.forecast_value FROM fact_table f JOIN predictions p ON f.date = p.date" },
-            { id: "D6_30", type: "Model Evaluation", text: "Why is it important to track a model's performance over time after it has been deployed, and what is 'model drift'?", placeholder: "To detect when the model becomes stale due to changes in the environment..." }
-        ]
-    },
-    7: {
-        title: "Day 7: Stakeholder Translation & Presentations",
-        desc: "Focuses on the soft skills of data analysis: translating complex technical findings into clear business narratives, building compelling presentations, and communicating with different audiences.",
-        instructions: "You will be presented with analysis results and asked to craft a concise story for a specific audience. The goal is to practice communicating data insights effectively and driving business action.",
-        problem: "The data team has built a complex, sophisticated model, but the business leaders don't understand or trust its predictions.",
-        challenge: "Analysts often struggle to explain their work without using technical jargon, leading to a gap in understanding between data and business teams.",
-        scenario: "A senior analyst has just finished an analysis showing that high wait times are the primary driver of low CSAT scores. They need to present these findings to the Vice President of Customer Experience.",
-        examples: [
-            {
-                task: "Write an executive summary of an analysis.",
-                expectedType: "Business Communication",
-                sample: "Summary: A 10-second increase in wait time leads to a 1-point drop in CSAT."
+            7: {
+                title: "Day 7: Stakeholder Translation & Presentations",
+                desc: "Focuses on the soft skills of data analysis: translating complex technical findings into clear business narratives, building compelling presentations, and communicating with different audiences.",
+                instructions: "You will be presented with analysis results and asked to craft a concise story for a specific audience. The goal is to practice communicating data insights effectively and driving business action.",
+                problem: "The data team has built a complex, sophisticated model, but the business leaders don't understand or trust its predictions.",
+                challenge: "Analysts often struggle to explain their work without using technical jargon, leading to a gap in understanding between data and business teams.",
+                scenario: "A senior analyst has just finished an analysis showing that high wait times are the primary driver of low CSAT scores. They need to present these findings to the Vice President of Customer Experience.",
+                examples: [
+                    {
+                        task: "Write an executive summary of an analysis.",
+                        expectedType: "Business Communication",
+                        sample: "Summary: A 10-second increase in wait time leads to a 1-point drop in CSAT."
+                    },
+                    {
+                        task: "Translate a complex query result into a business insight.",
+                        expectedType: "Analytical Logic",
+                        sample: "The data shows that customers in the West region are 20% more likely to churn."
+                    }
+                ],
+                drills: [
+                    { id: "D7_01", type: "Business Communication", text: "Summarize a report showing a decline in sales for a product line, attributing it to supply chain disruptions, in a single paragraph for the CEO.", placeholder: "Begin with a clear headline and a supporting narrative..." },
+                    { id: "D7_02", type: "Data Storytelling", text: "Draft a 5-slide presentation structure to present a quarterly business review, covering performance against KPIs, key drivers, and future recommendations.", placeholder: "Slide 1: Title/Executive Summary, Slide 2: KPI Performance..." },
+                    { id: "D7_03", type: "Business Communication", text: "Write an email to a stakeholder explaining a data quality issue that is causing discrepancies in their reports and the timeline for a fix.", placeholder: "Acknowledge the problem, explain the cause, state the fix timeline..." },
+                    { id: "D7_04", type: "Data Storytelling", text: "Create a narrative to present a new predictive model to the sales team, focusing on how it will help them prioritize leads and increase conversion.", placeholder: "Use 'Problem', 'Solution', 'Benefit' structure..." },
+                    { id: "D7_05", type: "Business Communication", text: "Translate a technical SQL query's output showing correlation between AHT and CSAT into a non-technical insight.", placeholder: "Avoid jargon. State: 'Faster calls lead to happier customers, but only up to a point.'" },
+                    { id: "D7_06", type: "Data Storytelling", text: "Design a dashboard annotation to help a user understand a sudden spike in a metric, pointing to a specific event like a marketing campaign launch.", placeholder: "Add a text box that says 'Campaign X launched on this date, causing the spike.'" },
+                    { id: "D7_07", type: "Business Communication", text: "Write a 2-paragraph executive summary for a detailed analysis on the effectiveness of a recent loyalty program.", placeholder: "Highlights: 1. Success metrics; 2. Key recommendations." },
+                    { id: "D7_08", type: "Data Storytelling", text: "Structure a data-driven argument using the 'Pyramid Principle' (start with the conclusion, then supporting arguments, then data).", placeholder: "1. Conclusion: We should expand into the European market. 2. Reason: High demand and low competition. 3. Data: Demand figures and competitor market share." },
+                    { id: "D7_09", type: "Business Communication", text: "Explain the concept of 'statistical significance' to a stakeholder who has no background in statistics.", placeholder: "Use an analogy, like: 'It means we're confident this result isn't just random chance.'" },
+                    { id: "D7_10", type: "Data Storytelling", text: "Prepare a short pitch for a data literacy training program, explaining the ROI of having a more data-savvy workforce.", placeholder: "Focus on faster decisions, fewer errors, and greater self-sufficiency." },
+                    { id: "D7_11", type: "Business Communication", text: "Draft the talking points for a 15-minute presentation on a newly built data warehouse to an audience of data analysts and engineers.", placeholder: "Focus on technical details: architecture, modeling, and query optimization." },
+                    { id: "D7_12", type: "Data Storytelling", text: "Create an FAQ document to accompany a new dashboard, anticipating common user questions about definitions, data sources, and refresh times.", placeholder: "Q: 'Why doesn't the dashboard match the legacy report?' A: 'Because...'" },
+                    { id: "D7_13", type: "Business Communication", text: "Write a feedback email to a stakeholder who requested a custom report, clarifying the requirements and suggesting a more efficient alternative.", placeholder: "Politely propose a change and explain the benefits (e.g., faster delivery)." },
+                    { id: "D7_14", type: "Data Storytelling", text: "Describe a visualization as a 'data story' to explain the key takeaway to someone who cannot see the chart.", placeholder: "Describe the axes, the trend, and the most important data point." },
+                    { id: "D7_15", type: "Business Communication", text: "Write a memo to your team about a successful project completion, highlighting each member's contribution and the business impact.", placeholder: "Be specific and use a positive and appreciative tone." },
+                    { id: "D7_16", type: "Data Storytelling", text: "Plan a meeting agenda to review a data quality report with the heads of Sales and Marketing, focusing on action items and responsibilities.", placeholder: "1. Review Findings; 2. Impact Discussion; 3. Action Plan Assignment." },
+                    { id: "D7_17", type: "Business Communication", text: "Draft a one-pager summarizing the key findings and recommendations from a complex analysis of customer lifetime value (CLTV).", placeholder: "Use bullet points, simple numbers, and a clear call to action." },
+                    { id: "D7_18", type: "Data Storytelling", text: "Tell a 'before and after' story of how your analytics solution improved a business process, with concrete numbers.", placeholder: "Before: Manual reporting took 5 days. After: Dashboard provides real-time insights." },
+                    { id: "D7_19", type: "Business Communication", text: "Write a script for a 3-minute video tutorial explaining how to use a new dashboard feature.", placeholder: "Use clear, step-by-step instructions with a friendly tone." },
+                    { id: "D7_20", type: "Data Storytelling", text: "Create a 'hypothesis and result' narrative to present the findings of an A/B test on a website checkout flow.", placeholder: "Hypothesis: A simpler checkout increases conversion. Result: Conversion increased by 5%." },
+                    { id: "D7_21", type: "Business Communication", text: "Write a diplomatic response to a stakeholder who is questioning the accuracy of a widely-used dashboard metric.", placeholder: "Acknowledge the concern, explain the definition, and offer a meeting to align on a resolution." },
+                    { id: "D7_22", type: "Data Storytelling", text: "Outline a data story that uses a customer journey map to show pain points, with data at each stage.", placeholder: "Start with acquisition, show drop-off at onboarding, and end with churn." },
+                    { id: "D7_23", type: "Business Communication", text: "Compose a slide title and subtitle that effectively communicates a complex insight for a high-level presentation.", placeholder: "Title: 'Customer Experience is Driving Growth.' Subtitle: 'High CSAT scores in Q4 correlate to a 15% increase in revenue.'" },
+                    { id: "D7_24", type: "Data Storytelling", text: "Create a compelling 'call to action' at the end of a presentation to a product team based on user analytics.", placeholder: "Next Steps: 'We recommend we A/B test a new feature in Q2 based on this feedback.'" },
+                    { id: "D7_25", type: "Business Communication", text: "Write a message to your team explaining a change in project priorities due to a shift in business strategy.", placeholder: "Be transparent, explain the rationale, and refocus efforts." },
+                    { id: "D7_26", type: "Data Storytelling", text: "Design a 'data dictionary' that serves as a communication tool to align definitions of key metrics across the organization.", placeholder: "Metric Name: 'Active User'; Definition: 'User who logged in in the last 30 days'." },
+                    { id: "D7_27", type: "Business Communication", text: "Draft a proposal to set up a weekly data office hour to help colleagues with their data and analytics questions.", placeholder: "Explain the purpose, time, and format of the open session." },
+                    { id: "D7_28", type: "Data Storytelling", text: "Describe a data story that uses an 'iceberg' analogy to explain that visible metrics are just the tip of the iceberg of data analysis.", placeholder: "Visible surface: Sales figures. Hidden depth: Customer behavior, operational efficiency, etc." },
+                    { id: "D7_29", type: "Business Communication", text: "Write a post-project review summary, focusing on what went well, what didn't, and lessons learned for the analytics team.", placeholder: "Use a 'start, stop, continue' framework." },
+                    { id: "D7_30", type: "Data Storytelling", text: "Create a brief (5-minute) presentation script that tells the story of a customer from first contact to resolution, highlighting data opportunities at each step.", placeholder: "Use a persona and a concrete example to make it relatable." }
+                ]
             },
-            {
-                task: "Translate a complex query result into a business insight.",
-                expectedType: "Analytical Logic",
-                sample: "The data shows that customers in the West region are 20% more likely to churn."
-            }
-        ],
-        drills: [
-            { id: "D7_01", type: "Business Communication", text: "Summarize a report showing a decline in sales for a product line, attributing it to supply chain disruptions, in a single paragraph for the CEO.", placeholder: "Begin with a clear headline and a supporting narrative..." },
-            { id: "D7_02", type: "Data Storytelling", text: "Draft a 5-slide presentation structure to present a quarterly business review, covering performance against KPIs, key drivers, and future recommendations.", placeholder: "Slide 1: Title/Executive Summary, Slide 2: KPI Performance..." },
-            { id: "D7_03", type: "Business Communication", text: "Write an email to a stakeholder explaining a data quality issue that is causing discrepancies in their reports and the timeline for a fix.", placeholder: "Acknowledge the problem, explain the cause, state the fix timeline..." },
-            { id: "D7_04", type: "Data Storytelling", text: "Create a narrative to present a new predictive model to the sales team, focusing on how it will help them prioritize leads and increase conversion.", placeholder: "Use 'Problem', 'Solution', 'Benefit' structure..." },
-            { id: "D7_05", type: "Business Communication", text: "Translate a technical SQL query's output showing correlation between AHT and CSAT into a non-technical insight.", placeholder: "Avoid jargon. State: 'Faster calls lead to happier customers, but only up to a point.'" },
-            { id: "D7_06", type: "Data Storytelling", text: "Design a dashboard annotation to help a user understand a sudden spike in a metric, pointing to a specific event like a marketing campaign launch.", placeholder: "Add a text box that says 'Campaign X launched on this date, causing the spike.'" },
-            { id: "D7_07", type: "Business Communication", text: "Write a 2-paragraph executive summary for a detailed analysis on the effectiveness of a recent loyalty program.", placeholder: "Highlights: 1. Success metrics; 2. Key recommendations." },
-            { id: "D7_08", type: "Data Storytelling", text: "Structure a data-driven argument using the 'Pyramid Principle' (start with the conclusion, then supporting arguments, then data).", placeholder: "1. Conclusion: We should expand into the European market. 2. Reason: High demand and low competition. 3. Data: Demand figures and competitor market share." },
-            { id: "D7_09", type: "Business Communication", text: "Explain the concept of 'statistical significance' to a stakeholder who has no background in statistics.", placeholder: "Use an analogy, like: 'It means we're confident this result isn't just random chance.'" },
-            { id: "D7_10", type: "Data Storytelling", text: "Prepare a short pitch for a data literacy training program, explaining the ROI of having a more data-savvy workforce.", placeholder: "Focus on faster decisions, fewer errors, and greater self-sufficiency." },
-            { id: "D7_11", type: "Business Communication", text: "Draft the talking points for a 15-minute presentation on a newly built data warehouse to an audience of data analysts and engineers.", placeholder: "Focus on technical details: architecture, modeling, and query optimization." },
-            { id: "D7_12", type: "Data Storytelling", text: "Create an FAQ document to accompany a new dashboard, anticipating common user questions about definitions, data sources, and refresh times.", placeholder: "Q: 'Why doesn't the dashboard match the legacy report?' A: 'Because...'" },
-            { id: "D7_13", type: "Business Communication", text: "Write a feedback email to a stakeholder who requested a custom report, clarifying the requirements and suggesting a more efficient alternative.", placeholder: "Politely propose a change and explain the benefits (e.g., faster delivery)." },
-            { id: "D7_14", type: "Data Storytelling", text: "Describe a visualization as a 'data story' to explain the key takeaway to someone who cannot see the chart.", placeholder: "Describe the axes, the trend, and the most important data point." },
-            { id: "D7_15", type: "Business Communication", text: "Write a memo to your team about a successful project completion, highlighting each member's contribution and the business impact.", placeholder: "Be specific and use a positive and appreciative tone." },
-            { id: "D7_16", type: "Data Storytelling", text: "Plan a meeting agenda to review a data quality report with the heads of Sales and Marketing, focusing on action items and responsibilities.", placeholder: "1. Review Findings; 2. Impact Discussion; 3. Action Plan Assignment." },
-            { id: "D7_17", type: "Business Communication", text: "Draft a one-pager summarizing the key findings and recommendations from a complex analysis of customer lifetime value (CLTV).", placeholder: "Use bullet points, simple numbers, and a clear call to action." },
-            { id: "D7_18", type: "Data Storytelling", text: "Tell a 'before and after' story of how your analytics solution improved a business process, with concrete numbers.", placeholder: "Before: Manual reporting took 5 days. After: Dashboard provides real-time insights." },
-            { id: "D7_19", type: "Business Communication", text: "Write a script for a 3-minute video tutorial explaining how to use a new dashboard feature.", placeholder: "Use clear, step-by-step instructions with a friendly tone." },
-            { id: "D7_20", type: "Data Storytelling", text: "Create a 'hypothesis and result' narrative to present the findings of an A/B test on a website checkout flow.", placeholder: "Hypothesis: A simpler checkout increases conversion. Result: Conversion increased by 5%." },
-            { id: "D7_21", type: "Business Communication", text: "Write a diplomatic response to a stakeholder who is questioning the accuracy of a widely-used dashboard metric.", placeholder: "Acknowledge the concern, explain the definition, and offer a meeting to align on a resolution." },
-            { id: "D7_22", type: "Data Storytelling", text: "Outline a data story that uses a customer journey map to show pain points, with data at each stage.", placeholder: "Start with acquisition, show drop-off at onboarding, and end with churn." },
-            { id: "D7_23", type: "Business Communication", text: "Compose a slide title and subtitle that effectively communicates a complex insight for a high-level presentation.", placeholder: "Title: 'Customer Experience is Driving Growth.' Subtitle: 'High CSAT scores in Q4 correlate to a 15% increase in revenue.'" },
-            { id: "D7_24", type: "Data Storytelling", text: "Create a compelling 'call to action' at the end of a presentation to a product team based on user analytics.", placeholder: "Next Steps: 'We recommend we A/B test a new feature in Q2 based on this feedback.'" },
-            { id: "D7_25", type: "Business Communication", text: "Write a message to your team explaining a change in project priorities due to a shift in business strategy.", placeholder: "Be transparent, explain the rationale, and refocus efforts." },
-            { id: "D7_26", type: "Data Storytelling", text: "Design a 'data dictionary' that serves as a communication tool to align definitions of key metrics across the organization.", placeholder: "Metric Name: 'Active User'; Definition: 'User who logged in in the last 30 days'." },
-            { id: "D7_27", type: "Business Communication", text: "Draft a proposal to set up a weekly data office hour to help colleagues with their data and analytics questions.", placeholder: "Explain the purpose, time, and format of the open session." },
-            { id: "D7_28", type: "Data Storytelling", text: "Describe a data story that uses an 'iceberg' analogy to explain that visible metrics are just the tip of the iceberg of data analysis.", placeholder: "Visible surface: Sales figures. Hidden depth: Customer behavior, operational efficiency, etc." },
-            { id: "D7_29", type: "Business Communication", text: "Write a post-project review summary, focusing on what went well, what didn't, and lessons learned for the analytics team.", placeholder: "Use a 'start, stop, continue' framework." },
-            { id: "D7_30", type: "Data Storytelling", text: "Create a brief (5-minute) presentation script that tells the story of a customer from first contact to resolution, highlighting data opportunities at each step.", placeholder: "Use a persona and a concrete example to make it relatable." }
-        ]
-    },
-    8: {
-        title: "Day 8: Advanced Analytics & Segmentation",
-        desc: "Focuses on customer segmentation and advanced analytical techniques like cohort analysis and behavioral clustering. The goal is to move beyond aggregate metrics and understand different customer groups.",
-        instructions: "You will design segmentation strategies, perform cohort analyses, and write queries to group customers based on behavior for targeted business strategies.",
-        problem: "Aggregate metrics show a stable CSAT score, but business leaders suspect that different customer segments have vastly different experiences.",
-        challenge: "The CRM data is not structured to easily segment customers, requiring heavy transformation and joining of multiple tables.",
-        scenario: "A marketing manager wants to identify a group of 'high-value, at-risk' customers to target with a retention campaign. These are defined as customers who have spent over $1000 in the last year but haven't made a purchase in the last 60 days.",
-        examples: [
-            {
-                task: "Write a query to segment customers by their total purchase value.",
-                expectedType: "SQL Structure",
-                sample: "SELECT customer_id, SUM(sales) as total_spend, CASE WHEN ... THEN 'High' ... END as segment FROM sales GROUP BY 1;"
+            8: {
+                title: "Day 8: Advanced Analytics & Segmentation",
+                desc: "Focuses on customer segmentation and advanced analytical techniques like cohort analysis and behavioral clustering. The goal is to move beyond aggregate metrics and understand different customer groups.",
+                instructions: "You will design segmentation strategies, perform cohort analyses, and write queries to group customers based on behavior for targeted business strategies.",
+                problem: "Aggregate metrics show a stable CSAT score, but business leaders suspect that different customer segments have vastly different experiences.",
+                challenge: "The CRM data is not structured to easily segment customers, requiring heavy transformation and joining of multiple tables.",
+                scenario: "A marketing manager wants to identify a group of 'high-value, at-risk' customers to target with a retention campaign. These are defined as customers who have spent over $1000 in the last year but haven't made a purchase in the last 60 days.",
+                examples: [
+                    {
+                        task: "Write a query to segment customers by their total purchase value.",
+                        expectedType: "SQL Structure",
+                        sample: "SELECT customer_id, SUM(sales) as total_spend, CASE WHEN ... THEN 'High' ... END as segment FROM sales GROUP BY 1;"
+                    },
+                    {
+                        task: "Define a cohort for analysis.",
+                        expectedType: "Analytical Logic",
+                        sample: "A cohort is a group of customers who share a common characteristic, like their sign-up month."
+                    }
+                ],
+                drills: [
+                    { id: "D8_01", type: "SQL Query", text: "Write a query to perform an RFM (Recency, Frequency, Monetary) analysis on a customer transaction dataset.", placeholder: "Calculate R, F, and M scores, then combine them for segmentation..." },
+                    { id: "D8_02", type: "Cohort Analysis", text: "Design a cohort retention table that shows the percentage of customers from a sign-up month who are active in subsequent months.", placeholder: "Define active as making a purchase in that month..." },
+                    { id: "D8_03", type: "SQL Query", text: "Write a query to identify the top 10% of customers based on lifetime value (LTV).", placeholder: "Use PERCENTILE_CONT or NTILE..." },
+                    { id: "D8_04", type: "Analytical Logic", text: "Explain the concept of 'behavioral segmentation' and provide two examples of behavioral segments in e-commerce.", placeholder: "Examples: 'Bargain Hunters' and 'Brand Loyalists'..." },
+                    { id: "D8_05", type: "SQL Query", text: "Create a customer segmentation table that categorizes customers into 'Active', 'At-Risk', and 'Churned' based on their last purchase date.", placeholder: "CASE WHEN last_purchase >= CURRENT_DATE - 30 THEN 'Active'..." },
+                    { id: "D8_06", type: "Cohort Analysis", text: "Write a query to calculate the cumulative revenue generated by each monthly sign-up cohort over a period of 12 months.", placeholder: "Partition by cohort_month, order by month and sum revenue..." },
+                    { id: "D8_07", type: "SQL Query", text: "Write a query to find the average order value (AOV) for each customer segment defined by total spend.", placeholder: "WITH segments AS (...) SELECT segment, AVG(order_amount) FROM orders JOIN segments..." },
+                    { id: "D8_08", type: "Analytical Logic", text: "Describe the difference between a 'cohort' and a 'segment'.", placeholder: "A cohort is a group defined by a shared event (e.g., sign-up month). A segment is a group defined by shared characteristics." },
+                    { id: "D8_09", type: "SQL Query", text: "Write a query to flag customers who have made a purchase in the first week after account creation, indicating a high initial engagement.", placeholder: "CASE WHEN EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id AND o.order_date <= c.creation_date + 7)..." },
+                    { id: "D8_10", type: "Cohort Analysis", text: "Design a cohort analysis to compare the CSAT scores of customers who signed up in different quarters.", placeholder: "Group by sign-up quarter, calculate average CSAT per month..." },
+                    { id: "D8_11", type: "SQL Query", text: "Write a query to assign customers to a 'sales channel' segment (e.g., Web, Mobile, In-Store) based on their primary purchase method.", placeholder: "SELECT customer_id, MODE() WITHIN GROUP (ORDER BY sales_channel) as primary_channel..." },
+                    { id: "D8_12", type: "Analytical Logic", text: "Define 'product affinity' and provide an example of how it could be used to segment customers for cross-selling.", placeholder: "Customers who bought a laptop are highly likely to buy a laptop bag." },
+                    { id: "D8_13", type: "SQL Query", text: "Write a query to calculate the average number of days between purchases for each customer to find their purchase frequency.", placeholder: "LAG(order_date) OVER(PARTITION BY customer_id ORDER BY order_date)..." },
+                    { id: "D8_14", type: "Cohort Analysis", text: "Create a cohort of customers acquired via a specific marketing campaign and track their 30-day and 90-day retention.", placeholder: "Filter customers by acquisition_campaign = 'Summer2024', then calculate retention..." },
+                    { id: "D8_15", type: "SQL Query", text: "Write a query to segment customers based on their total support ticket count (e.g., 'Low', 'Medium', 'High' maintenance).", placeholder: "CASE WHEN support_tickets >= 10 THEN 'High'..." },
+                    { id: "D8_16", type: "Analytical Logic", text: "Explain how a 'customer journey' analysis can lead to actionable segments.", placeholder: "Segments can be created based on the path (e.g., 'Explore and Abandon' versus 'Quick Buy')." },
+                    { id: "D8_17", type: "SQL Query", text: "Write a query to identify the products that are most frequently bought together in the same order (market basket analysis).", placeholder: "Perform a self-join on orders to find common combinations..." },
+                    { id: "D8_18", type: "Cohort Analysis", text: "Write a query to calculate the monthly average AHT for a cohort of new hires, comparing their performance over their first 3 months.", placeholder: "Group by hire_date cohort and months_of_tenure..." },
+                    { id: "D8_19", type: "SQL Query", text: "Write a query to assign customers to a 'geographic segment' based on their zip code, and aggregate sales by this segment.", placeholder: "JOIN customers with a geography_dimension table..." },
+                    { id: "D8_20", type: "Analytical Logic", text: "Describe the 'Pareto Principle' (80/20 rule) and how it applies to customer segmentation.", placeholder: "20% of customers often account for 80% of revenue." },
+                    { id: "D8_21", type: "SQL Query", text: "Write a query to create a 'churn probability' segment by scoring customers based on factors like reduced usage and negative sentiment comments.", placeholder: "Create a composite score using multiple criteria..." },
+                    { id: "D8_22", type: "Cohort Analysis", text: "Design a cohort analysis to measure the impact of a new app feature on user engagement by comparing cohorts exposed to the feature with those who were not.", placeholder: "Use a treatment and control cohort..." },
+                    { id: "D8_23", type: "SQL Query", text: "Write a query to find the most profitable customer segment by comparing average profit per customer across segments.", placeholder: "SELECT segment, AVG(profit) FROM orders JOIN customers..." },
+                    { id: "D8_24", type: "Analytical Logic", text: "Explain the concept of 'persona' in marketing and how it is distinct from a 'data segment'.", placeholder: "A persona is a fictional character built from data segments to humanize the customer." },
+                    { id: "D8_25", type: "SQL Query", text: "Write a query to identify customers who have been downgrading their subscription plan over time, indicating potential churn risk.", placeholder: "Compare the current plan and previous plan..." },
+                    { id: "D8_26", type: "Cohort Analysis", text: "Write a query to show the average CSAT score for each monthly sign-up cohort over their first 6 months as a customer.", placeholder: "Group by cohort_month, calculate rolling CSAT averages..." },
+                    { id: "D8_27", type: "SQL Query", text: "Write a query to segment customers based on the number of support interactions they have had (e.g., '0-1', '2-5', '>5').", placeholder: "CASE WHEN interaction_count BETWEEN 0 AND 1 THEN 'Low'..." },
+                    { id: "D8_28", type: "Analytical Logic", text: "Explain how a business can use segmentation to improve their Net Promoter Score (NPS).", placeholder: "By identifying and fixing the pain points of the 'Detractor' segment." },
+                    { id: "D8_29", type: "SQL Query", text: "Write a query to find the date of a customer's first and second purchases to calculate the time between them.", placeholder: "First: MIN(order_date), Second: a query with ROW_NUMBER()... " },
+                    { id: "D8_30", type: "Cohort Analysis", text: "Create a cohort analysis for agents based on their hire date, tracking their CSAT scores over their first 12 months to determine the time to 'full proficiency'.", placeholder: "Cohort by hire month, track monthly average CSAT..." }
+                ]
             },
-            {
-                task: "Define a cohort for analysis.",
-                expectedType: "Analytical Logic",
-                sample: "A cohort is a group of customers who share a common characteristic, like their sign-up month."
-            }
-        ],
-        drills: [
-            { id: "D8_01", type: "SQL Query", text: "Write a query to perform an RFM (Recency, Frequency, Monetary) analysis on a customer transaction dataset.", placeholder: "Calculate R, F, and M scores, then combine them for segmentation..." },
-            { id: "D8_02", type: "Cohort Analysis", text: "Design a cohort retention table that shows the percentage of customers from a sign-up month who are active in subsequent months.", placeholder: "Define active as making a purchase in that month..." },
-            { id: "D8_03", type: "SQL Query", text: "Write a query to identify the top 10% of customers based on lifetime value (LTV).", placeholder: "Use PERCENTILE_CONT or NTILE..." },
-            { id: "D8_04", type: "Analytical Logic", text: "Explain the concept of 'behavioral segmentation' and provide two examples of behavioral segments in e-commerce.", placeholder: "Examples: 'Bargain Hunters' and 'Brand Loyalists'..." },
-            { id: "D8_05", type: "SQL Query", text: "Create a customer segmentation table that categorizes customers into 'Active', 'At-Risk', and 'Churned' based on their last purchase date.", placeholder: "CASE WHEN last_purchase >= CURRENT_DATE - 30 THEN 'Active'..." },
-            { id: "D8_06", type: "Cohort Analysis", text: "Write a query to calculate the cumulative revenue generated by each monthly sign-up cohort over a period of 12 months.", placeholder: "Partition by cohort_month, order by month and sum revenue..." },
-            { id: "D8_07", type: "SQL Query", text: "Write a query to find the average order value (AOV) for each customer segment defined by total spend.", placeholder: "WITH segments AS (...) SELECT segment, AVG(order_amount) FROM orders JOIN segments..." },
-            { id: "D8_08", type: "Analytical Logic", text: "Describe the difference between a 'cohort' and a 'segment'.", placeholder: "A cohort is a group defined by a shared event (e.g., sign-up month). A segment is a group defined by shared characteristics." },
-            { id: "D8_09", type: "SQL Query", text: "Write a query to flag customers who have made a purchase in the first week after account creation, indicating a high initial engagement.", placeholder: "CASE WHEN EXISTS (SELECT 1 FROM orders o WHERE o.customer_id = c.id AND o.order_date <= c.creation_date + 7)..." },
-            { id: "D8_10", type: "Cohort Analysis", text: "Design a cohort analysis to compare the CSAT scores of customers who signed up in different quarters.", placeholder: "Group by sign-up quarter, calculate average CSAT per month..." },
-            { id: "D8_11", type: "SQL Query", text: "Write a query to assign customers to a 'sales channel' segment (e.g., Web, Mobile, In-Store) based on their primary purchase method.", placeholder: "SELECT customer_id, MODE() WITHIN GROUP (ORDER BY sales_channel) as primary_channel..." },
-            { id: "D8_12", type: "Analytical Logic", text: "Define 'product affinity' and provide an example of how it could be used to segment customers for cross-selling.", placeholder: "Customers who bought a laptop are highly likely to buy a laptop bag." },
-            { id: "D8_13", type: "SQL Query", text: "Write a query to calculate the average number of days between purchases for each customer to find their purchase frequency.", placeholder: "LAG(order_date) OVER(PARTITION BY customer_id ORDER BY order_date)..." },
-            { id: "D8_14", type: "Cohort Analysis", text: "Create a cohort of customers acquired via a specific marketing campaign and track their 30-day and 90-day retention.", placeholder: "Filter customers by acquisition_campaign = 'Summer2024', then calculate retention..." },
-            { id: "D8_15", type: "SQL Query", text: "Write a query to segment customers based on their total support ticket count (e.g., 'Low', 'Medium', 'High' maintenance).", placeholder: "CASE WHEN support_tickets >= 10 THEN 'High'..." },
-            { id: "D8_16", type: "Analytical Logic", text: "Explain how a 'customer journey' analysis can lead to actionable segments.", placeholder: "Segments can be created based on the path (e.g., 'Explore and Abandon' versus 'Quick Buy')." },
-            { id: "D8_17", type: "SQL Query", text: "Write a query to identify the products that are most frequently bought together in the same order (market basket analysis).", placeholder: "Perform a self-join on orders to find common combinations..." },
-            { id: "D8_18", type: "Cohort Analysis", text: "Write a query to calculate the monthly average AHT for a cohort of new hires, comparing their performance over their first 3 months.", placeholder: "Group by hire_date cohort and months_of_tenure..." },
-            { id: "D8_19", type: "SQL Query", text: "Write a query to assign customers to a 'geographic segment' based on their zip code, and aggregate sales by this segment.", placeholder: "JOIN customers with a geography_dimension table..." },
-            { id: "D8_20", type: "Analytical Logic", text: "Describe the 'Pareto Principle' (80/20 rule) and how it applies to customer segmentation.", placeholder: "20% of customers often account for 80% of revenue." },
-            { id: "D8_21", type: "SQL Query", text: "Write a query to create a 'churn probability' segment by scoring customers based on factors like reduced usage and negative sentiment comments.", placeholder: "Create a composite score using multiple criteria..." },
-            { id: "D8_22", type: "Cohort Analysis", text: "Design a cohort analysis to measure the impact of a new app feature on user engagement by comparing cohorts exposed to the feature with those who were not.", placeholder: "Use a treatment and control cohort..." },
-            { id: "D8_23", type: "SQL Query", text: "Write a query to find the most profitable customer segment by comparing average profit per customer across segments.", placeholder: "SELECT segment, AVG(profit) FROM orders JOIN customers..." },
-            { id: "D8_24", type: "Analytical Logic", text: "Explain the concept of 'persona' in marketing and how it is distinct from a 'data segment'.", placeholder: "A persona is a fictional character built from data segments to humanize the customer." },
-            { id: "D8_25", type: "SQL Query", text: "Write a query to identify customers who have been downgrading their subscription plan over time, indicating potential churn risk.", placeholder: "Compare the current plan and previous plan..." },
-            { id: "D8_26", type: "Cohort Analysis", text: "Write a query to show the average CSAT score for each monthly sign-up cohort over their first 6 months as a customer.", placeholder: "Group by cohort_month, calculate rolling CSAT averages..." },
-            { id: "D8_27", type: "SQL Query", text: "Write a query to segment customers based on the number of support interactions they have had (e.g., '0-1', '2-5', '>5').", placeholder: "CASE WHEN interaction_count BETWEEN 0 AND 1 THEN 'Low'..." },
-            { id: "D8_28", type: "Analytical Logic", text: "Explain how a business can use segmentation to improve their Net Promoter Score (NPS).", placeholder: "By identifying and fixing the pain points of the 'Detractor' segment." },
-            { id: "D8_29", type: "SQL Query", text: "Write a query to find the date of a customer's first and second purchases to calculate the time between them.", placeholder: "First: MIN(order_date), Second: a query with ROW_NUMBER()... " },
-            { id: "D8_30", type: "Cohort Analysis", text: "Create a cohort analysis for agents based on their hire date, tracking their CSAT scores over their first 12 months to determine the time to 'full proficiency'.", placeholder: "Cohort by hire month, track monthly average CSAT..." }
-        ]
-    },
-    9: {
-        title: "Day 9: Automation & Workflow Optimization",
-        desc: "Focuses on automating repetitive data tasks and optimizing analytical workflows. Covers scheduling, alerting, and designing efficient and reliable data processes.",
-        instructions: "You will design automation scripts, propose alerting mechanisms, and optimize slow-running queries and inefficient workflows.",
-        problem: "The data team spends over 40% of their time on manual reporting and data preparation tasks, leaving little time for strategic analysis.",
-        challenge: "A complex data pipeline that generates a daily report often fails due to timeouts and data volume issues, requiring manual intervention.",
-        scenario: "An analyst spends 3 hours every Monday manually merging data from five different systems to create a weekly executive report. They need to automate this process.",
-        examples: [
-            {
-                task: "Write a query to create a stored procedure for a daily report.",
-                expectedType: "SQL Structure",
-                sample: "CREATE PROCEDURE generate_daily_report AS BEGIN ... END;"
+            9: {
+                title: "Day 9: Automation & Workflow Optimization",
+                desc: "Focuses on automating repetitive data tasks and optimizing analytical workflows. Covers scheduling, alerting, and designing efficient and reliable data processes.",
+                instructions: "You will design automation scripts, propose alerting mechanisms, and optimize slow-running queries and inefficient workflows.",
+                problem: "The data team spends over 40% of their time on manual reporting and data preparation tasks, leaving little time for strategic analysis.",
+                challenge: "A complex data pipeline that generates a daily report often fails due to timeouts and data volume issues, requiring manual intervention.",
+                scenario: "An analyst spends 3 hours every Monday manually merging data from five different systems to create a weekly executive report. They need to automate this process.",
+                examples: [
+                    {
+                        task: "Write a query to create a stored procedure for a daily report.",
+                        expectedType: "SQL Structure",
+                        sample: "CREATE PROCEDURE generate_daily_report AS BEGIN ... END;"
+                    },
+                    {
+                        task: "Design a workflow to automate an email notification.",
+                        expectedType: "Operational Logic",
+                        sample: "The workflow should run every hour, check a metric, and send an email if the metric exceeds a threshold."
+                    }
+                ],
+                drills: [
+                    { id: "D9_01", type: "Automation", text: "Design a fully automated SQL job that runs at 6 AM daily to refresh a dashboard's underlying tables.", placeholder: "Use SQL Agent, cron, or Airflow to schedule... " },
+                    { id: "D9_02", type: "Query Optimization", text: "Rewrite a slow SQL query that performs a self-join on a huge table by using a more efficient window function.", placeholder: "Use LAG/LEAD instead of a self-join on date..." },
+                    { id: "D9_03", type: "Automation", text: "Write a script (conceptual) to automate the process of checking for data quality issues (nulls, duplicates) and logging the results to a table.", placeholder: "Run checks and insert results into a data_quality_report table..." },
+                    { id: "D9_04", type: "Workflow Design", text: "Design a workflow to 'fan-out' a large report generation task into smaller, parallel processes to reduce runtime.", placeholder: "Partition data by region or customer_id and process each segment in parallel..." },
+                    { id: "D9_05", type: "Automation", text: "Propose a method to automatically send a summary email of daily sales metrics to the sales team at 9 AM.", placeholder: "Schedule a script to generate the report and send via SMTP..." },
+                    { id: "D9_06", type: "Query Optimization", text: "Explain how adding an index to a column can improve query performance and what the trade-offs are.", placeholder: "Indexes speed up SELECT statements but slow down INSERT/UPDATE statements..." },
+                    { id: "D9_07", type: "Workflow Design", text: "Design an alerting workflow that sends a notification to the data team if a critical pipeline step takes longer than 30 minutes.", placeholder: "Monitor start and end times of the pipeline step and compare..." },
+                    { id: "D9_08", type: "Automation", text: "Write a conceptual script to automate the creation of a new user's database accounts and permissions based on an HR file.", placeholder: "Iterate over CSV file and run CREATE USER and GRANT statements..." },
+                    { id: "D9_09", type: "Query Optimization", text: "Analyze the execution plan of a query and suggest how to avoid a table scan.", placeholder: "Use an index, or rewrite the WHERE clause to be sargable..." },
+                    { id: "D9_10", type: "Workflow Design", text: "Design a continuous integration/continuous deployment (CI/CD) pipeline for data transformations (e.g., dbt).", placeholder: "Commit code -> Run tests -> Build/Deploy to production..." },
+                    { id: "D9_11", type: "Automation", text: "Design a script to automatically archive data older than a specific date into a separate table.", placeholder: "DELETE FROM main_table WHERE date < ... INTO archive_table..." },
+                    { id: "D9_12", type: "Workflow Design", text: "Propose a strategy to handle a task that is prone to failure due to external API timeouts, including retry logic.", placeholder: "Implement an exponential backoff and retry mechanism..." },
+                    { id: "D9_13", type: "Automation", text: "Write a SQL script to create all necessary views and stored procedures for a new reporting schema.", placeholder: "Use CREATE OR REPLACE VIEW and CREATE PROCEDURE..." },
+                    { id: "D9_14", type: "Query Optimization", text: "Rewrite a query that uses a subquery in the WHERE clause to use an EXISTS clause instead for better performance.", placeholder: "WHERE EXISTS (SELECT 1 ...) instead of WHERE IN (SELECT ...)" },
+                    { id: "D9_15", type: "Workflow Design", text: "Design a 'data pipeline' observability dashboard that shows the status and success/failure rates of all scheduled jobs.", placeholder: "Show green/yellow/red status for each job..." },
+                    { id: "D9_16", type: "Automation", text: "Design a mechanism to automatically re-run a failed query after a fix is applied, ensuring no manual intervention is needed.", placeholder: "Implement a wrapper that catches exceptions and retries..." },
+                    { id: "D9_17", type: "Query Optimization", text: "Identify a scenario where using a materialized view can significantly improve query performance.", placeholder: "For frequently run, complex aggregated queries..." },
+                    { id: "D9_18", type: "Workflow Design", text: "Design a workflow to use a staging area to validate data before it is loaded into the production tables.", placeholder: "Load to staging, run validation, then move to production..." },
+                    { id: "D9_19", type: "Automation", text: "Write a conceptual script that uses an API to fetch data and load it into a database, handling pagination.", placeholder: "Loop through API pages until a last page marker is found..." },
+                    { id: "D9_20", type: "Workflow Design", text: "Propose a strategy to monitor and manage the dependencies between different data processing tasks.", placeholder: "Use a DAG (Directed Acyclic Graph) like in Airflow or Prefect..." },
+                    { id: "D9_21", type: "Automation", text: "Design a process to automatically back up critical tables before a major data deployment.", placeholder: "CREATE TABLE backup_table AS SELECT * FROM main_table..." },
+                    { id: "D9_22", type: "Query Optimization", text: "Explain how to use the 'EXPLAIN' plan to identify a performance bottleneck.", placeholder: "Look for operations like 'Seq Scan' or 'Hash Join' with high cost..." },
+                    { id: "D9_23", type: "Workflow Design", text: "Design a data quality alert that triggers an email if the total record count in a table changes by more than 20% from the previous day.", placeholder: "Compare yesterday's count with today's count..." },
+                    { id: "D9_24", type: "Automation", text: "Write a script to dynamically generate SQL queries based on a user's input in a dashboard.", placeholder: "Use parameterized queries to build the WHERE clause..." },
+                    { id: "D9_25", type: "Workflow Design", text: "Design a workflow that checks for the existence of a file in a cloud storage bucket and processes it if it is present.", placeholder: "Use a cloud function or script to check for the file..." },
+                    { id: "D9_26", type: "Query Optimization", text: "Propose a method to improve performance when joining a fact table with a slowly changing dimension.", placeholder: "Use a view that pre-joins the current dimension records..." },
+                    { id: "D9_27", type: "Automation", text: "Design a script to automatically generate a weekly report in PDF or Excel format and save it to a shared drive.", placeholder: "Use a reporting tool or a Python library like ReportLab..." },
+                    { id: "D9_28", type: "Workflow Design", text: "Design a process to keep a data dictionary up-to-date automatically whenever a new table is created or a column is added.", placeholder: "Use a trigger or a scheduled job that scans metadata..." },
+                    { id: "D9_29", type: "Automation", text: "Write a conceptual script to reset a test database to a known state every night for consistent testing.", placeholder: "Take a backup of the clean state and restore it daily..." },
+                    { id: "D9_30", type: "Workflow Design", text: "Design a comprehensive monitoring and alerting system for an entire data platform, covering pipelines, databases, and dashboards.", placeholder: "Integrate with a tool like DataDog or build custom health checks..." }
+                ]
             },
-            {
-                task: "Design a workflow to automate an email notification.",
-                expectedType: "Operational Logic",
-                sample: "The workflow should run every hour, check a metric, and send an email if the metric exceeds a threshold."
+            10: {
+                title: "Day 10: Capstone Project & Integration",
+                desc: "The final day is a capstone project that brings together all the skills learned in the training. The goal is to solve a complex, end-to-end business problem using analytics.",
+                instructions: "You will be given a realistic business scenario. You must design a solution, write the necessary SQL, and prepare a final presentation of your findings. This will test your ability to integrate and apply all your knowledge.",
+                problem: "A fast-growing e-commerce company is experiencing a decline in customer retention and a drop in overall satisfaction.",
+                challenge: "The company has data siloed across multiple systems (CRM, website analytics, support ticketing, marketing), making it difficult to get a single view of the customer.",
+                scenario: "You are an analytics consultant brought in to help the company turn around its customer experience. You have been given full access to all raw data. The CEO wants a clear, data-driven strategy to improve retention and CSAT within the next 3 months.",
+                examples: [
+                    {
+                        task: "Define the scope of the project.",
+                        expectedType: "Project Planning",
+                        sample: "The scope is to analyze 3 years of data to identify the root causes of churn and propose actionable interventions."
+                    },
+                    {
+                        task: "Describe the final deliverables.",
+                        expectedType: "Business Communication",
+                        sample: "Final deliverables include a comprehensive report, a set of new dashboards, and a recommendation presentation to the executive team."
+                    }
+                ],
+                drills: [
+                    { id: "D10_01", type: "Project Planning", text: "Define the primary business question for the capstone project: 'How can we improve customer retention and CSAT scores?'.", placeholder: "Break down into sub-questions: Which segments churn most? What is the main driver of low CSAT?" },
+                    { id: "D10_02", type: "SQL Query", text: "Write a query to collect and join data from all relevant tables (customers, orders, support_tickets, surveys) to create a single, comprehensive customer dataset for analysis.", placeholder: "Perform a series of joins to combine all data..." },
+                    { id: "D10_03", type: "Data Quality", text: "Identify and propose a plan to handle any data quality issues found in the merged dataset (e.g., missing records, inconsistent date formats).", placeholder: "Document all issues and propose cleaning steps..." },
+                    { id: "D10_04", type: "Exploratory Analysis", text: "Perform an exploratory analysis of the dataset to summarize key metrics (average CSAT, churn rate, average LTV) and identify initial patterns.", placeholder: "Calculate counts, means, and distribution of key variables..." },
+                    { id: "D10_05", type: "Customer Segmentation", text: "Segment customers into meaningful groups for analysis (e.g., by spend, by engagement, by support interactions).", placeholder: "Use RFM analysis, behavioral segmentation, or demographic segmentation..." },
+                    { id: "D10_06", type: "Churn Analysis", text: "For each customer segment, calculate the churn rate and identify the profile of a typical churned customer.", placeholder: "Use statistical tests to compare churned vs. retained customers..." },
+                    { id: "D10_07", type: "Root Cause Analysis", text: "Conduct a deeper dive to find the root causes of churn. Is it low CSAT? Product issues? Long wait times? Use hypothesis testing.", placeholder: "Correlate churn with other variables like CSAT, wait time, etc." },
+                    { id: "D10_08", type: "SQL Query", text: "Write a query to calculate the average CSAT score for different customer segments and identify which segments are the most dissatisfied.", placeholder: "GROUP BY segment, AVG(csat_score)..." },
+                    { id: "D10_09", type: "Time-Series Analysis", text: "Analyze the trend of key metrics (CSAT, churn) over the last 3 years to identify if the problem is worsening or improving.", placeholder: "Plot the monthly moving average of CSAT and churn..." },
+                    { id: "D10_10", type: "Forecasting", text: "Build a simple forecasting model to predict the next quarter's churn rate, assuming no changes are made.", placeholder: "Use a basic time-series model as a baseline..." },
+                    { id: "D10_11", type: "Hypothesis Generation", text: "Based on the analysis, generate a list of hypotheses for why the company is losing customers. (e.g., 'Customers who experience a call transfer are twice as likely to churn.')", placeholder: "Translate data insights into testable business hypotheses..." },
+                    { id: "D10_12", type: "Recommendations", text: "Propose a set of concrete, actionable recommendations to improve retention and CSAT. Prioritize them based on potential impact and feasibility.", placeholder: "e.g., 'Fix the call transfer issue.' or 'Launch a loyalty program for high-value customers.'" },
+                    { id: "D10_13", type: "Dashboard Design", text: "Design a set of dashboards for different stakeholders (CEO, CX Manager, Marketing Manager) that provide real-time visibility into the new KPIs.", placeholder: "Design executive summary, operational, and marketing dashboards..." },
+                    { id: "D10_14", type: "SQL Query", text: "Write the final SQL queries to power the new dashboards, ensuring they are optimized for performance.", placeholder: "Create views or materialized views for dashboard use..." },
+                    { id: "D10_15", type: "Presentation Design", text: "Create a compelling 10-slide presentation to present your findings and recommendations to the CEO and the executive team.", placeholder: "Structure: Problem, Analysis, Insights, Recommendations, Implementation Plan." },
+                    { id: "D10_16", type: "Business Communication", text: "Write an executive summary of your capstone project findings in one page.", placeholder: "Focus on the most critical numbers and the bottom-line impact of your recommendations." },
+                    { id: "D10_17", type: "Implementation Plan", text: "Propose a phased implementation plan for the recommendations, including estimated timelines and resources required.", placeholder: "Phase 1 (1 month): Quick wins, Phase 2 (2 months): New processes..." },
+                    { id: "D10_18", type: "A/B Test Design", text: "Design an A/B test to validate one of your recommendations before a full rollout.", placeholder: "e.g., Randomly assign customers to receive a new follow-up email (Variant B) versus standard practice (Variant A)." },
+                    { id: "D10_19", type: "Automation", text: "Design an automated process to track the key metrics on a weekly basis and alert the team if they deviate from the forecast.", placeholder: "Set up a scheduled job to run and send a report every Monday..." },
+                    { id: "D10_20", type: "ROI Calculation", text: "Calculate the potential ROI of your recommendations. For example, 'A 1% reduction in churn is worth $X million.'", placeholder: "Link the impact on churn to revenue and profitability..." },
+                    { id: "D10_21", type: "Stakeholder Alignment", text: "Draft a memo to align different departments (Sales, Marketing, Support) on the new customer retention strategy.", placeholder: "Outline each department's role and responsibilities in the new plan." },
+                    { id: "D10_22", type: "SQL Query", text: "Write a query to continuously monitor the new churn prediction score for each customer.", placeholder: "Update the customer dimension table daily..." },
+                    { id: "D10_23", type: "Data Quality", text: "Propose a long-term data governance plan to ensure the data required for these analyses remains high quality.", placeholder: "Assign data owners, define critical fields, and implement quality checks." },
+                    { id: "D10_24", type: "Project Retrospective", text: "Write a project retrospective report summarizing what went well, what was challenging, and the key lessons learned from the capstone project.", placeholder: "Be honest and reflective." },
+                    { id: "D10_25", type: "Communication", text: "Prepare a 1-minute 'elevator pitch' of your project findings.", placeholder: "State the problem, the key insight, and the recommended action in 60 seconds." },
+                    { id: "D10_26", type: "Advanced Analytics", text: "Explore if there is a relationship between customer engagement with the company's mobile app and their likelihood to churn.", placeholder: "Analyze app usage patterns and correlate with churn." },
+                    { id: "D10_27", type: "Cohort Analysis", text: "Analyze the retention of customers acquired during the last major marketing promotion and compare it to regular customers.", placeholder: "Cohort by acquisition source and compare retention curves." },
+                    { id: "D10_28", type: "SQL Query", text: "Write a final query to generate a 'watch list' of customers who are at the highest risk of churning in the next 30 days.", placeholder: "Create a rules-based scoring system based on historical churn patterns." },
+                    { id: "D10_29", type: "Project Presentation", text: "Rehearse and deliver the final presentation to a mock executive board, handling challenging questions from the 'board'.", placeholder: "Prepare for questions on methodology, cost, and implementation." },
+                    { id: "D10_30", type: "Integration", text: "Document the entire project, including the problem statement, methodology, data sources, code, and results, for future reference.", placeholder: "Create a comprehensive project wiki." }
+                ]
             }
-        ],
-        drills: [
-            { id: "D9_01", type: "Automation", text: "Design a fully automated SQL job that runs at 6 AM daily to refresh a dashboard's underlying tables.", placeholder: "Use SQL Agent, cron, or Airflow to schedule... " },
-            { id: "D9_02", type: "Query Optimization", text: "Rewrite a slow SQL query that performs a self-join on a huge table by using a more efficient window function.", placeholder: "Use LAG/LEAD instead of a self-join on date..." },
-            { id: "D9_03", type: "Automation", text: "Write a script (conceptual) to automate the process of checking for data quality issues (nulls, duplicates) and logging the results to a table.", placeholder: "Run checks and insert results into a data_quality_report table..." },
-            { id: "D9_04", type: "Workflow Design", text: "Design a workflow to 'fan-out' a large report generation task into smaller, parallel processes to reduce runtime.", placeholder: "Partition data by region or customer_id and process each segment in parallel..." },
-            { id: "D9_05", type: "Automation", text: "Propose a method to automatically send a summary email of daily sales metrics to the sales team at 9 AM.", placeholder: "Schedule a script to generate the report and send via SMTP..." },
-            { id: "D9_06", type: "Query Optimization", text: "Explain how adding an index to a column can improve query performance and what the trade-offs are.", placeholder: "Indexes speed up SELECT statements but slow down INSERT/UPDATE statements..." },
-            { id: "D9_07", type: "Workflow Design", text: "Design an alerting workflow that sends a notification to the data team if a critical pipeline step takes longer than 30 minutes.", placeholder: "Monitor start and end times of the pipeline step and compare..." },
-            { id: "D9_08", type: "Automation", text: "Write a conceptual script to automate the creation of a new user's database accounts and permissions based on an HR file.", placeholder: "Iterate over CSV file and run CREATE USER and GRANT statements..." },
-            { id: "D9_09", type: "Query Optimization", text: "Analyze the execution plan of a query and suggest how to avoid a table scan.", placeholder: "Use an index, or rewrite the WHERE clause to be sargable..." },
-            { id: "D9_10", type: "Workflow Design", text: "Design a continuous integration/continuous deployment (CI/CD) pipeline for data transformations (e.g., dbt).", placeholder: "Commit code -> Run tests -> Build/Deploy to production..." },
-            { id: "D9_11", type: "Automation", text: "Design a script to automatically archive data older than a specific date into a separate table.", placeholder: "DELETE FROM main_table WHERE date < ... INTO archive_table..." },
-            { id: "D9_12", type: "Workflow Design", text: "Propose a strategy to handle a task that is prone to failure due to external API timeouts, including retry logic.", placeholder: "Implement an exponential backoff and retry mechanism..." },
-            { id: "D9_13", type: "Automation", text: "Write a SQL script to create all necessary views and stored procedures for a new reporting schema.", placeholder: "Use CREATE OR REPLACE VIEW and CREATE PROCEDURE..." },
-            { id: "D9_14", type: "Query Optimization", text: "Rewrite a query that uses a subquery in the WHERE clause to use an EXISTS clause instead for better performance.", placeholder: "WHERE EXISTS (SELECT 1 ...) instead of WHERE IN (SELECT ...)" },
-            { id: "D9_15", type: "Workflow Design", text: "Design a 'data pipeline' observability dashboard that shows the status and success/failure rates of all scheduled jobs.", placeholder: "Show green/yellow/red status for each job..." },
-            { id: "D9_16", type: "Automation", text: "Design a mechanism to automatically re-run a failed query after a fix is applied, ensuring no manual intervention is needed.", placeholder: "Implement a wrapper that catches exceptions and retries..." },
-            { id: "D9_17", type: "Query Optimization", text: "Identify a scenario where using a materialized view can significantly improve query performance.", placeholder: "For frequently run, complex aggregated queries..." },
-            { id: "D9_18", type: "Workflow Design", text: "Design a workflow to use a staging area to validate data before it is loaded into the production tables.", placeholder: "Load to staging, run validation, then move to production..." },
-            { id: "D9_19", type: "Automation", text: "Write a conceptual script that uses an API to fetch data and load it into a database, handling pagination.", placeholder: "Loop through API pages until a last page marker is found..." },
-            { id: "D9_20", type: "Workflow Design", text: "Propose a strategy to monitor and manage the dependencies between different data processing tasks.", placeholder: "Use a DAG (Directed Acyclic Graph) like in Airflow or Prefect..." },
-            { id: "D9_21", type: "Automation", text: "Design a process to automatically back up critical tables before a major data deployment.", placeholder: "CREATE TABLE backup_table AS SELECT * FROM main_table..." },
-            { id: "D9_22", type: "Query Optimization", text: "Explain how to use the 'EXPLAIN' plan to identify a performance bottleneck.", placeholder: "Look for operations like 'Seq Scan' or 'Hash Join' with high cost..." },
-            { id: "D9_23", type: "Workflow Design", text: "Design a data quality alert that triggers an email if the total record count in a table changes by more than 20% from the previous day.", placeholder: "Compare yesterday's count with today's count..." },
-            { id: "D9_24", type: "Automation", text: "Write a script to dynamically generate SQL queries based on a user's input in a dashboard.", placeholder: "Use parameterized queries to build the WHERE clause..." },
-            { id: "D9_25", type: "Workflow Design", text: "Design a workflow that checks for the existence of a file in a cloud storage bucket and processes it if it is present.", placeholder: "Use a cloud function or script to check for the file..." },
-            { id: "D9_26", type: "Query Optimization", text: "Propose a method to improve performance when joining a fact table with a slowly changing dimension.", placeholder: "Use a view that pre-joins the current dimension records..." },
-            { id: "D9_27", type: "Automation", text: "Design a script to automatically generate a weekly report in PDF or Excel format and save it to a shared drive.", placeholder: "Use a reporting tool or a Python library like ReportLab..." },
-            { id: "D9_28", type: "Workflow Design", text: "Design a process to keep a data dictionary up-to-date automatically whenever a new table is created or a column is added.", placeholder: "Use a trigger or a scheduled job that scans metadata..." },
-            { id: "D9_29", type: "Automation", text: "Write a conceptual script to reset a test database to a known state every night for consistent testing.", placeholder: "Take a backup of the clean state and restore it daily..." },
-            { id: "D9_30", type: "Workflow Design", text: "Design a comprehensive monitoring and alerting system for an entire data platform, covering pipelines, databases, and dashboards.", placeholder: "Integrate with a tool like DataDog or build custom health checks..." }
-        ]
-    },
-    10: {
-        title: "Day 10: Capstone Project & Integration",
-        desc: "The final day is a capstone project that brings together all the skills learned in the training. The goal is to solve a complex, end-to-end business problem using analytics.",
-        instructions: "You will be given a realistic business scenario. You must design a solution, write the necessary SQL, and prepare a final presentation of your findings. This will test your ability to integrate and apply all your knowledge.",
-        problem: "A fast-growing e-commerce company is experiencing a decline in customer retention and a drop in overall satisfaction.",
-        challenge: "The company has data siloed across multiple systems (CRM, website analytics, support ticketing, marketing), making it difficult to get a single view of the customer.",
-        scenario: "You are an analytics consultant brought in to help the company turn around its customer experience. You have been given full access to all raw data. The CEO wants a clear, data-driven strategy to improve retention and CSAT within the next 3 months.",
-        examples: [
-            {
-                task: "Define the scope of the project.",
-                expectedType: "Project Planning",
-                sample: "The scope is to analyze 3 years of data to identify the root causes of churn and propose actionable interventions."
-            },
-            {
-                task: "Describe the final deliverables.",
-                expectedType: "Business Communication",
-                sample: "Final deliverables include a comprehensive report, a set of new dashboards, and a recommendation presentation to the executive team."
-            }
-        ],
-        drills: [
-            { id: "D10_01", type: "Project Planning", text: "Define the primary business question for the capstone project: 'How can we improve customer retention and CSAT scores?'.", placeholder: "Break down into sub-questions: Which segments churn most? What is the main driver of low CSAT?" },
-            { id: "D10_02", type: "SQL Query", text: "Write a query to collect and join data from all relevant tables (customers, orders, support_tickets, surveys) to create a single, comprehensive customer dataset for analysis.", placeholder: "Perform a series of joins to combine all data..." },
-            { id: "D10_03", type: "Data Quality", text: "Identify and propose a plan to handle any data quality issues found in the merged dataset (e.g., missing records, inconsistent date formats).", placeholder: "Document all issues and propose cleaning steps..." },
-            { id: "D10_04", type: "Exploratory Analysis", text: "Perform an exploratory analysis of the dataset to summarize key metrics (average CSAT, churn rate, average LTV) and identify initial patterns.", placeholder: "Calculate counts, means, and distribution of key variables..." },
-            { id: "D10_05", type: "Customer Segmentation", text: "Segment customers into meaningful groups for analysis (e.g., by spend, by engagement, by support interactions).", placeholder: "Use RFM analysis, behavioral segmentation, or demographic segmentation..." },
-            { id: "D10_06", type: "Churn Analysis", text: "For each customer segment, calculate the churn rate and identify the profile of a typical churned customer.", placeholder: "Use statistical tests to compare churned vs. retained customers..." },
-            { id: "D10_07", type: "Root Cause Analysis", text: "Conduct a deeper dive to find the root causes of churn. Is it low CSAT? Product issues? Long wait times? Use hypothesis testing.", placeholder: "Correlate churn with other variables like CSAT, wait time, etc." },
-            { id: "D10_08", type: "SQL Query", text: "Write a query to calculate the average CSAT score for different customer segments and identify which segments are the most dissatisfied.", placeholder: "GROUP BY segment, AVG(csat_score)..." },
-            { id: "D10_09", type: "Time-Series Analysis", text: "Analyze the trend of key metrics (CSAT, churn) over the last 3 years to identify if the problem is worsening or improving.", placeholder: "Plot the monthly moving average of CSAT and churn..." },
-            { id: "D10_10", type: "Forecasting", text: "Build a simple forecasting model to predict the next quarter's churn rate, assuming no changes are made.", placeholder: "Use a basic time-series model as a baseline..." },
-            { id: "D10_11", type: "Hypothesis Generation", text: "Based on the analysis, generate a list of hypotheses for why the company is losing customers. (e.g., 'Customers who experience a call transfer are twice as likely to churn.')", placeholder: "Translate data insights into testable business hypotheses..." },
-            { id: "D10_12", type: "Recommendations", text: "Propose a set of concrete, actionable recommendations to improve retention and CSAT. Prioritize them based on potential impact and feasibility.", placeholder: "e.g., 'Fix the call transfer issue.' or 'Launch a loyalty program for high-value customers.'" },
-            { id: "D10_13", type: "Dashboard Design", text: "Design a set of dashboards for different stakeholders (CEO, CX Manager, Marketing Manager) that provide real-time visibility into the new KPIs.", placeholder: "Design executive summary, operational, and marketing dashboards..." },
-            { id: "D10_14", type: "SQL Query", text: "Write the final SQL queries to power the new dashboards, ensuring they are optimized for performance.", placeholder: "Create views or materialized views for dashboard use..." },
-            { id: "D10_15", type: "Presentation Design", text: "Create a compelling 10-slide presentation to present your findings and recommendations to the CEO and the executive team.", placeholder: "Structure: Problem, Analysis, Insights, Recommendations, Implementation Plan." },
-            { id: "D10_16", type: "Business Communication", text: "Write an executive summary of your capstone project findings in one page.", placeholder: "Focus on the most critical numbers and the bottom-line impact of your recommendations." },
-            { id: "D10_17", type: "Implementation Plan", text: "Propose a phased implementation plan for the recommendations, including estimated timelines and resources required.", placeholder: "Phase 1 (1 month): Quick wins, Phase 2 (2 months): New processes..." },
-            { id: "D10_18", type: "A/B Test Design", text: "Design an A/B test to validate one of your recommendations before a full rollout.", placeholder: "e.g., Randomly assign customers to receive a new follow-up email (Variant B) versus standard practice (Variant A)." },
-            { id: "D10_19", type: "Automation", text: "Design an automated process to track the key metrics on a weekly basis and alert the team if they deviate from the forecast.", placeholder: "Set up a scheduled job to run and send a report every Monday..." },
-            { id: "D10_20", type: "ROI Calculation", text: "Calculate the potential ROI of your recommendations. For example, 'A 1% reduction in churn is worth $X million.'", placeholder: "Link the impact on churn to revenue and profitability..." },
-            { id: "D10_21", type: "Stakeholder Alignment", text: "Draft a memo to align different departments (Sales, Marketing, Support) on the new customer retention strategy.", placeholder: "Outline each department's role and responsibilities in the new plan." },
-            { id: "D10_22", type: "SQL Query", text: "Write a query to continuously monitor the new churn prediction score for each customer.", placeholder: "Update the customer dimension table daily..." },
-            { id: "D10_23", type: "Data Quality", text: "Propose a long-term data governance plan to ensure the data required for these analyses remains high quality.", placeholder: "Assign data owners, define critical fields, and implement quality checks." },
-            { id: "D10_24", type: "Project Retrospective", text: "Write a project retrospective report summarizing what went well, what was challenging, and the key lessons learned from the capstone project.", placeholder: "Be honest and reflective." },
-            { id: "D10_25", type: "Communication", text: "Prepare a 1-minute 'elevator pitch' of your project findings.", placeholder: "State the problem, the key insight, and the recommended action in 60 seconds." },
-            { id: "D10_26", type: "Advanced Analytics", text: "Explore if there is a relationship between customer engagement with the company's mobile app and their likelihood to churn.", placeholder: "Analyze app usage patterns and correlate with churn." },
-            { id: "D10_27", type: "Cohort Analysis", text: "Analyze the retention of customers acquired during the last major marketing promotion and compare it to regular customers.", placeholder: "Cohort by acquisition source and compare retention curves." },
-            { id: "D10_28", type: "SQL Query", text: "Write a final query to generate a 'watch list' of customers who are at the highest risk of churning in the next 30 days.", placeholder: "Create a rules-based scoring system based on historical churn patterns." },
-            { id: "D10_29", type: "Project Presentation", text: "Rehearse and deliver the final presentation to a mock executive board, handling challenging questions from the 'board'.", placeholder: "Prepare for questions on methodology, cost, and implementation." },
-            { id: "D10_30", type: "Integration", text: "Document the entire project, including the problem statement, methodology, data sources, code, and results, for future reference.", placeholder: "Create a comprehensive project wiki." }
-        ]
-
         };
 
         // Core State Objects
