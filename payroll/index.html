@@ -1,0 +1,758 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alorica ESS Portal - Corporate Hub</title>
+    <style>
+        :root {
+            --bg-base: #0f172a;
+            --bg-surface: #1e293b;
+            --bg-muted: #334155;
+            --accent: #ff6b00; /* Alorica Corporate Orange */
+            --accent-hover: #e05e00;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --error: #ef4444;
+            --info: #0ea5e9;
+            --border: #475569;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .portal-container {
+            width: 100%;
+            max-width: 1200px;
+            margin: 20px;
+            background: var(--bg-surface);
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .login-panel {
+            max-width: 450px;
+            margin: 80px auto;
+            padding: 40px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            box-sizing: border-box;
+        }
+
+        .portal-header {
+            text-align: center;
+            margin-bottom: 32px;
+        }
+
+        .portal-header h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            letter-spacing: -0.5px;
+            margin: 0 0 8px 0;
+            color: var(--text-main);
+        }
+
+        .portal-header p {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 12px 16px;
+            background: var(--bg-base);
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            box-sizing: border-box;
+            transition: all 0.2s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 2px rgba(255, 107, 0, 0.2);
+        }
+
+        .btn {
+            width: 100%;
+            padding: 12px;
+            background: var(--accent);
+            color: #ffffff;
+            font-weight: 700;
+            font-size: 0.95rem;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s ease;
+        }
+
+        .btn:hover {
+            background: var(--accent-hover);
+        }
+
+        .dashboard-view {
+            display: none;
+            grid-template-columns: 260px 1fr;
+            min-height: 750px;
+        }
+
+        .sidebar {
+            background: #0f172a;
+            border-right: 1px solid var(--border);
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .nav-group {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .nav-item {
+            padding: 12px 16px;
+            border-radius: 6px;
+            color: var(--text-muted);
+            font-weight: 600;
+            font-size: 0.9rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            border: none;
+            background: none;
+            text-align: left;
+            width: 100%;
+        }
+
+        .nav-item.active, .nav-item:hover {
+            background: var(--bg-muted);
+            color: var(--accent);
+        }
+
+        .main-content {
+            padding: 32px;
+            background: var(--bg-base);
+            overflow-y: auto;
+        }
+
+        .tab-panel {
+            display: none;
+        }
+        
+        .tab-panel.active-panel {
+            display: block;
+        }
+
+        .form-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            background: var(--bg-surface);
+            padding: 24px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+        }
+        
+        .form-grid-full {
+            grid-column: span 2;
+        }
+
+        .month-section {
+            margin-bottom: 24px;
+        }
+
+        .month-title {
+            font-size: 1.1rem;
+            color: var(--accent);
+            margin: 0 0 10px 0;
+            border-left: 4px solid var(--accent);
+            padding-left: 10px;
+        }
+
+        .holiday-table {
+            width: 100%;
+            border-collapse: collapse;
+            background: var(--bg-surface);
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--border);
+            margin-bottom: 16px;
+        }
+
+        .holiday-table th, .holiday-table td {
+            padding: 12px 16px;
+            text-align: left;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .holiday-table th {
+            background-color: var(--bg-muted);
+            color: var(--text-main);
+            font-size: 0.8rem;
+            text-transform: uppercase;
+        }
+
+        .badge {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 600;
+        }
+        .badge-mandatory { background: rgba(255, 107, 0, 0.15); color: var(--accent); }
+        .badge-status-progress { background: rgba(14, 165, 233, 0.15); color: var(--info); }
+        .badge-status-resolved { background: rgba(16, 185, 129, 0.15); color: var(--success); }
+        .badge-status-open { background: rgba(255, 107, 0, 0.15); color: var(--accent); }
+
+        .banner-alert {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid var(--success);
+            padding: 16px;
+            border-radius: 6px;
+            color: var(--success);
+            margin-bottom: 24px;
+            font-size: 0.9rem;
+        }
+
+        /* HARDCOPY PRINT STYLES */
+        #printable-form-template {
+            display: none;
+            background: white;
+            color: black;
+            padding: 40px;
+            font-family: Arial, sans-serif;
+        }
+
+        @media print {
+            body * { visibility: hidden; }
+            #printable-form-template, #printable-form-template * { visibility: visible; }
+            #printable-form-template {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                display: block !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+<div class="portal-container">
+    
+    <div id="loginSection" class="login-panel">
+        <div class="portal-header">
+            <h1>Alorica Portal</h1>
+            <p>Internal Operations Employee Gateway</p>
+        </div>
+        
+        <div class="form-group">
+            <label for="email">Alorica Corporate Email</label>
+            <input type="email" id="email" class="form-control" placeholder="alias@alorica.com" value="">
+        </div>
+
+        <div class="form-group">
+            <label for="empId">Employee Identification ID</label>
+            <input type="password" id="empId" class="form-control" placeholder="Enter numeric profile code" value="">
+        </div>
+
+        <button class="btn" onclick="authenticateSession()">VALIDATE ACCOUNT</button>
+        <div id="authAlert" style="color: var(--error); font-size: 0.85rem; margin-top: 10px; text-align: center; display: none;">Invalid profile configuration metadata. Access Denied.</div>
+    </div>
+
+    <div id="dashboardSection" class="dashboard-view">
+        
+        <div class="sidebar">
+            <div class="nav-group">
+                <div style="font-weight: 800; font-size: 1rem; color: var(--accent); margin-bottom: 32px; padding-left: 16px;">ALORICA PAYROLL & IT</div>
+                <button class="nav-item active" onclick="switchTab('banking', this)">Bank Details</button>
+                <button class="nav-item" onclick="switchTab('gratuity', this)">Gratuity Form</button>
+                <button class="nav-item" onclick="switchTab('calendar', this)">Holiday Calendar</button>
+                <button class="nav-item" onclick="switchTab('leave', this)">Leave Apply Tab</button>
+                <button class="nav-item" onclick="switchTab('helpdesk', this)">IT & Facilities Help Desk</button>
+            </div>
+            <div>
+                <button class="nav-item" onclick="terminateSession()" style="color: var(--error);">Exit Portal</button>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div style="margin-bottom: 32px;">
+                <h2 id="pageTitle" style="margin: 0; font-size: 1.5rem;">Corporate Salary Account Profile</h2>
+                <p style="margin: 4px 0 0 0; color: var(--text-muted); font-size: 0.9rem;">Identity Mapping: <span id="userIdent" style="color: var(--accent);"></span></p>
+            </div>
+
+            <div id="panel-banking" class="tab-panel active-panel">
+                <p style="color: var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Provide verified transaction routing metrics below to ensure secure credit line connectivity.</p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Financial Clearing Institution</label>
+                        <select class="form-control" id="bankName">
+                            <option value="ICICI Bank Ltd">ICICI Bank Ltd</option>
+                            <option value="State Bank of India">State Bank of India (SBI)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Account Assignment Reference</label>
+                        <input type="text" class="form-control" placeholder="Enter bank account number" id="bankAcc">
+                    </div>
+                    <div class="form-group">
+                        <label>IFSC Routing Code</label>
+                        <input type="text" class="form-control" placeholder="e.g. SBIN0000123" id="bankIfsc">
+                    </div>
+                    <div class="form-group">
+                        <label>Branch Office Location Context</label>
+                        <input type="text" class="form-control" placeholder="Enter branch address" id="bankBranch">
+                    </div>
+                </div>
+                <button class="btn" style="width: auto; padding: 12px 30px;" onclick="saveProfile('Banking Details')">COMMIT BANK PROFILE</button>
+            </div>
+
+            <div id="panel-gratuity" class="tab-panel">
+                <div class="banner-alert">
+                    <strong>Submission Mandate Instructions:</strong> Fill out the formal ledger statement inputs below, trigger the download deployment configuration via the <strong>Print / Download</strong> engine button, and transmit the soft copy to the processing desk at: <strong style="text-decoration: underline; color: #fff;">payroll@alorica.com</strong>.
+                </div>
+                
+                <div class="form-grid">
+                    <div class="form-grid-full"><h3 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--accent);">Statutory Declaration Schema</h3></div>
+                    <div class="form-group">
+                        <label>Candidate Full Name</label>
+                        <input type="text" class="form-control" placeholder="Enter your full name" id="empFullName">
+                    </div>
+                    <div class="form-group">
+                        <label>Department Code / Designation</label>
+                        <input type="text" class="form-control" placeholder="e.g. 1433PPS / Tech Solutions" id="empDept">
+                    </div>
+                    <div class="form-group">
+                        <label>Father's or Husband's Full Name</label>
+                        <input type="text" class="form-control" placeholder="Enter family relation full name" id="empRelationName">
+                    </div>
+                    <div class="form-group">
+                        <label>Marital Status Group</label>
+                        <select class="form-control" id="empMarital">
+                            <option value="" disabled selected>Select marital status</option>
+                            <option value="Married">Married</option>
+                            <option value="Unmarried">Unmarried</option>
+                        </select>
+                    </div>
+
+                    <div class="form-grid-full" style="border-top: 1px solid var(--border); padding-top: 20px; margin-top: 10px;">
+                        <h4 style="margin: 0 0 10px 0; color: var(--accent);">Primary Beneficiary / Nominee Designation Matrix</h4>
+                    </div>
+                    <div class="form-group">
+                        <label>Nominee Name & Address Profile</label>
+                        <input type="text" class="form-control" placeholder="Enter name and address" id="nomineeProfile">
+                    </div>
+                    <div class="form-group">
+                        <label>Relationship Structure Context</label>
+                        <input type="text" class="form-control" placeholder="e.g. SPOUSE / MOTHER" id="nomineeRel">
+                    </div>
+                    <div class="form-group">
+                        <label>Share of Gratuity Allocation Percentage (%)</label>
+                        <input type="number" class="form-control" placeholder="e.g. 100" id="nomineeShare">
+                    </div>
+                    <div class="form-group">
+                        <label>Nominee Declared Age</label>
+                        <input type="number" class="form-control" placeholder="Enter age" id="nomineeAge">
+                    </div>
+                    <div class="form-group">
+                        <label>Nominee Government ID Type</label>
+                        <select class="form-control" id="nomineeIdType">
+                            <option value="" disabled selected>Select identity document type</option>
+                            <option value="Aadhaar Card">Aadhaar Card</option>
+                            <option value="PAN Card">PAN Card</option>
+                            <option value="Passport Document">Passport Document</option>
+                            <option value="Voter ID Card">Voter ID Card</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Nominee Government ID Number</label>
+                        <input type="text" class="form-control" placeholder="Enter government registration code" id="nomineeIdNum">
+                    </div>
+                </div>
+                
+                <div style="display: flex; gap: 15px;">
+                    <button class="btn" style="width: auto; padding: 12px 30px;" onclick="saveProfile('Gratuity Mapping')">SAVE PARAMETERS</button>
+                    <button class="btn" style="width: auto; padding: 12px 35px; background: var(--bg-muted); color: white;" onclick="triggerCompilationAndPrint()">PRINT / DOWNLOAD FORM COMPONENT</button>
+                </div>
+            </div>
+
+            <div id="panel-calendar" class="tab-panel">
+                <p style="color: var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Corporate Month-wise Calendar Schedule for Corporate Office locations (Year 2026).</p>
+                
+                <div class="month-section">
+                    <div class="month-title">January 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>January 26, 2026 (Monday)</td><td>Republic Day</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">March 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>March 11, 2026 (Wednesday)</td><td>Maha Shivratri</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                            <tr><td>March 29, 2026 (Sunday)</td><td>Holi</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">April 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>April 2, 2026 (Thursday)</td><td>Good Friday</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">May 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>May 1, 2026 (Friday)</td><td>Labour Day</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                            <tr><td>May 27, 2026 (Wednesday)</td><td>Id-ul-Zuha (Bakrid)</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">August 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>August 15, 2026 (Saturday)</td><td>Independence Day</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                            <tr><td>August 17, 2026 (Monday)</td><td>Raksha Bandhan</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">September 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>September 2, 2026 (Wednesday)</td><td>Janmashtami</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">October 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>October 2, 2026 (Friday)</td><td>Mahatma Gandhi Jayanti</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                            <tr><td>October 12, 2026 (Monday)</td><td>Dussehra (Vijayadashami)</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                            <tr><td>October 31, 2026 (Saturday)</td><td>Eid-e-Milad</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">November 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>November 4, 2026 (Wednesday)</td><td>Diwali (Deepavali)</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                            <tr><td>November 5, 2026 (Thursday)</td><td>Diwali Holiday</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="month-section">
+                    <div class="month-title">December 2026</div>
+                    <table class="holiday-table">
+                        <thead><tr><th style="width: 30%;">Date Block</th><th style="width: 45%;">Festival Context Description</th><th>Classification</th></tr></thead>
+                        <tbody>
+                            <tr><td>December 25, 2026 (Friday)</td><td>Christmas</td><td><span class="badge badge-mandatory">Mandatory Holiday</span></td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="panel-leave" class="tab-panel">
+                <p style="color: var(--text-muted); font-size:0.85rem; margin-bottom:20px;">Initialize explicit leave allocation requests via active workspace metrics.</p>
+                
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Leave Matrix Categories</label>
+                        <select class="form-control" id="leaveType">
+                            <option value="Annual Planned Leave">Annual Planned Leave Balance</option>
+                            <option value="Casual / Sick Leave">Casual / Sick Contingency Leave</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Start Date Framework (From)</label>
+                        <input type="date" class="form-control" id="leaveFrom">
+                    </div>
+                    <div class="form-group">
+                        <label>End Date Framework (To)</label>
+                        <input type="date" class="form-control" id="leaveTo">
+                    </div>
+                    <div class="form-group">
+                        <label>Reason</label>
+                        <input type="text" class="form-control" placeholder="Provide reason for planned absence" id="leaveReason">
+                    </div>
+                </div>
+                <button class="btn" style="width: auto; padding: 12px 30px; background: var(--success); color: white;" onclick="submitLeave()">DISPATCH APPLICATION</button>
+            </div>
+
+            <div id="panel-helpdesk" class="tab-panel">
+                <p style="color: var(--text-muted); font-size:0.85rem; margin-bottom:20px;">
+                    Log internal business ticket parameters regarding hardware configurations, core software access provisions, or office facility infrastructure errors.
+                </p>
+                
+                <div class="form-grid">
+                    <div class="form-grid-full">
+                        <h3 style="margin: 0 0 10px 0; font-size: 1.1rem; color: var(--accent);">Create Service Desk Ticket</h3>
+                    </div>
+                    <div class="form-group">
+                        <label>Issue Classification Category</label>
+                        <select class="form-control" id="ticketCategory">
+                            <option value="Hardware">Hardware (Laptop, Monitor, Peripheral Asset)</option>
+                            <option value="Software">Software (OS, VPN, Security Tokens, Enterprise Tools)</option>
+                            <option value="Infrastructure">Infrastructure & Facilities (Workstation, Badge Access, Cafeteria)</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Urgency Threshold Severity</label>
+                        <select class="form-control" id="ticketSeverity">
+                            <option value="Low">Low - General Operational Question</option>
+                            <option value="Medium">Medium - Standard Asset Defect</option>
+                            <option value="High">High - Blocker / Production Interruption</option>
+                        </select>
+                    </div>
+                    <div class="form-grid-full form-group">
+                        <label>Problem Summary Description</label>
+                        <input type="text" class="form-control" placeholder="Summarize hardware, software, or workspace issue metrics" id="ticketSummary">
+                    </div>
+                </div>
+                <button class="btn" style="width: auto; padding: 12px 30px; background: var(--info); color: white; margin-bottom: 30px;" onclick="fileHelpdeskTicket()">SUBMIT SYSTEM TICKET</button>
+
+                <h3 style="margin: 20px 0 10px 0; font-size: 1.1rem; color: var(--accent);">Active Support Tickets Log</h3>
+                <table class="holiday-table" id="ticketsTable">
+                    <thead>
+                        <tr>
+                            <th style="width: 15%;">Ticket ID</th>
+                            <th style="width: 20%;">Category</th>
+                            <th style="width: 45%;">Summary Context</th>
+                            <th>Status Queue</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>ALO-88214</td>
+                            <td>Software</td>
+                            <td>Corporate VPN profile synchronization timeout loop on macOS enterprise client</td>
+                            <td><span class="badge badge-status-progress">In Progress</span></td>
+                        </tr>
+                        <tr>
+                            <td>ALO-87102</td>
+                            <td>Infrastructure</td>
+                            <td>Floor 4 conference block smart card lock mechanism sensor error</td>
+                            <td><span class="badge badge-status-resolved">Resolved</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+</div>
+
+<div id="printable-form-template">
+    <div style="text-align: center; border-bottom: 2px solid #000; padding-bottom: 15px; margin-bottom: 25px;">
+        <h2>FORM F: GRATUITY NOMINATION STATEMENT</h2>
+        <h3>ALORICA SECTOR COMPLIANCE ENGINE</h3>
+        <p>In accordance with statutory provisioning parameters under the Payment of Gratuity Act</p>
+    </div>
+
+    <p><strong>TO: ALORICA INDIA PRIVATE LIMITED</strong><br>Shared Services Compensation Division, India Establishments</p>
+    
+    <p>I, Shri / Shrimati / Kumari <span id="print-name" style="text-decoration: underline; font-weight: bold;">-</span> hereby nominate the person(s) mentioned below to receive the gratuity payable after my demise relative to credit totals mapped under my tenure ledger balances.</p>
+
+    <h3>1. ACCOUNT REGISTRATION DISCLOSURE STATEMENT</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;" border="1" cellpadding="8">
+        <tr><td style="width: 40%; font-weight: bold;">Department / Cadre Tracker:</td><td id="print-dept">-</td></tr>
+        <tr><td style="font-weight: bold;">Father's / Husband's Full Identity Name:</td><td id="print-relname">-</td></tr>
+        <tr><td style="font-weight: bold;">Marital Structural Status:</td><td id="print-marital">-</td></tr>
+    </table>
+
+    <h3>2. NOMINATION REGISTER STRUCTURAL SCHEMATICS</h3>
+    <table style="width: 100%; border-collapse: collapse; margin-bottom: 30px;" border="1" cellpadding="8">
+        <thead>
+            <tr style="background: #f2f2f2;">
+                <th>Nominee Profile Details & Address Context</th>
+                <th>Relationship</th>
+                <th>Allocation %</th>
+                <th>Age</th>
+                <th>Government ID Verification</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td id="print-nomprofile">-</td>
+                <td id="print-nomrel">-</td>
+                <td id="print-nomshare">-</td>
+                <td id="print-nomage">-</td>
+                <td id="print-nomid">-</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="border: 1px dashed #000; padding: 12px; font-size: 11px; margin-bottom: 45px; background: #fafafa;">
+        <strong>SUBMISSION ROUTING MANDATE NOTICE:</strong> Once printed or compiled into a system PDF format via your local printing layer framework, you are explicitly ordered to dispatch a copy directly to the compliance focal desk inbox via: <strong>payroll@alorica.com</strong>.
+    </div>
+
+    <table style="width: 100%; margin-top: 60px;">
+        <tr>
+            <td style="width: 50%;"></td>
+            <td style="width: 50%; border-top: 1px solid #000; text-align: center; padding-top: 8px; font-size: 13px; font-weight: bold;">
+                Candidate Signature Execution (Manual Wet Ink)
+            </td>
+        </tr>
+    </table>
+</div>
+
+<script>
+    // Configured Active Corporate Access Index Map
+    const USER_PROFILES = {
+        "yaminiyuktapeethala@aloricaservice.com": { name: "Yamini Peethala", code: "24896571" },
+        "admin@aloricaservice.com": { name: "System Administrator", code: "10000001" },
+        "manager@aloricaservice.com": { name: "Line Manager", code: "10000002" },
+        "employee1@aloricaservice.com": { name: "Corporate Employee", code: "10000003" }
+    };
+
+    function authenticateSession() {
+        const inputUser = document.getElementById('email').value.trim();
+        const inputPass = document.getElementById('empId').value.trim();
+        
+        if (USER_PROFILES[inputUser] && USER_PROFILES[inputUser].code === inputPass) {
+            document.getElementById('loginSection').style.display = 'none';
+            document.getElementById('dashboardSection').style.display = 'grid';
+            document.getElementById('userIdent').innerText = USER_PROFILES[inputUser].name;
+            document.getElementById('authAlert').style.display = 'none';
+        } else {
+            document.getElementById('authAlert').style.display = 'block';
+        }
+    }
+
+    function terminateSession() {
+        document.getElementById('dashboardSection').style.display = 'none';
+        document.getElementById('loginSection').style.display = 'block';
+        document.getElementById('email').value = '';
+        document.getElementById('empId').value = '';
+    }
+
+    function switchTab(tabId, element) {
+        const tabs = document.querySelectorAll('.tab-panel');
+        tabs.forEach(tab => tab.classList.remove('active-panel'));
+        
+        const navItems = document.querySelectorAll('.nav-item');
+        navItems.forEach(item => item.classList.remove('active'));
+
+        document.getElementById('panel-' + tabId).classList.add('active-panel');
+        element.classList.add('active');
+
+        const titles = {
+            'banking': 'Corporate Salary Account Profile',
+            'gratuity': 'Gratuity Nomination Ledger Form (Form F)',
+            'calendar': 'Corporate Holiday Calendar Schedule',
+            'leave': 'Leave Allocation Workspace',
+            'helpdesk': 'IT & Facilities Operations Help Desk'
+        };
+        document.getElementById('pageTitle').innerText = titles[tabId];
+    }
+
+    function saveProfile(moduleName) {
+        alert(moduleName + " configuration parameters successfully committed.");
+    }
+
+    function submitLeave() {
+        alert("Leave application request dispatched for supervisor review.");
+    }
+
+    function fileHelpdeskTicket() {
+        const category = document.getElementById('ticketCategory').value;
+        const summary = document.getElementById('ticketSummary').value;
+
+        if (!summary) {
+            alert("Please provide a summary description.");
+            return;
+        }
+
+        const table = document.getElementById('ticketsTable').getElementsByTagName('tbody')[0];
+        const newRow = table.insertRow(0);
+        
+        const randomNum = Math.floor(10000 + Math.random() * 90000);
+        
+        newRow.innerHTML = `
+            <td>ALO-${randomNum}</td>
+            <td>${category}</td>
+            <td>${summary}</td>
+            <td><span class="badge badge-status-open">Open</span></td>
+        `;
+
+        document.getElementById('ticketSummary').value = '';
+        alert("Service Desk ticket submitted successfully.");
+    }
+
+    function triggerCompilationAndPrint() {
+        document.getElementById('print-name').innerText = document.getElementById('empFullName').value || "-";
+        document.getElementById('print-dept').innerText = document.getElementById('empDept').value || "-";
+        document.getElementById('print-relname').innerText = document.getElementById('empRelationName').value || "-";
+        document.getElementById('print-marital').innerText = document.getElementById('empMarital').value || "-";
+        document.getElementById('print-nomprofile').innerText = document.getElementById('nomineeProfile').value || "-";
+        document.getElementById('print-nomrel').innerText = document.getElementById('nomineeRel').value || "-";
+        document.getElementById('print-nomshare').innerText = (document.getElementById('nomineeShare').value ? document.getElementById('nomineeShare').value + "%" : "-");
+        document.getElementById('print-nomage').innerText = document.getElementById('nomineeAge').value || "-";
+        
+        const idType = document.getElementById('nomineeIdType').value || "";
+        const idNum = document.getElementById('nomineeIdNum').value || "";
+        document.getElementById('print-nomid').innerText = (idType || idNum) ? `${idType}: ${idNum}` : "-";
+
+        window.print();
+    }
+</script>
+
+</body>
+</html>
