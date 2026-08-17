@@ -237,27 +237,134 @@
     .sidebar .stat-number { font-size: 1.6rem; font-weight: 700; color: #004685; }
     .sidebar .stat-accent { color: #f97316; }
 
-    /* certificate styles */
-    .certificate {
-      background: #fafcff;
-      border: 2px solid #004685;
-      border-radius: 24px;
-      padding: 2rem 2.5rem;
-      margin-top: 1.5rem;
-      text-align: center;
-      box-shadow: 0 10px 25px -8px rgba(0,70,133,0.2);
+    /* ===== HORIZONTAL CERTIFICATE with colorful margins ===== */
+    .certificate-wrapper {
+      margin-top: 2rem;
+      display: flex;
+      justify-content: center;
+      width: 100%;
+    }
+    .certificate-horizontal {
+      background: linear-gradient(135deg, #f9f3e6 0%, #fdf8f0 100%);
+      border: 12px solid transparent;
+      border-image: linear-gradient(135deg, #f97316, #eab308, #22c55e, #3b82f6, #8b5cf6) 1;
+      border-radius: 28px;
+      padding: 2.2rem 2.8rem;
+      max-width: 800px;
+      width: 100%;
+      box-shadow: 0 20px 40px -12px rgba(0,0,0,0.3);
       position: relative;
+      transition: all 0.3s;
+      text-align: center;
     }
-    .certificate::before {
-      content: "🏆";
-      font-size: 2.8rem;
-      display: block;
-      margin-bottom: 0.3rem;
+    .certificate-horizontal::before {
+      content: "🏅";
+      position: absolute;
+      top: -20px;
+      left: -10px;
+      font-size: 3.2rem;
+      opacity: 0.25;
+      transform: rotate(-15deg);
     }
-    .certificate h2 { color: #004685; font-size: 1.6rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
-    .certificate .cert-detail { font-size: 1rem; color: #1e293b; margin: 0.4rem 0; }
-    .certificate .cert-highlight { font-weight: 700; color: #004685; }
-    .certificate .cert-footer { margin-top: 1rem; font-size: 0.8rem; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 0.8rem; }
+    .certificate-horizontal::after {
+      content: "🏅";
+      position: absolute;
+      bottom: -20px;
+      right: -10px;
+      font-size: 3.2rem;
+      opacity: 0.25;
+      transform: rotate(15deg);
+    }
+    .cert-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px double #b45309;
+      padding-bottom: 0.5rem;
+      margin-bottom: 1rem;
+    }
+    .cert-header h2 {
+      color: #78350f;
+      font-size: 1.5rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-shadow: 1px 1px 0 rgba(251,191,36,0.3);
+    }
+    .cert-header .cert-badge {
+      background: linear-gradient(135deg, #f97316, #eab308);
+      color: white;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .cert-body {
+      padding: 0.8rem 0;
+    }
+    .cert-body .cert-name {
+      font-size: 2rem;
+      font-weight: 700;
+      color: #0b1e33;
+      background: linear-gradient(135deg, #1e3a5f, #004685);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin: 0.2rem 0;
+    }
+    .cert-body .cert-id {
+      font-size: 0.95rem;
+      color: #475569;
+      background: #eef2f6;
+      display: inline-block;
+      padding: 0.2rem 1.2rem;
+      border-radius: 40px;
+      margin: 0.2rem 0 0.6rem;
+    }
+    .cert-body .cert-title {
+      font-size: 1.2rem;
+      font-weight: 600;
+      color: #78350f;
+      background: #fef3c7;
+      display: inline-block;
+      padding: 0.2rem 1.8rem;
+      border-radius: 40px;
+      margin: 0.4rem 0;
+    }
+    .cert-body .cert-score {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #15803d;
+      background: #dcfce7;
+      display: inline-block;
+      padding: 0.2rem 2rem;
+      border-radius: 40px;
+      margin: 0.4rem 0;
+    }
+    .cert-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-top: 2px dashed #d1d9e6;
+      padding-top: 0.8rem;
+      margin-top: 0.8rem;
+      font-size: 0.8rem;
+      color: #64748b;
+    }
+    .cert-footer .cert-seal {
+      font-size: 1.8rem;
+      opacity: 0.5;
+    }
+    .cert-footer .cert-date {
+      font-weight: 600;
+      color: #475569;
+    }
+
+    @media (max-width: 600px) {
+      .certificate-horizontal { padding: 1.5rem 1rem; }
+      .cert-header { flex-direction: column; gap: 0.4rem; }
+      .cert-body .cert-name { font-size: 1.5rem; }
+    }
 
     @media (max-width: 900px) { .main-container { flex-direction: column; } }
   </style>
@@ -350,7 +457,7 @@
           <p style="color:#475569; margin-bottom:1.2rem;">Select <strong>all</strong> correct options. Passing grade: 80%.</p>
           <div id="quiz-container"></div>
           <button class="btn" style="background:#22c55e; margin-top:1.5rem;" onclick="submitExam()">Submit Final Assessment</button>
-          <!-- Certificate will be injected here -->
+          <!-- Certificate container (horizontal) -->
           <div id="certificate-container"></div>
         </div>
       </div>
@@ -539,19 +646,31 @@
       document.getElementById('main-progress').style.width = `${pct}%`;
     }
 
-    // Certificate generation
+    // ===== HORIZONTAL CERTIFICATE with colorful border =====
     function generateCertificate(name, empId, score) {
       const container = document.getElementById('certificate-container');
       container.innerHTML = `
-        <div class="certificate">
-          <h2>🎓 Certificate of Completion</h2>
-          <p class="cert-detail">This certifies that</p>
-          <p class="cert-detail" style="font-size:1.4rem; font-weight:700; color:#004685;">${name}</p>
-          <p class="cert-detail">Employee ID: <span class="cert-highlight">${empId}</span></p>
-          <p class="cert-detail">has successfully completed the</p>
-          <p class="cert-detail" style="font-weight:700; font-size:1.1rem;">Operations Support Enterprise · L2 Training</p>
-          <p class="cert-detail">with a score of <span class="cert-highlight">${score}%</span></p>
-          <div class="cert-footer">Issued by Alorica · ${new Date().toLocaleDateString()}</div>
+        <div class="certificate-wrapper">
+          <div class="certificate-horizontal">
+            <div class="cert-header">
+              <h2>🎓 ALORICA</h2>
+              <span class="cert-badge">★ CERTIFIED ★</span>
+            </div>
+            <div class="cert-body">
+              <p style="color:#475569; font-weight:500;">This certifies that</p>
+              <div class="cert-name">${name}</div>
+              <div class="cert-id">📋 Employee ID: ${empId}</div>
+              <p style="color:#475569; font-weight:500; margin-top:0.2rem;">has successfully completed</p>
+              <div class="cert-title">Operations Support Enterprise · L2</div>
+              <p style="color:#475569; font-weight:500; margin-top:0.3rem;">with a final score of</p>
+              <div class="cert-score">${score}%</div>
+            </div>
+            <div class="cert-footer">
+              <span class="cert-seal">🔰</span>
+              <span class="cert-date">Issued: ${new Date().toLocaleDateString()}</span>
+              <span class="cert-seal">🔰</span>
+            </div>
+          </div>
         </div>
       `;
     }
@@ -567,17 +686,13 @@
       const pct = Math.round((score / quizQuestions.length) * 100);
       
       if (pct >= 80) {
-        // Generate certificate
         const name = userEmail || 'Employee';
         const empId = userEmpId || 'N/A';
         generateCertificate(name, empId, pct);
-        // Scroll to certificate
         document.getElementById('certificate-container').scrollIntoView({ behavior: 'smooth' });
-        // Show success message
         alert(`✅ PASSED! Score: ${pct}% · Certificate generated below.`);
       } else {
         alert(`❌ FAILED. Score: ${pct}% (>=80% required). Please review and retry.`);
-        // remove any existing certificate
         document.getElementById('certificate-container').innerHTML = '';
       }
     }
