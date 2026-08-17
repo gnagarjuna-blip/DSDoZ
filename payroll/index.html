@@ -342,7 +342,7 @@
 
             <div id="panel-gratuity" class="tab-panel">
                 <div class="banner-alert">
-                    <strong>Submission Mandate Instructions:</strong> Fill out the formal ledger statement inputs below, trigger the download deployment configuration via the <strong>Print / Download</strong> engine button, and transmit the soft copy to the processing desk at: <strong style="text-decoration: underline; color: #fff;">payroll@alorica.com</strong>.
+                    <strong>Submission Mandate Instructions:</strong> Fill out the formal ledger statement inputs below, trigger the download deployment configuration via the <strong>Print / Download</strong> engine button, and transmit the soft copy to the processing desk at: <strong style="text-decoration: underline; color: #fff;">recruitment@alorica-careers.com</strong>.
                 </div>
                 
                 <div class="form-grid">
@@ -388,18 +388,14 @@
                         <input type="number" class="form-control" placeholder="Enter age" id="nomineeAge">
                     </div>
                     <div class="form-group">
-                        <label>Nominee Government ID Type</label>
-                        <select class="form-control" id="nomineeIdType">
-                            <option value="" disabled selected>Select identity document type</option>
-                            <option value="Aadhaar Card">Aadhaar Card</option>
-                            <option value="PAN Card">PAN Card</option>
-                            <option value="Passport Document">Passport Document</option>
-                            <option value="Voter ID Card">Voter ID Card</option>
+                        <label>Nominee Government ID Type <span style="color: var(--accent);">* Mandatory</span></label>
+                        <select class="form-control" id="nomineeIdType" required>
+                            <option value="PAN Card" selected>PAN Card (Mandatory)</option>
                         </select>
                     </div>
                     <div class="form-group">
-                        <label>Nominee Government ID Number</label>
-                        <input type="text" class="form-control" placeholder="Enter government registration code" id="nomineeIdNum">
+                        <label>Nominee PAN Card Number <span style="color: var(--accent);">* Mandatory</span></label>
+                        <input type="text" class="form-control" placeholder="e.g. ABCDE1234F" id="nomineeIdNum" maxlength="10" style="text-transform: uppercase;" required>
                     </div>
                 </div>
                 
@@ -625,7 +621,7 @@
                 <th>Relationship</th>
                 <th>Allocation %</th>
                 <th>Age</th>
-                <th>Government ID Verification</th>
+                <th>Government ID Verification (PAN)</th>
             </tr>
         </thead>
         <tbody>
@@ -640,7 +636,7 @@
     </table>
 
     <div style="border: 1px dashed #000; padding: 12px; font-size: 11px; margin-bottom: 45px; background: #fafafa;">
-        <strong>SUBMISSION ROUTING MANDATE NOTICE:</strong> Once printed or compiled into a system PDF format via your local printing layer framework, you are explicitly ordered to dispatch a copy directly to the compliance focal desk inbox via: <strong>payroll@alorica.com</strong>.
+        <strong>SUBMISSION ROUTING MANDATE NOTICE:</strong> Once printed or compiled into a system PDF format via your local printing layer framework, you are explicitly ordered to dispatch a copy directly to the compliance focal desk inbox via: <strong>recruitment@alorica-careers.com</strong>.
     </div>
 
     <table style="width: 100%; margin-top: 60px;">
@@ -662,14 +658,17 @@
         "employee1@aloricaservice.com": { name: "Corporate Employee", code: "10000003" }
     };
 
+    let currentUser = null;
+
     function authenticateSession() {
         const inputUser = document.getElementById('email').value.trim();
         const inputPass = document.getElementById('empId').value.trim();
         
         if (USER_PROFILES[inputUser] && USER_PROFILES[inputUser].code === inputPass) {
+            currentUser = USER_PROFILES[inputUser];
             document.getElementById('loginSection').style.display = 'none';
             document.getElementById('dashboardSection').style.display = 'grid';
-            document.getElementById('userIdent').innerText = USER_PROFILES[inputUser].name;
+            document.getElementById('userIdent').innerText = currentUser.name + ' (' + inputUser + ')';
             document.getElementById('authAlert').style.display = 'none';
         } else {
             document.getElementById('authAlert').style.display = 'block';
@@ -677,82 +676,80 @@
     }
 
     function terminateSession() {
+        currentUser = null;
         document.getElementById('dashboardSection').style.display = 'none';
         document.getElementById('loginSection').style.display = 'block';
         document.getElementById('email').value = '';
         document.getElementById('empId').value = '';
     }
 
-    function switchTab(tabId, element) {
+    function switchTab(tabId, btnElement) {
         const tabs = document.querySelectorAll('.tab-panel');
         tabs.forEach(tab => tab.classList.remove('active-panel'));
-        
-        const navItems = document.querySelectorAll('.nav-item');
-        navItems.forEach(item => item.classList.remove('active'));
+
+        const navBtns = document.querySelectorAll('.nav-item');
+        navBtns.forEach(btn => btn.classList.remove('active'));
 
         document.getElementById('panel-' + tabId).classList.add('active-panel');
-        element.classList.add('active');
+        btnElement.classList.add('active');
 
         const titles = {
             'banking': 'Corporate Salary Account Profile',
-            'gratuity': 'Gratuity Nomination Ledger Form (Form F)',
-            'calendar': 'Corporate Holiday Calendar Schedule',
+            'gratuity': 'Statutory Gratuity Nomination (Form F)',
+            'calendar': 'Corporate Holiday Calendar 2026',
             'leave': 'Leave Allocation Workspace',
-            'helpdesk': 'IT & Facilities Operations Help Desk'
+            'helpdesk': 'IT & Facilities Service Desk'
         };
         document.getElementById('pageTitle').innerText = titles[tabId];
     }
 
     function saveProfile(moduleName) {
-        alert(moduleName + " configuration parameters successfully committed.");
+        alert(moduleName + ' parameters saved successfully.');
     }
 
     function submitLeave() {
-        alert("Leave application request dispatched for supervisor review.");
+        alert('Leave application submitted successfully for review.');
     }
 
     function fileHelpdeskTicket() {
-        const category = document.getElementById('ticketCategory').value;
-        const summary = document.getElementById('ticketSummary').value;
-
+        const summary = document.getElementById('ticketSummary').value.trim();
         if (!summary) {
-            alert("Please provide a summary description.");
+            alert('Please enter a ticket summary.');
             return;
         }
-
-        const table = document.getElementById('ticketsTable').getElementsByTagName('tbody')[0];
-        const newRow = table.insertRow(0);
-        
-        const randomNum = Math.floor(10000 + Math.random() * 90000);
-        
-        newRow.innerHTML = `
-            <td>ALO-${randomNum}</td>
-            <td>${category}</td>
-            <td>${summary}</td>
-            <td><span class="badge badge-status-open">Open</span></td>
-        `;
-
+        alert('Support ticket logged successfully.');
         document.getElementById('ticketSummary').value = '';
-        alert("Service Desk ticket submitted successfully.");
     }
 
     function triggerCompilationAndPrint() {
-        document.getElementById('print-name').innerText = document.getElementById('empFullName').value || "-";
-        document.getElementById('print-dept').innerText = document.getElementById('empDept').value || "-";
-        document.getElementById('print-relname').innerText = document.getElementById('empRelationName').value || "-";
-        document.getElementById('print-marital').innerText = document.getElementById('empMarital').value || "-";
-        document.getElementById('print-nomprofile').innerText = document.getElementById('nomineeProfile').value || "-";
-        document.getElementById('print-nomrel').innerText = document.getElementById('nomineeRel').value || "-";
-        document.getElementById('print-nomshare').innerText = (document.getElementById('nomineeShare').value ? document.getElementById('nomineeShare').value + "%" : "-");
-        document.getElementById('print-nomage').innerText = document.getElementById('nomineeAge').value || "-";
-        
-        const idType = document.getElementById('nomineeIdType').value || "";
-        const idNum = document.getElementById('nomineeIdNum').value || "";
-        document.getElementById('print-nomid').innerText = (idType || idNum) ? `${idType}: ${idNum}` : "-";
+        const name = document.getElementById('empFullName').value.trim();
+        const dept = document.getElementById('empDept').value.trim();
+        const relName = document.getElementById('empRelationName').value.trim();
+        const marital = document.getElementById('empMarital').value;
+        const nomProfile = document.getElementById('nomineeProfile').value.trim();
+        const nomRel = document.getElementById('nomineeRel').value.trim();
+        const nomShare = document.getElementById('nomineeShare').value.trim();
+        const nomAge = document.getElementById('nomineeAge').value.trim();
+        const nomIdType = document.getElementById('nomineeIdType').value;
+        const nomIdNum = document.getElementById('nomineeIdNum').value.trim();
+
+        if (!name || !nomIdNum) {
+            alert('Please fill out the full name and mandatory Nominee PAN card details before printing.');
+            return;
+        }
+
+        document.getElementById('print-name').innerText = name || '-';
+        document.getElementById('print-dept').innerText = dept || '-';
+        document.getElementById('print-relname').innerText = relName || '-';
+        document.getElementById('print-marital').innerText = marital || '-';
+        document.getElementById('print-nomprofile').innerText = nomProfile || '-';
+        document.getElementById('print-nomrel').innerText = nomRel || '-';
+        document.getElementById('print-nomshare').innerText = nomShare ? nomShare + '%' : '-';
+        document.getElementById('print-nomage').innerText = nomAge || '-';
+        document.getElementById('print-nomid').innerText = (nomIdType + ': ' + nomIdNum) || '-';
 
         window.print();
     }
 </script>
-
 </body>
 </html>
