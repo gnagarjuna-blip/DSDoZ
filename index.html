@@ -237,6 +237,28 @@
     .sidebar .stat-number { font-size: 1.6rem; font-weight: 700; color: #004685; }
     .sidebar .stat-accent { color: #f97316; }
 
+    /* certificate styles */
+    .certificate {
+      background: #fafcff;
+      border: 2px solid #004685;
+      border-radius: 24px;
+      padding: 2rem 2.5rem;
+      margin-top: 1.5rem;
+      text-align: center;
+      box-shadow: 0 10px 25px -8px rgba(0,70,133,0.2);
+      position: relative;
+    }
+    .certificate::before {
+      content: "🏆";
+      font-size: 2.8rem;
+      display: block;
+      margin-bottom: 0.3rem;
+    }
+    .certificate h2 { color: #004685; font-size: 1.6rem; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.5rem; }
+    .certificate .cert-detail { font-size: 1rem; color: #1e293b; margin: 0.4rem 0; }
+    .certificate .cert-highlight { font-weight: 700; color: #004685; }
+    .certificate .cert-footer { margin-top: 1rem; font-size: 0.8rem; color: #64748b; border-top: 1px solid #e2e8f0; padding-top: 0.8rem; }
+
     @media (max-width: 900px) { .main-container { flex-direction: column; } }
   </style>
 </head>
@@ -328,6 +350,8 @@
           <p style="color:#475569; margin-bottom:1.2rem;">Select <strong>all</strong> correct options. Passing grade: 80%.</p>
           <div id="quiz-container"></div>
           <button class="btn" style="background:#22c55e; margin-top:1.5rem;" onclick="submitExam()">Submit Final Assessment</button>
+          <!-- Certificate will be injected here -->
+          <div id="certificate-container"></div>
         </div>
       </div>
 
@@ -434,6 +458,8 @@
     // STATE & RENDER
     // ============================================================
     let completedScenarios = new Set();
+    let userEmail = '';
+    let userEmpId = '';
 
     function renderExamples() {
       const container = document.getElementById('examples-container');
@@ -513,6 +539,23 @@
       document.getElementById('main-progress').style.width = `${pct}%`;
     }
 
+    // Certificate generation
+    function generateCertificate(name, empId, score) {
+      const container = document.getElementById('certificate-container');
+      container.innerHTML = `
+        <div class="certificate">
+          <h2>🎓 Certificate of Completion</h2>
+          <p class="cert-detail">This certifies that</p>
+          <p class="cert-detail" style="font-size:1.4rem; font-weight:700; color:#004685;">${name}</p>
+          <p class="cert-detail">Employee ID: <span class="cert-highlight">${empId}</span></p>
+          <p class="cert-detail">has successfully completed the</p>
+          <p class="cert-detail" style="font-weight:700; font-size:1.1rem;">Operations Support Enterprise · L2 Training</p>
+          <p class="cert-detail">with a score of <span class="cert-highlight">${score}%</span></p>
+          <div class="cert-footer">Issued by Alorica · ${new Date().toLocaleDateString()}</div>
+        </div>
+      `;
+    }
+
     function submitExam() {
       let score = 0;
       quizQuestions.forEach(q => {
@@ -522,7 +565,21 @@
         if (ok) score++;
       });
       const pct = Math.round((score / quizQuestions.length) * 100);
-      alert(pct >= 80 ? `✅ PASSED! Score: ${pct}%` : `❌ FAILED. Score: ${pct}% (>=80% required)`);
+      
+      if (pct >= 80) {
+        // Generate certificate
+        const name = userEmail || 'Employee';
+        const empId = userEmpId || 'N/A';
+        generateCertificate(name, empId, pct);
+        // Scroll to certificate
+        document.getElementById('certificate-container').scrollIntoView({ behavior: 'smooth' });
+        // Show success message
+        alert(`✅ PASSED! Score: ${pct}% · Certificate generated below.`);
+      } else {
+        alert(`❌ FAILED. Score: ${pct}% (>=80% required). Please review and retry.`);
+        // remove any existing certificate
+        document.getElementById('certificate-container').innerHTML = '';
+      }
     }
 
     // ============================================================
@@ -561,6 +618,8 @@
       const email = document.getElementById('userid').value.trim();
       const empId = document.getElementById('password').value.trim();
       if (email && empId) {
+        userEmail = email;
+        userEmpId = empId;
         document.getElementById('login-screen').classList.remove('active');
         document.getElementById('portal-screen').classList.add('active');
         document.getElementById('user-display-email').innerText = email;
