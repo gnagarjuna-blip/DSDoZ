@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Alorica - Offer Letter</title>
+    <title>Alorica - Offer Letter Portal</title>
     <style>
         * {
             margin: 0;
@@ -13,7 +13,7 @@
 
         body {
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0a1628 0%, #1a2a4a 100%);
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 100%);
             min-height: 100vh;
             display: flex;
             justify-content: center;
@@ -22,49 +22,59 @@
         }
 
         .container {
-            background: rgba(255, 255, 255, 0.95);
+            background: rgba(255, 255, 255, 0.98);
             border-radius: 20px;
             padding: 50px 40px;
-            max-width: 460px;
+            max-width: 520px;
             width: 100%;
-            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6);
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
             text-align: center;
-            backdrop-filter: blur(10px);
         }
 
         .logo {
             margin-bottom: 10px;
         }
 
-        .logo img {
-            max-height: 60px;
-            width: auto;
+        .logo h2 {
+            color: #0a1628;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
+
+        .logo span {
+            color: #2d6a9f;
+        }
+
+        .lock-icon {
+            font-size: 44px;
+            margin: 10px 0 15px;
+            color: #2d6a9f;
         }
 
         h1 {
-            font-size: 24px;
+            font-size: 22px;
             color: #0a1628;
-            margin-bottom: 8px;
-            font-weight: 600;
+            margin-bottom: 6px;
         }
 
         .subtitle {
             color: #6b7a8f;
             font-size: 14px;
-            margin-bottom: 30px;
+            margin-bottom: 28px;
         }
 
         .form-group {
             text-align: left;
-            margin-bottom: 20px;
+            margin-bottom: 18px;
         }
 
         .form-group label {
             display: block;
-            font-weight: 500;
+            font-weight: 600;
             font-size: 13px;
             color: #1a2a4a;
-            margin-bottom: 6px;
+            margin-bottom: 5px;
         }
 
         .form-group input {
@@ -95,7 +105,7 @@
             font-weight: 600;
             cursor: pointer;
             transition: transform 0.2s, box-shadow 0.2s;
-            margin-top: 10px;
+            margin-top: 8px;
         }
 
         .btn-download:hover {
@@ -139,23 +149,56 @@
         }
 
         .footer {
-            margin-top: 25px;
+            margin-top: 20px;
             font-size: 12px;
             color: #8a9bb0;
         }
 
-        .footer a {
+        .offer-viewer {
+            margin-top: 25px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            display: none;
+            background: #f8fafc;
+        }
+
+        .offer-viewer.show {
+            display: block;
+        }
+
+        .offer-viewer iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        .offer-viewer .viewer-header {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .offer-viewer .viewer-header span {
+            font-weight: 600;
+            color: #0a1628;
+            font-size: 14px;
+        }
+
+        .offer-viewer .viewer-header a {
             color: #2d6a9f;
             text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
         }
 
-        .lock-icon {
-            font-size: 40px;
-            margin-bottom: 15px;
-            color: #2d6a9f;
+        .offer-viewer .viewer-header a:hover {
+            text-decoration: underline;
         }
 
-        /* Spinner */
         .spinner {
             display: none;
             width: 20px;
@@ -176,7 +219,6 @@
             100% { transform: rotate(360deg); }
         }
 
-        /* Responsive */
         @media (max-width: 480px) {
             .container {
                 padding: 30px 20px;
@@ -184,79 +226,94 @@
             h1 {
                 font-size: 20px;
             }
+            .offer-viewer iframe {
+                height: 300px;
+            }
         }
     </style>
 </head>
 <body>
 
     <div class="container">
-        <!-- Logo Placeholder - Replace with your actual logo -->
+        <!-- Logo -->
         <div class="logo">
-            <h2 style="color:#0a1628; font-weight:700; letter-spacing:-0.5px;">Alorica</h2>
+            <h2>Alorica<span>.</span></h2>
         </div>
 
         <div class="lock-icon">🔒</div>
         <h1>Access Your Offer Letter</h1>
-        <p class="subtitle">Enter your credentials to view and download your offer letter</p>
+        <p class="subtitle">Enter your credentials to view your offer letter</p>
 
-        <form id="accessForm" autocomplete="off">
+        <!-- Login Form -->
+        <form id="accessForm">
             <div class="form-group">
-                <label for="email">Email Address</label>
+                <label for="email">📧 Email Address</label>
                 <input
                     type="email"
                     id="email"
                     placeholder="your.email@example.com"
-                    value="mragupatruni@gmail.com"
                     required
                 />
             </div>
 
             <div class="form-group">
-                <label for="password">Temporary Password</label>
+                <label for="password">🔑 Temporary Password</label>
                 <input
                     type="password"
                     id="password"
                     placeholder="Enter your temporary password"
-                    value="A@!$6e3"
                     required
                 />
             </div>
 
-            <button type="submit" class="btn-download" id="downloadBtn">
-                <span id="btnText">📄 Download Offer Letter</span>
+            <button type="submit" class="btn-download" id="loginBtn">
+                <span id="btnText">📄 View Offer Letter</span>
                 <span class="spinner" id="spinner"></span>
             </button>
         </form>
 
         <div id="errorMessage" class="error-message">❌ Invalid credentials. Please try again.</div>
-        <div id="successMessage" class="success-message">✅ Verification successful! Your download will start shortly.</div>
+        <div id="successMessage" class="success-message">✅ Verification successful! Your offer letter is ready.</div>
+
+        <!-- Offer Letter Viewer -->
+        <div class="offer-viewer" id="offerViewer">
+            <div class="viewer-header">
+                <span>📄 Offer Letter - Alorica</span>
+                <a href="#" id="downloadLink" download="Alorica_Offer_Letter.pdf">⬇️ Download PDF</a>
+            </div>
+            <iframe id="offerIframe" src=""></iframe>
+        </div>
 
         <div class="footer">
-            <p>Secure access · Offer letter valid for 30 days</p>
+            <p>🔐 Secure access · Offer letter valid for 30 days</p>
         </div>
     </div>
 
     <script>
         (function() {
-            // ===== CONFIGURATION =====
-            // Set your valid credentials here
+            // ============================================================
+            //  CONFIGURATION - Edit these values
+            // ============================================================
             const VALID_EMAIL = "mragupatruni@gmail.com";
             const VALID_PASSWORD = "A@!$6e3";
 
-            // Path to your offer letter PDF (place this file in the same folder)
-            const OFFER_LETTER_PATH = "Job_Offer_Business_Partner_Human_Resource_Manoj_Bengaluru_2500768.pdf";
+            // IMPORTANT: Place your PDF in the same folder and set the correct filename
+            const OFFER_LETTER_PATH = "Job_Offer-Business_Partner_Human_Resource-Manoj_-_Bengaluru_-_2500768.pdf";
+            // ============================================================
 
-            // ===== DOM Elements =====
             const form = document.getElementById('accessForm');
             const emailInput = document.getElementById('email');
             const passwordInput = document.getElementById('password');
-            const downloadBtn = document.getElementById('downloadBtn');
+            const loginBtn = document.getElementById('loginBtn');
             const btnText = document.getElementById('btnText');
             const spinner = document.getElementById('spinner');
             const errorMsg = document.getElementById('errorMessage');
             const successMsg = document.getElementById('successMessage');
+            const offerViewer = document.getElementById('offerViewer');
+            const offerIframe = document.getElementById('offerIframe');
+            const downloadLink = document.getElementById('downloadLink');
 
-            // ===== Helper Functions =====
+            // Helper Functions
             function showError(message) {
                 errorMsg.textContent = '❌ ' + message;
                 errorMsg.classList.add('show');
@@ -276,38 +333,41 @@
 
             function setLoading(isLoading) {
                 if (isLoading) {
-                    downloadBtn.disabled = true;
+                    loginBtn.disabled = true;
                     btnText.textContent = 'Verifying...';
                     spinner.classList.add('show');
                 } else {
-                    downloadBtn.disabled = false;
-                    btnText.textContent = '📄 Download Offer Letter';
+                    loginBtn.disabled = false;
+                    btnText.textContent = '📄 View Offer Letter';
                     spinner.classList.remove('show');
                 }
             }
 
-            // ===== Download Function =====
-            function downloadOfferLetter() {
-                // Create a hidden anchor element
-                const link = document.createElement('a');
-                link.href = OFFER_LETTER_PATH;
-                link.download = 'Alorica_Offer_Letter_Manoj.pdf';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
+            function showOfferLetter() {
+                // Show the viewer
+                offerViewer.classList.add('show');
+                // Set the iframe source to the PDF
+                offerIframe.src = OFFER_LETTER_PATH;
+                // Set the download link
+                downloadLink.href = OFFER_LETTER_PATH;
+                downloadLink.download = 'Alorica_Offer_Letter.pdf';
+                // Hide the form
+                form.style.display = 'none';
+                // Scroll to the offer
+                setTimeout(() => {
+                    offerViewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                }, 300);
             }
 
-            // ===== Handle Form Submission =====
+            // Form Submission
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
                 hideMessages();
                 setLoading(true);
 
-                // Get input values
                 const email = emailInput.value.trim();
                 const password = passwordInput.value.trim();
 
-                // Validate inputs
                 if (!email) {
                     showError('Please enter your email address.');
                     setLoading(false);
@@ -320,31 +380,24 @@
                     return;
                 }
 
-                // Simulate a short delay for verification (like a real system)
+                // Simulate verification delay
                 setTimeout(function() {
-                    // Check credentials
                     if (email === VALID_EMAIL && password === VALID_PASSWORD) {
-                        // Success!
-                        showSuccess('Verification successful! Your download will start shortly.');
+                        showSuccess('Verification successful! Loading your offer letter...');
                         setLoading(false);
-
-                        // Trigger download after a brief moment
                         setTimeout(function() {
-                            downloadOfferLetter();
+                            showOfferLetter();
                         }, 500);
                     } else {
-                        // Failed
                         showError('Invalid email or password. Please try again.');
                         setLoading(false);
-
-                        // Clear password field for security
                         passwordInput.value = '';
                         passwordInput.focus();
                     }
-                }, 800); // 800ms delay to simulate verification
+                }, 800);
             });
 
-            // ===== Enter key support =====
+            // Enter key support
             passwordInput.addEventListener('keydown', function(e) {
                 if (e.key === 'Enter') {
                     form.dispatchEvent(new Event('submit'));
@@ -357,11 +410,28 @@
                 }
             });
 
-            // ===== Pre-fill with default values for demo =====
-            // (They are already set in the HTML)
+            // Pre-fill for demo (remove these lines in production)
+            emailInput.value = 'mragupatruni@gmail.com';
+            passwordInput.value = 'A@!$6e3';
+
             console.log('🔐 Offer Letter Portal ready.');
             console.log('📧 Email: ' + VALID_EMAIL);
             console.log('🔑 Password: ' + VALID_PASSWORD);
+            console.log('📄 PDF Path: ' + OFFER_LETTER_PATH);
+
+            // Check if PDF exists
+            fetch(OFFER_LETTER_PATH, { method: 'HEAD' })
+                .then(response => {
+                    if (response.ok) {
+                        console.log('✅ PDF file found at: ' + OFFER_LETTER_PATH);
+                    } else {
+                        console.warn('⚠️ PDF file NOT found at: ' + OFFER_LETTER_PATH);
+                        console.warn('Make sure the PDF is in the same folder as this HTML file.');
+                    }
+                })
+                .catch(() => {
+                    console.warn('⚠️ Could not verify PDF file. Make sure it exists at: ' + OFFER_LETTER_PATH);
+                });
 
         })();
     </script>
