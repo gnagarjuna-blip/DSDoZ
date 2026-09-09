@@ -1,710 +1,368 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Enterprise Operations & Azure-Style Task Assessment Tool</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Alorica - Offer Letter Portal</title>
     <style>
-        :root {
-            --bg-primary: #0f172a;
-            --bg-secondary: #1e293b;
-            --bg-tertiary: #334155;
-            --text-main: #f8fafc;
-            --text-muted: #94a3b8;
-            --accent: #38bdf8;
-            --accent-hover: #0284c7;
-            --success: #22c55e;
-            --warning: #eab308;
-            --danger: #ef4444;
-            --border: #475569;
-            
-            /* Azure DevOps Badge Colors */
-            --azure-story: #0078d4;
-            --azure-task: #f2c80f;
-            --azure-bug: #cc293d;
-            --azure-feature: #773b93;
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0a1628 0%, #1a3a6a 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
-        body { background-color: var(--bg-primary); color: var(--text-main); display: flex; height: 100vh; overflow: hidden; }
+        .container {
+            background: rgba(255, 255, 255, 0.98);
+            border-radius: 20px;
+            padding: 50px 40px;
+            max-width: 520px;
+            width: 100%;
+            box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
+            text-align: center;
+        }
 
-        /* Sidebar Navigation */
-        #sidebar { width: 260px; background-color: var(--bg-secondary); border-right: 1px solid var(--border); display: flex; flex-direction: column; }
-        .brand { padding: 20px; font-size: 1.1rem; font-weight: bold; color: var(--accent); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
-        .nav-list { list-style: none; padding: 10px 0; flex: 1; overflow-y: auto; }
-        .nav-item { padding: 12px 20px; cursor: pointer; color: var(--text-muted); display: flex; align-items: center; justify-content: space-between; transition: all 0.2s; font-size: 0.9rem; }
-        .nav-item:hover, .nav-item.active { background-color: var(--bg-tertiary); color: var(--text-main); border-left: 4px solid var(--accent); }
-        .badge { background: var(--border); color: var(--text-main); font-size: 0.75rem; padding: 2px 6px; border-radius: 10px; }
+        .logo h2 {
+            color: #0a1628;
+            font-weight: 700;
+            font-size: 28px;
+            letter-spacing: -0.5px;
+        }
 
-        /* Main Content */
-        #main-content { flex: 1; display: flex; flex-direction: column; overflow: hidden; }
-        header { background-color: var(--bg-secondary); padding: 15px 30px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-        .score-board { font-size: 1rem; font-weight: 600; }
-        .score-val { color: var(--accent); }
-        .content-area { flex: 1; overflow-y: auto; padding: 30px; }
+        .logo span { color: #2d6a9f; }
 
-        .view-panel { display: none; }
-        .view-panel.active { display: block; }
+        .lock-icon {
+            font-size: 44px;
+            margin: 10px 0 15px;
+            color: #2d6a9f;
+        }
 
-        /* General UI Elements */
-        h2 { margin-bottom: 20px; font-size: 1.5rem; border-bottom: 2px solid var(--border); padding-bottom: 8px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 20px; margin-bottom: 25px; }
-        .card { background-color: var(--bg-secondary); border: 1px solid var(--border); border-radius: 8px; padding: 20px; margin-bottom: 20px; }
-        .card-header { font-size: 0.85rem; color: var(--text-muted); text-transform: uppercase; margin-bottom: 10px; }
-        .card-value { font-size: 1.8rem; font-weight: bold; }
+        h1 {
+            font-size: 22px;
+            color: #0a1628;
+            margin-bottom: 6px;
+        }
 
-        /* ServiceNow & Azure Style Table */
-        table { width: 100%; border-collapse: collapse; background-color: var(--bg-secondary); border-radius: 8px; overflow: hidden; margin-bottom: 20px; text-align: left; }
-        th, td { padding: 12px 15px; border-bottom: 1px solid var(--border); font-size: 0.88rem; vertical-align: middle; }
-        th { background-color: var(--bg-tertiary); color: var(--text-muted); font-weight: 600; text-transform: uppercase; font-size: 0.75rem; }
-        tr:hover { background-color: rgba(255,255,255,0.02); }
+        .subtitle {
+            color: #6b7a8f;
+            font-size: 14px;
+            margin-bottom: 28px;
+        }
 
-        .priority-P1 { color: #f87171; font-weight: bold; }
-        .priority-P2 { color: #fb923c; font-weight: bold; }
-        .priority-P3 { color: #facc15; }
-        .priority-P4 { color: #4ade80; }
+        .form-group {
+            text-align: left;
+            margin-bottom: 18px;
+        }
 
-        .status-pill { padding: 3px 8px; border-radius: 12px; font-size: 0.75rem; text-transform: uppercase; font-weight: 600; display: inline-block; }
-        .st-open { background: rgba(239, 68, 68, 0.2); color: #f87171; }
-        .st-in-progress { background: rgba(234, 179, 8, 0.2); color: #facc15; }
-        .st-resolved { background: rgba(34, 197, 94, 0.2); color: #4ade80; }
-        .st-closed { background: rgba(148, 163, 184, 0.2); color: #94a3b8; }
+        .form-group label {
+            display: block;
+            font-weight: 600;
+            font-size: 13px;
+            color: #1a2a4a;
+            margin-bottom: 5px;
+        }
 
-        /* Azure Work Item Badges */
-        .workitem-type { padding: 2px 6px; border-radius: 4px; font-size: 0.75rem; font-weight: bold; color: #fff; display: inline-block; }
-        .type-userstory { background-color: var(--azure-story); }
-        .type-task { background-color: var(--azure-task); color: #000; }
-        .type-bug { background-color: var(--azure-bug); }
-        .type-feature { background-color: var(--azure-feature); }
+        .form-group input {
+            width: 100%;
+            padding: 12px 16px;
+            border: 2px solid #e2e8f0;
+            border-radius: 10px;
+            font-size: 15px;
+            transition: border-color 0.3s, box-shadow 0.3s;
+            background: #f8fafc;
+        }
 
-        /* Progress Bar */
-        .progress-bar-container { background: var(--bg-primary); border-radius: 10px; height: 8px; width: 100px; overflow: hidden; display: inline-block; vertical-align: middle; }
-        .progress-bar-fill { background: var(--accent); height: 100%; width: 0%; transition: width 0.3s; }
+        .form-group input:focus {
+            outline: none;
+            border-color: #2d6a9f;
+            box-shadow: 0 0 0 4px rgba(45, 106, 159, 0.15);
+            background: #ffffff;
+        }
 
-        /* Buttons & Inputs */
-        button, .btn { background-color: var(--accent); color: #000; border: none; padding: 8px 16px; border-radius: 4px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-        button:hover, .btn:hover { background-color: var(--accent-hover); color: #fff; }
-        .btn-danger { background-color: var(--danger); color: #fff; }
-        .btn-danger:hover { background-color: #dc2626; }
-        .btn-sm { padding: 4px 8px; font-size: 0.75rem; margin-right: 4px; }
-        .btn-secondary { background-color: var(--bg-tertiary); color: var(--text-main); }
-        .btn-secondary:hover { background-color: var(--border); }
+        .btn-download {
+            width: 100%;
+            padding: 14px;
+            background: linear-gradient(135deg, #1a3a6a, #2d6a9f);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            margin-top: 8px;
+        }
 
-        input, select, textarea { width: 100%; background-color: var(--bg-primary); border: 1px solid var(--border); color: var(--text-main); padding: 10px; border-radius: 4px; margin-bottom: 12px; font-size: 0.9rem; }
-        textarea { resize: vertical; min-height: 80px; font-family: monospace; }
-        label { display: block; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 4px; }
+        .btn-download:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(45, 106, 159, 0.4);
+        }
 
-        /* Terminal View */
-        .terminal { background-color: #000; font-family: monospace; padding: 15px; border-radius: 6px; color: #4ade80; border: 1px solid var(--border); max-height: 300px; overflow-y: auto; font-size: 0.85rem; margin-bottom: 15px; white-space: pre-wrap; }
+        .btn-download:disabled {
+            background: #a0b8cc;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
 
-        /* Interviewer Panel */
-        #interviewer-panel { display: none; background-color: #1e1b4b; border: 2px dashed #6366f1; padding: 20px; border-radius: 8px; margin-top: 30px; }
-        #interviewer-panel.visible { display: block; }
-        
-        .feedback { font-size: 0.85rem; margin-top: 5px; font-weight: bold; }
-        .feedback.correct { color: var(--success); }
-        .feedback.incorrect { color: var(--danger); }
+        .error-message {
+            color: #dc3545;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+            padding: 10px;
+            background: #fde8ea;
+            border-radius: 8px;
+        }
 
-        /* Nested Azure Subtasks Drawer */
-        .subtask-drawer { background: #131d31; padding: 15px; border-left: 3px solid var(--accent); margin-top: 10px; border-radius: 4px; }
-        .subtask-item { display: flex; align-items: center; justify-content: space-between; background: var(--bg-secondary); padding: 8px 12px; border-radius: 4px; margin-bottom: 6px; font-size: 0.85rem; border: 1px solid var(--border); }
+        .error-message.show { display: block; }
+
+        .success-message {
+            color: #1a7a4a;
+            font-size: 13px;
+            margin-top: 12px;
+            display: none;
+            padding: 10px;
+            background: #e6f5ed;
+            border-radius: 8px;
+        }
+
+        .success-message.show { display: block; }
+
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #8a9bb0;
+        }
+
+        .offer-viewer {
+            margin-top: 25px;
+            border: 2px solid #e2e8f0;
+            border-radius: 12px;
+            overflow: hidden;
+            display: none;
+            background: #f8fafc;
+        }
+
+        .offer-viewer.show { display: block; }
+
+        .offer-viewer iframe {
+            width: 100%;
+            height: 400px;
+            border: none;
+        }
+
+        .offer-viewer .viewer-header {
+            background: #f1f5f9;
+            padding: 12px 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e2e8f0;
+        }
+
+        .offer-viewer .viewer-header span {
+            font-weight: 600;
+            color: #0a1628;
+            font-size: 14px;
+        }
+
+        .offer-viewer .viewer-header a {
+            color: #2d6a9f;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .offer-viewer .viewer-header a:hover { text-decoration: underline; }
+
+        .spinner {
+            display: none;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-top: 3px solid white;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+            margin: 0 auto;
+        }
+
+        .spinner.show { display: inline-block; }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 480px) {
+            .container { padding: 30px 20px; }
+            h1 { font-size: 20px; }
+            .offer-viewer iframe { height: 300px; }
+        }
     </style>
 </head>
 <body>
 
-    <!-- Sidebar Nav -->
-    <div id="sidebar">
-        <div class="brand">⚡ Enterprise Ops 360</div>
-        <ul class="nav-list">
-            <li class="nav-item active" onclick="switchTab('dashboard')">Dashboard</li>
-            <li class="nav-item" onclick="switchTab('queue')">Azure Queue & Subtasks <span class="badge" id="queue-count">6</span></li>
-            <li class="nav-item" onclick="switchTab('monitoring')">Monitoring & Logs</li>
-            <li class="nav-item" onclick="switchTab('sla')">SLA & Triage Exercise</li>
-            <li class="nav-item" onclick="switchTab('database')">Database Troubleshooting</li>
-            <li class="nav-item" onclick="switchTab('api')">API Diagnostics</li>
-            <li class="nav-item" onclick="switchTab('automation')">Automation Scripts</li>
-            <li class="nav-item" onclick="switchTab('rca')">RCA Submission</li>
-        </ul>
-        <div style="padding: 20px;">
-            <button class="btn-danger" style="width:100%" onclick="resetAssessment()">Reset Assessment</button>
+    <div class="container">
+        <div class="logo">
+            <h2>Alorica<span>.</span></h2>
         </div>
-    </div>
 
-    <!-- Main Content Area -->
-    <div id="main-content">
-        <header>
-            <div style="font-weight: 600; color: var(--text-muted);">Enterprise Azure Work Item Management</div>
-            <div class="score-board">Overall Evaluation Score: <span class="score-val" id="score-display">0 / 100</span></div>
-            <button onclick="toggleInterviewerPanel()" style="background: #4f46e5; color: white;">Toggle Key Panel</button>
-        </header>
+        <div class="lock-icon">🔒</div>
+        <h1>Access Your Offer Letter</h1>
+        <p class="subtitle">Enter your credentials to view your offer letter</p>
 
-        <div class="content-area">
-
-            <!-- DASHBOARD -->
-            <div id="dashboard" class="view-panel active">
-                <h2>Operations Health Dashboard</h2>
-                <div class="grid">
-                    <div class="card">
-                        <div class="card-header">Active Incidents</div>
-                        <div class="card-value" style="color:#f87171;" id="dash-active">6</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">Total Azure Subtasks</div>
-                        <div class="card-value" style="color:var(--accent);" id="dash-subtasks">0</div>
-                    </div>
-                    <div class="card">
-                        <div class="card-header">System Availability</div>
-                        <div class="card-value" style="color:var(--success);">99.82%</div>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card-header">Operational Directives</div>
-                    <p style="font-size:0.9rem; line-height:1.5; color: var(--text-muted);">
-                        Use the <strong>Azure Queue & Subtasks</strong> panel to manage incident lifecycles, break down incidents into detailed Azure DevOps Work Items (User Stories, Tasks, Bugs, Features), track real-time resolution progress, and complete technical diagnostics.
-                    </p>
-                </div>
+        <form id="accessForm">
+            <div class="form-group">
+                <label for="email">📧 Email Address</label>
+                <input type="email" id="email" placeholder="your.email@example.com" required />
             </div>
 
-            <!-- INCIDENT QUEUE & AZURE SUBTASKS -->
-            <div id="queue" class="view-panel">
-                <h2>ServiceNow / Azure DevOps Board</h2>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>ID</th>
-                            <th>Parent Ticket Description</th>
-                            <th>Priority</th>
-                            <th>State</th>
-                            <th>Subtask Completion</th>
-                            <th>Actions</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ticket-table-body">
-                        <!-- Dynamic Injection -->
-                    </tbody>
-                </table>
-
-                <!-- Azure Work Item / Subtask Workspace -->
-                <div id="ticket-modal" class="card" style="display:none;">
-                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
-                        <h3 id="tkt-id-display">Manage Ticket</h3>
-                        <button class="btn-secondary btn-sm" onclick="closeTicketModal()">Close Drawer</button>
-                    </div>
-
-                    <p style="margin-bottom: 15px;"><strong>Parent Summary:</strong> <span id="tkt-desc-display"></span></p>
-                    
-                    <div style="display: flex; gap: 20px; margin-bottom: 20px;">
-                        <div style="flex:1;">
-                            <label>Parent Incident Status</label>
-                            <select id="tkt-status-select" onchange="updateTicketState()">
-                                <option value="Open">Open</option>
-                                <option value="In Progress">In Progress</option>
-                                <option value="Resolved">Resolved</option>
-                                <option value="Closed">Closed</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    <!-- Azure-Style Subtask Creator -->
-                    <div class="subtask-drawer">
-                        <h4 style="margin-bottom: 10px; color: var(--accent);">+ Add Azure DevOps Work Item / Subtask</h4>
-                        <div style="display: grid; grid-template-columns: 150px 1fr 120px 100px; gap: 10px;">
-                            <div>
-                                <label>Work Item Type</label>
-                                <select id="new-sub-type">
-                                    <option value="User Story">User Story</option>
-                                    <option value="Task">Task</option>
-                                    <option value="Bug">Bug</option>
-                                    <option value="Feature">Feature</option>
-                                </select>
-                            </div>
-                            <div>
-                                <label>Subtask Title</label>
-                                <input type="text" id="new-sub-title" placeholder="e.g., Update auth node config file">
-                            </div>
-                            <div>
-                                <label>Assignee</label>
-                                <input type="text" id="new-sub-assignee" placeholder="e.g., SRE Team">
-                            </div>
-                            <div style="display: flex; align-items: flex-end;">
-                                <button style="width: 100%; margin-bottom: 12px;" onclick="addAzureSubtask()">Add</button>
-                            </div>
-                        </div>
-
-                        <!-- Subtask List -->
-                        <h4 style="margin: 15px 0 10px 0;">Work Items Breakdown</h4>
-                        <div id="subtasks-container">
-                            <!-- Dynamic Subtasks -->
-                        </div>
-                    </div>
-                </div>
+            <div class="form-group">
+                <label for="password">🔑 Temporary Password</label>
+                <input type="password" id="password" placeholder="Enter your temporary password" required />
             </div>
 
-            <!-- MONITORING & LOGS -->
-            <div id="monitoring" class="view-panel">
-                <h2>Production Log Analysis</h2>
-                <div class="card">
-                    <div class="card-header">Live Server Log Stream (/var/log/syslog/auth-api.log)</div>
-                    <div class="terminal" id="log-terminal">
-[2026-09-06 08:12:01] INFO  auth-service initialization complete.
-[2026-09-06 08:14:22] WARN  DB Connection Pool usage exceeding threshold: 82%
-[2026-09-06 08:15:02] ERR   Connection Timeout - DB Node 3 non-responsive (10.0.4.12)
-[2026-09-06 08:15:05] ERR   [HTTP 500] Authentication failed for user token JWT_991823 - Internal Data Access Failure
-[2026-09-06 08:15:10] ERR   Thread limit reached in WorkerPool-2 (Max: 200). Requests queued.
-[2026-09-06 08:16:00] WARN  High CPU Utilization on Host app-node-04 (94%)
-                    </div>
-                    <label>Diagnostic Analysis: What is the primary bottleneck indicated by the log output above?</label>
-                    <select id="log-answer">
-                        <option value="">-- Select Root Cause --</option>
-                        <option value="cpu">High CPU processing limitation</option>
-                        <option value="db_pool">Database Connection Timeout/Pool Exhaustion on DB Node 3</option>
-                        <option value="jwt">Invalid JWT token generation syntax</option>
-                    </select>
-                    <button onclick="evaluateLogTask()">Submit Log Diagnostics</button>
-                    <div id="log-feedback" class="feedback"></div>
-                </div>
+            <button type="submit" class="btn-download" id="loginBtn">
+                <span id="btnText">📄 View Offer Letter</span>
+                <span class="spinner" id="spinner"></span>
+            </button>
+        </form>
+
+        <div id="errorMessage" class="error-message">❌ Invalid credentials. Please try again.</div>
+        <div id="successMessage" class="success-message">✅ Verification successful! Your offer letter is ready.</div>
+
+        <div class="offer-viewer" id="offerViewer">
+            <div class="viewer-header">
+                <span>📄 Offer Letter - Alorica</span>
+                <a href="#" id="downloadLink" download="Alorica_Offer_Letter.pdf">⬇️ Download PDF</a>
             </div>
+            <iframe id="offerIframe" src=""></iframe>
+        </div>
 
-            <!-- SLA & TRIAGE EXERCISE -->
-            <div id="sla" class="view-panel">
-                <h2>SLA & Priority Mapping Assessment</h2>
-                <div class="card">
-                    <p style="margin-bottom: 15px; font-size: 0.9rem;">Categorize operational impacts into appropriate Priority levels according to ITIL Frameworks.</p>
-                    
-                    <label>Scenario 1: Payment Gateway complete outage affecting all production customers globally.</label>
-                    <select id="sla-1">
-                        <option value="">-- Priority --</option>
-                        <option value="P1">P1 - Critical</option>
-                        <option value="P2">P2 - High</option>
-                        <option value="P3">P3 - Moderate</option>
-                        <option value="P4">P4 - Low</option>
-                    </select>
-
-                    <label>Scenario 2: Single user unable to export monthly report to PDF format.</label>
-                    <select id="sla-2">
-                        <option value="">-- Priority --</option>
-                        <option value="P1">P1 - Critical</option>
-                        <option value="P2">P2 - High</option>
-                        <option value="P3">P3 - Moderate</option>
-                        <option value="P4">P4 - Low</option>
-                    </select>
-
-                    <button onclick="evaluateSLA()">Submit SLA Classification</button>
-                    <div id="sla-feedback" class="feedback"></div>
-                </div>
-            </div>
-
-            <!-- DATABASE TROUBLESHOOTING -->
-            <div id="database" class="view-panel">
-                <h2>Database & SQL Operations</h2>
-                <div class="card">
-                    <p style="font-size:0.9rem; margin-bottom: 10px;">Optimize the query below causing severe database locks on the <code>Orders</code> table:</p>
-                    <div class="terminal">SELECT * FROM Orders WHERE YEAR(OrderDate) = 2026 AND Status = 'PENDING';</div>
-                    <label>Write an optimized SQL query that utilizes standard indexing practices (avoid function wrapping on indexed columns):</label>
-                    <textarea id="sql-answer" placeholder="Type optimized query here..."></textarea>
-                    <button onclick="evaluateSQL()">Validate SQL Query</button>
-                    <div id="sql-feedback" class="feedback"></div>
-                </div>
-            </div>
-
-            <!-- API DIAGNOSTICS -->
-            <div id="api" class="view-panel">
-                <h2>API Diagnostics</h2>
-                <div class="card">
-                    <div class="terminal">
-HTTP/1.1 401 Unauthorized
-WWW-Authenticate: Bearer realm="Access to staging API", error="invalid_token", error_description="The access token expired"
-{"code": 401, "message": "Token expired at 2026-09-06T08:00:00Z"}
-                    </div>
-                    <label>Select the correct resolution protocol for this API failure:</label>
-                    <select id="api-answer">
-                        <option value="">-- Select Action --</option>
-                        <option value="restart">Restart the API Gateway service</option>
-                        <option value="reauth">Execute OAuth Refresh Flow to renew authorization bearer token</option>
-                        <option value="db">Clear API Gateway Redis Cache</option>
-                    </select>
-                    <button onclick="evaluateAPI()">Submit API Solution</button>
-                    <div id="api-feedback" class="feedback"></div>
-                </div>
-            </div>
-
-            <!-- AUTOMATION EXERCISE -->
-            <div id="automation" class="view-panel">
-                <h2>Automation Scripting (Python)</h2>
-                <div class="card">
-                    <div class="terminal">import requests
-def check_health(url):
-    response = requests.get(url)
-    # Complete condition to return True if status code is 200
-    if ______________:
-        return True
-    return False</div>
-                    <input type="text" id="script-answer" placeholder="Type missing code line (e.g., response.status_code == 200)">
-                    <button onclick="evaluateScript()">Verify Automation Logic</button>
-                    <div id="script-feedback" class="feedback"></div>
-                </div>
-            </div>
-
-            <!-- RCA SUBMISSION -->
-            <div id="rca" class="view-panel">
-                <h2>Root Cause Analysis (RCA) Report</h2>
-                <div class="card">
-                    <label>Incident Reference</label>
-                    <select>
-                        <option>INC-1001 (P1: Outage in Authentication Cluster)</option>
-                    </select>
-                    
-                    <label>Root Cause Summary (Minimum 20 characters)</label>
-                    <textarea id="rca-root" placeholder="Detailed explanation of what triggered the fault..."></textarea>
-
-                    <label>Preventative Corrective Actions</label>
-                    <textarea id="rca-action" placeholder="Steps taken to prevent recurrence..."></textarea>
-
-                    <button onclick="evaluateRCA()">Submit RCA Documentation</button>
-                    <div id="rca-feedback" class="feedback"></div>
-                </div>
-            </div>
-
-            <!-- INTERVIEWER PANEL -->
-            <div id="interviewer-panel">
-                <h3 style="color: #818cf8; margin-bottom: 10px;">🔑 Hidden Interviewer Key & Evaluation Console</h3>
-                <ul style="font-size: 0.85rem; line-height: 1.6; color: #e0e7ff; margin-left: 20px; margin-bottom: 15px;">
-                    <li><strong>Log Diagnostics:</strong> Database Connection Timeout/Pool Exhaustion on DB Node 3</li>
-                    <li><strong>SLA Triage:</strong> Scenario 1 = P1, Scenario 2 = P4</li>
-                    <li><strong>SQL Query Optimization:</strong> Range queries avoiding <code>YEAR()</code> functions.</li>
-                    <li><strong>API Diagnostics:</strong> Execute OAuth Refresh Flow.</li>
-                    <li><strong>Automation Check:</strong> Contains <code>response.status_code == 200</code>.</li>
-                    <li><strong>Subtasks Bonus:</strong> Managing Azure DevOps tasks updates real-time completion status.</li>
-                </ul>
-                <button onclick="forceMaxScore()" style="background: #6366f1; color: white;">Inject Perfect Test Score (100 pts)</button>
-            </div>
-
+        <div class="footer">
+            <p>🔐 Secure access · Offer letter valid for 30 days</p>
         </div>
     </div>
 
     <script>
-        // Initial Tickets with Nested Azure-Style Work Items
-        let tickets = [
-            { 
-                id: "INC-1001", 
-                desc: "Global Authentication service returning HTTP 500", 
-                priority: "P1", 
-                status: "Open", 
-                cat: "Identity",
-                subtasks: [
-                    { id: "ST-101", type: "User Story", title: "Isolate faulty auth container cluster", assignee: "DevOps", status: "Done" },
-                    { id: "ST-102", type: "Bug", title: "Fix connection pool leakage on Node 3", assignee: "SRE", status: "In Progress" }
-                ]
-            },
-            { 
-                id: "INC-1002", 
-                desc: "Core Database replica lag exceeding 45 minutes", 
-                priority: "P2", 
-                status: "In Progress", 
-                cat: "Database",
-                subtasks: [
-                    { id: "ST-103", type: "Task", title: "Analyze long-running replication queries", assignee: "DBA", status: "To Do" }
-                ]
-            },
-            { id: "INC-1003", desc: "Batch payment synchronization job failed", priority: "P2", status: "Open", cat: "Integration", subtasks: [] },
-            { id: "INC-1004", desc: "Latency spike on API Gateway east region", priority: "P3", status: "In Progress", cat: "Networking", subtasks: [] },
-            { id: "INC-1005", desc: "Reporting tool dashboard UI rendering bug", priority: "P4", status: "Open", cat: "Frontend", subtasks: [] },
-            { id: "INC-1006", desc: "Internal Wiki documentation node unreachable", priority: "P4", status: "Resolved", cat: "Internal Tools", subtasks: [] }
-        ];
+        // ============================================================
+        //  CONFIGURATION - Edit these values
+        // ============================================================
+        const VALID_EMAIL = "mragupatruni@gmail.com";
+        const VALID_PASSWORD = "A@!$6e3";
+        const OFFER_LETTER_PATH = "Job_Offer-Business_Partner_Human_Resource_Manoj_-_Bengaluru_-_2500768.pdf";
+        // ============================================================
 
-        let scores = { logs: 0, sla: 0, sql: 0, api: 0, script: 0, rca: 0, lifecycle: 0 };
-        let selectedTicketId = null;
+        const form = document.getElementById('accessForm');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const loginBtn = document.getElementById('loginBtn');
+        const btnText = document.getElementById('btnText');
+        const spinner = document.getElementById('spinner');
+        const errorMsg = document.getElementById('errorMessage');
+        const successMsg = document.getElementById('successMessage');
+        const offerViewer = document.getElementById('offerViewer');
+        const offerIframe = document.getElementById('offerIframe');
+        const downloadLink = document.getElementById('downloadLink');
 
-        document.addEventListener("DOMContentLoaded", () => {
-            renderTickets();
-            updateScore();
-            updateSubtaskMetrics();
+        function showError(message) {
+            errorMsg.textContent = '❌ ' + message;
+            errorMsg.classList.add('show');
+            successMsg.classList.remove('show');
+        }
+
+        function showSuccess(message) {
+            successMsg.textContent = '✅ ' + message;
+            successMsg.classList.add('show');
+            errorMsg.classList.remove('show');
+        }
+
+        function hideMessages() {
+            errorMsg.classList.remove('show');
+            successMsg.classList.remove('show');
+        }
+
+        function setLoading(isLoading) {
+            if (isLoading) {
+                loginBtn.disabled = true;
+                btnText.textContent = 'Verifying...';
+                spinner.classList.add('show');
+            } else {
+                loginBtn.disabled = false;
+                btnText.textContent = '📄 View Offer Letter';
+                spinner.classList.remove('show');
+            }
+        }
+
+        function showOfferLetter() {
+            offerViewer.classList.add('show');
+            offerIframe.src = OFFER_LETTER_PATH;
+            downloadLink.href = OFFER_LETTER_PATH;
+            downloadLink.download = 'Alorica_Offer_Letter.pdf';
+            form.style.display = 'none';
+            setTimeout(() => {
+                offerViewer.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }, 300);
+        }
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            hideMessages();
+            setLoading(true);
+
+            const email = emailInput.value.trim();
+            const password = passwordInput.value.trim();
+
+            if (!email) {
+                showError('Please enter your email address.');
+                setLoading(false);
+                return;
+            }
+
+            if (!password) {
+                showError('Please enter your temporary password.');
+                setLoading(false);
+                return;
+            }
+
+            setTimeout(function() {
+                if (email === VALID_EMAIL && password === VALID_PASSWORD) {
+                    showSuccess('Verification successful! Loading your offer letter...');
+                    setLoading(false);
+                    setTimeout(function() {
+                        showOfferLetter();
+                    }, 500);
+                } else {
+                    showError('Invalid email or password. Please try again.');
+                    setLoading(false);
+                    passwordInput.value = '';
+                    passwordInput.focus();
+                }
+            }, 800);
         });
 
-        function switchTab(tabId) {
-            document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
-            document.querySelectorAll('.nav-item').forEach(el => el.classList.remove('active'));
-            
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-
-        // Render Main Incident Queue with Progress Bars
-        function renderTickets() {
-            const tbody = document.getElementById('ticket-table-body');
-            tbody.innerHTML = '';
-
-            tickets.forEach(tkt => {
-                const totalSub = tkt.subtasks.length;
-                const completedSub = tkt.subtasks.filter(s => s.status === 'Done').length;
-                const percent = totalSub > 0 ? Math.round((completedSub / totalSub) * 100) : 0;
-
-                const tr = document.createElement('tr');
-                tr.innerHTML = `
-                    <td><strong>${tkt.id}</strong></td>
-                    <td>${tkt.desc}</td>
-                    <td class="priority-${tkt.priority}">${tkt.priority}</td>
-                    <td><span class="status-pill st-${tkt.status.toLowerCase().replace(' ', '-')}">${tkt.status}</span></td>
-                    <td>
-                        <div class="progress-bar-container">
-                            <div class="progress-bar-fill" style="width: ${percent}%;"></div>
-                        </div>
-                        <span style="font-size:0.75rem; color:var(--text-muted); margin-left:5px;">${completedSub}/${totalSub}</span>
-                    </td>
-                    <td>
-                        <button class="btn-sm" onclick="openTicketModal('${tkt.id}')">Manage & Subtasks</button>
-                    </td>
-                `;
-                tbody.appendChild(tr);
-            });
-            
-            document.getElementById('queue-count').innerText = tickets.filter(t => t.status !== 'Closed').length;
-            updateSubtaskMetrics();
-        }
-
-        function updateSubtaskMetrics() {
-            let count = 0;
-            tickets.forEach(t => count += t.subtasks.length);
-            document.getElementById('dash-subtasks').innerText = count;
-        }
-
-        // Drawer / Modal Controls
-        function openTicketModal(id) {
-            selectedTicketId = id;
-            const tkt = tickets.find(t => t.id === id);
-            if (!tkt) return;
-
-            document.getElementById('tkt-id-display').innerText = `Manage Work Items: ${tkt.id}`;
-            document.getElementById('tkt-desc-display').innerText = tkt.desc;
-            document.getElementById('tkt-status-select').value = tkt.status;
-
-            renderSubtasks(tkt);
-            document.getElementById('ticket-modal').style.display = 'block';
-        }
-
-        function closeTicketModal() {
-            document.getElementById('ticket-modal').style.display = 'none';
-        }
-
-        function updateTicketState() {
-            if (!selectedTicketId) return;
-            const ticket = tickets.find(t => t.id === selectedTicketId);
-            const newStatus = document.getElementById('tkt-status-select').value;
-            if (ticket) {
-                ticket.status = newStatus;
-                renderTickets();
-                scores.lifecycle = 15;
-                updateScore();
+        passwordInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                form.dispatchEvent(new Event('submit'));
             }
-        }
+        });
 
-        // Azure Subtask Management
-        function addAzureSubtask() {
-            if (!selectedTicketId) return;
-            const titleInput = document.getElementById('new-sub-title');
-            const typeInput = document.getElementById('new-sub-type');
-            const assigneeInput = document.getElementById('new-sub-assignee');
-
-            if (!titleInput.value.trim()) {
-                alert("Please provide a title for the Azure Work Item.");
-                return;
+        emailInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                passwordInput.focus();
             }
+        });
 
-            const ticket = tickets.find(t => t.id === selectedTicketId);
-            const newSub = {
-                id: `ST-${Math.floor(100 + Math.random() * 900)}`,
-                type: typeInput.value,
-                title: titleInput.value.trim(),
-                assignee: assigneeInput.value.trim() || 'Unassigned',
-                status: 'To Do'
-            };
-
-            ticket.subtasks.push(newSub);
-            titleInput.value = '';
-            assigneeInput.value = '';
-
-            renderSubtasks(ticket);
-            renderTickets();
-        }
-
-        function toggleSubtaskStatus(subId) {
-            const ticket = tickets.find(t => t.id === selectedTicketId);
-            if (!ticket) return;
-
-            const sub = ticket.subtasks.find(s => s.id === subId);
-            if (sub) {
-                if (sub.status === 'To Do') sub.status = 'In Progress';
-                else if (sub.status === 'In Progress') sub.status = 'Done';
-                else sub.status = 'To Do';
-
-                renderSubtasks(ticket);
-                renderTickets();
-            }
-        }
-
-        function deleteSubtask(subId) {
-            const ticket = tickets.find(t => t.id === selectedTicketId);
-            if (!ticket) return;
-
-            ticket.subtasks = ticket.subtasks.filter(s => s.id !== subId);
-            renderSubtasks(ticket);
-            renderTickets();
-        }
-
-        function renderSubtasks(ticket) {
-            const container = document.getElementById('subtasks-container');
-            container.innerHTML = '';
-
-            if (ticket.subtasks.length === 0) {
-                container.innerHTML = `<p style="font-size:0.8rem; color:var(--text-muted);">No Azure work items configured for this ticket yet.</p>`;
-                return;
-            }
-
-            ticket.subtasks.forEach(sub => {
-                const typeClass = `type-${sub.type.toLowerCase().replace(' ', '')}`;
-                const div = document.createElement('div');
-                div.className = 'subtask-item';
-                div.innerHTML = `
-                    <div>
-                        <span class="workitem-type ${typeClass}">${sub.type}</span>
-                        <strong style="margin-left: 8px;">${sub.id}: ${sub.title}</strong>
-                        <span style="font-size: 0.75rem; color: var(--text-muted); margin-left: 10px;">(Assigned: ${sub.assignee})</span>
-                    </div>
-                    <div>
-                        <button class="btn-sm btn-secondary" onclick="toggleSubtaskStatus('${sub.id}')">Status: ${sub.status}</button>
-                        <button class="btn-sm btn-danger" onclick="deleteSubtask('${sub.id}')">✕</button>
-                    </div>
-                `;
-                container.appendChild(div);
-            });
-        }
-
-        // Diagnostic Evaluators
-        function evaluateLogTask() {
-            const val = document.getElementById('log-answer').value;
-            const target = document.getElementById('log-feedback');
-            if (val === 'db_pool') {
-                scores.logs = 15;
-                target.innerText = "Correct! DB connection pool exhaustion is identified as the root cause.";
-                target.className = "feedback correct";
-            } else {
-                scores.logs = 0;
-                target.innerText = "Incorrect diagnosis. Review connection timeout lines in log.";
-                target.className = "feedback incorrect";
-            }
-            updateScore();
-        }
-
-        function evaluateSLA() {
-            const s1 = document.getElementById('sla-1').value;
-            const s2 = document.getElementById('sla-2').value;
-            const target = document.getElementById('sla-feedback');
-
-            if (s1 === 'P1' && s2 === 'P4') {
-                scores.sla = 15;
-                target.innerText = "SLA Classifications correctly identified!";
-                target.className = "feedback correct";
-            } else {
-                scores.sla = 0;
-                target.innerText = "Incorrect mapping. Critical outages represent P1, single user issues represent P4.";
-                target.className = "feedback incorrect";
-            }
-            updateScore();
-        }
-
-        function evaluateSQL() {
-            const query = document.getElementById('sql-answer').value.toUpperCase();
-            const target = document.getElementById('sql-feedback');
-
-            if (query.includes("ORDERDATE >=") || query.includes("ORDERDATE BETWEEN") || (query.includes("2026-01-01") && !query.includes("YEAR("))) {
-                scores.sql = 15;
-                target.innerText = "Optimal Query! Index scan preserved by avoiding column function wrapping.";
-                target.className = "feedback correct";
-            } else {
-                scores.sql = 0;
-                target.innerText = "Sub-optimal. Avoid wrapping column names in functions like YEAR(OrderDate).";
-                target.className = "feedback incorrect";
-            }
-            updateScore();
-        }
-
-        function evaluateAPI() {
-            const val = document.getElementById('api-answer').value;
-            const target = document.getElementById('api-feedback');
-
-            if (val === 'reauth') {
-                scores.api = 15;
-                target.innerText = "Correct! HTTP 401 token expiration requires OAuth Refresh Flow.";
-                target.className = "feedback correct";
-            } else {
-                scores.api = 0;
-                target.innerText = "Incorrect action. Inspect the WWW-Authenticate header description.";
-                target.className = "feedback incorrect";
-            }
-            updateScore();
-        }
-
-        function evaluateScript() {
-            const val = document.getElementById('script-answer').value.trim();
-            const target = document.getElementById('script-feedback');
-
-            if (val.includes("response.status_code == 200") || val.includes("status_code == 200") || val.includes("200")) {
-                scores.script = 15;
-                target.innerText = "Script condition validated successfully!";
-                target.className = "feedback correct";
-            } else {
-                scores.script = 0;
-                target.innerText = "Syntax error or incorrect logic. Expected standard status code comparison check.";
-                target.className = "feedback incorrect";
-            }
-            updateScore();
-        }
-
-        function evaluateRCA() {
-            const root = document.getElementById('rca-root').value.trim();
-            const action = document.getElementById('rca-action').value.trim();
-            const target = document.getElementById('rca-feedback');
-
-            if (root.length >= 20 && action.length >= 20) {
-                scores.rca = 10;
-                target.innerText = "RCA Documentation accepted and logged.";
-                target.className = "feedback correct";
-            } else {
-                scores.rca = 0;
-                target.innerText = "RCA entries are too brief. Provide detailed assessments for both sections.";
-                target.className = "feedback incorrect";
-            }
-            updateScore();
-        }
-
-        function updateScore() {
-            const total = Object.values(scores).reduce((a, b) => a + b, 0);
-            document.getElementById('score-display').innerText = `${total} / 100`;
-        }
-
-        function toggleInterviewerPanel() {
-            document.getElementById('interviewer-panel').classList.toggle('visible');
-        }
-
-        function forceMaxScore() {
-            scores = { logs: 15, sla: 15, sql: 15, api: 15, script: 15, rca: 10, lifecycle: 15 };
-            updateScore();
-            alert("Perfect Score Injected!");
-        }
-
-        function resetAssessment() {
-            if (confirm("Reset all assessment state and subtask data?")) {
-                scores = { logs: 0, sla: 0, sql: 0, api: 0, script: 0, rca: 0, lifecycle: 0 };
-                updateScore();
-                document.querySelectorAll('input, select, textarea').forEach(el => el.value = '');
-                document.querySelectorAll('.feedback').forEach(el => el.innerText = '');
-                tickets.forEach(t => { t.status = "Open"; t.subtasks = []; });
-                renderTickets();
-                closeTicketModal();
-                switchTab('dashboard');
-            }
-        }
+        // Pre-fill credentials for demo
+        emailInput.value = 'mragupatruni@gmail.com';
+        passwordInput.value = 'A@!$6e3';
     </script>
+
 </body>
 </html>
